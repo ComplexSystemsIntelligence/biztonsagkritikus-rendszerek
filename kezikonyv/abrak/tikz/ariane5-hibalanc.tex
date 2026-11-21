@@ -1,0 +1,19 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[node distance=4mm, every node/.append style={font=\scriptsize}]
+  \node[szurkedoboz=40mm] (a) {az Ariane 4 inerciális referenciarendszerének (SRI) szoftverét változatlanul átvették};
+  \node[szurkedoboz=40mm, below=of a] (b) {egy, a felszállás után már szükségtelen igazítási funkció még 40 s-ig futott};
+  \node[doboz=40mm, below=of b] (c) {az Ariane 5 nagyobb vízszintes sebessége miatt egy 64 bites lebegőpontos érték túllépte a 16 bites egész tartományát};
+  \node[doboz=40mm, below=of c] (d) {a konverzió nem volt védve: operandushiba, a kivétel kezelése a számítógép leállítása};
+  \node[kiemeltdoboz=40mm, right=10mm of d] (e) {a tartalék SRI ugyanazzal a szoftverrel 72 ms-mal korábban ugyanígy leállt};
+  \node[kiemeltdoboz=40mm, above=of e] (f) {a fedélzeti számítógép a diagnosztikai bitmintát repülési adatnak értelmezte};
+  \node[pirosdoboz=40mm, above=of f] (g) {a fúvókák teljes kitérése, a rakéta letért a pályáról, és mintegy 40 s-mal a felszállás után megsemmisült};
+  \draw[nyil] (a) -- (b); \draw[nyil] (b) -- (c); \draw[nyil] (c) -- (d); \draw[nyil] (d) -- (e); \draw[nyil] (e) -- (f); \draw[nyil] (f) -- (g);
+  \node[liladoboz=40mm, align=left, font=\tiny, right=10mm of g, anchor=north west] (t) {\textbf{tanulságok}\\[2pt]
+    -- az újrafelhasználás új környezetben új igazolást kíván\\
+    -- a homogén redundancia a szoftverhiba ellen nem véd\\
+    -- a kivételkezelés feltevése (hardverhiba) téves volt\\
+    -- a szükségtelen funkciók kockázatot hordoznak};
+\end{tikzpicture}
+\end{document}

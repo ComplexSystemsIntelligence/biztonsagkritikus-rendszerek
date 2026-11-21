@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}, b/.style={doboz=30mm, minimum height=9mm, inner sep=2pt}, j/.style={zolddoboz=30mm, minimum height=9mm, inner sep=2pt}]
+  \node[b] (r) at (0,0) {szoftver-biztonsági követelmények};
+  \node[b] (a) at (1.4,-1.4) {szoftverarchitektúra};
+  \node[b] (d) at (2.8,-2.8) {részletes terv, modulok};
+  \node[sotetdoboz=30mm, minimum height=9mm, font=\scriptsize\bfseries] (k) at (5.4,-4.2) {kódolás (kódolási szabvány, statikus elemzés)};
+  \node[j] (mt) at (8.0,-2.8) {modulteszt, strukturális lefedettség};
+  \node[j] (it) at (9.4,-1.4) {integrációs teszt};
+  \node[j] (vt) at (10.8,0) {szoftververifikáció a követelmények ellen};
+  \draw[nyil] (r) -- (a); \draw[nyil] (a) -- (d); \draw[nyil] (d) -- (k); \draw[nyil] (k) -- (mt); \draw[nyil] (mt) -- (it); \draw[nyil] (it) -- (vt);
+  \draw[ketnyil, draw=peKiemel, szaggatott] (r.east) -- node[above, text=peKiemel]{követhetőség, tesztelés a követelmények alapján} (vt.west);
+  \draw[ketnyil, draw=peKiemel, szaggatott] (a.east) -- (it.west);
+  \draw[ketnyil, draw=peKiemel, szaggatott] (d.east) -- (mt.west);
+  \node[felirat, font=\tiny, align=center] at (5.4,0.9) {rendszerszintű biztonsági követelmények (például SIL, ASIL, DAL) és veszélyelemzés};
+  \draw[nyilv] (5.4,0.7) -- (r.north east);
+  \node[szurkedoboz=34mm, font=\tiny, align=left, anchor=north west] at (-1.6,-3.6) {\textbf{minden lépés kimenete:}\\ellenőrzött munkatermék, felülvizsgálat (a SIL/ASIL-tól függő függetlenséggel), konfigurációkezelés};
+  \node[szurkedoboz=36mm, font=\tiny, align=left, anchor=north east] at (12.4,-3.6) {\textbf{eszközök:}\\a fordítók, a kódgenerátorok és a tesztelő eszközök minősítése vagy a kimenetük ellenőrzése};
+\end{tikzpicture}
+\end{document}

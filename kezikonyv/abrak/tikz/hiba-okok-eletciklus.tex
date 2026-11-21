@@ -1,0 +1,14 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[xbar, width=11cm, height=5.6cm, xmin=0, xmax=52, bar width=4.5mm,
+  symbolic y coords={{Üzembe helyezés utáni változtatások},{Üzemeltetés és karbantartás},{Telepítés és üzembe helyezés},{Tervezés és megvalósítás},{Specifikáció}},
+  ytick=data, y tick label style={font=\footnotesize}, x tick label style={font=\footnotesize},
+  xlabel={a vizsgált irányítástechnikai eredetű események aránya [\%]}, xlabel style={font=\footnotesize},
+  nodes near coords, nodes near coords style={font=\footnotesize\bfseries, text=peSotet},
+  axis line style={peSotet}, xmajorgrids, grid style={peSzurkeH}, enlarge y limits=0.15]
+  \addplot[fill=peKek, draw=peKek] coordinates {(20,{Üzembe helyezés utáni változtatások}) (15,{Üzemeltetés és karbantartás}) (6,{Telepítés és üzembe helyezés}) (15,{Tervezés és megvalósítás}) (44,{Specifikáció})};
+\end{axis}
+\end{tikzpicture}
+\end{document}

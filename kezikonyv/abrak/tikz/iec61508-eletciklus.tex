@@ -1,0 +1,41 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  f/.style={doboz=#1, font=\scriptsize, minimum height=8mm, inner sep=2pt},
+  f/.default=50mm,
+  sz/.style={font=\scriptsize\bfseries, text=peKiemel}]
+  % \lep{szám}{hely}{szöveg}{szélesség}{stílus}
+  \def\lep#1#2#3#4#5{\node[#5=#4, font=\scriptsize, minimum height=8mm, inner sep=2pt] (n#1) at #2 {};
+    \node[sz, anchor=west] at ($(n#1.west)+(0.06,0)$) {#1};
+    \node[font=\scriptsize, align=center, text width=#4-8mm] at ($(n#1)+(0.2,0)$) {#3};}
+  \lep{1}{(1.5,0)}{Koncepció}{50mm}{doboz}
+  \lep{2}{(1.5,-1.0)}{A teljes hatókör meghatározása}{50mm}{doboz}
+  \lep{3}{(1.5,-2.0)}{Veszély- és kockázatelemzés}{50mm}{kiemeltdoboz}
+  \lep{4}{(1.5,-3.0)}{A teljes biztonsági követelmények}{50mm}{doboz}
+  \lep{5}{(1.5,-4.0)}{A biztonsági követelmények kiosztása}{50mm}{doboz}
+  \lep{9}{(-1.75,-5.6)}{E/E/PE biztonsági rendszer (IEC 61508-2, -3)}{31mm}{zolddoboz}
+  \lep{10}{(1.5,-5.6)}{más technológiájú biztonsági rendszer}{31mm}{doboz}
+  \lep{11}{(4.75,-5.6)}{külső kockázat\-csökkentő intézkedések}{31mm}{doboz}
+  \lep{12}{(1.5,-7.2)}{Telepítés és üzembe helyezés}{50mm}{doboz}
+  \lep{13}{(1.5,-8.2)}{A teljes biztonsági validálás}{50mm}{doboz}
+  \lep{14}{(1.5,-9.2)}{Üzemeltetés, karbantartás, javítás}{50mm}{doboz}
+  \lep{15}{(6.3,-9.2)}{Módosítás, átalakítás}{34mm}{doboz}
+  \lep{16}{(1.5,-10.2)}{Leszerelés, ártalmatlanítás}{50mm}{doboz}
+  \lep{8}{(-4.4,-7.2)}{Telepítés, üzembe helyezés tervezése}{34mm}{liladoboz}
+  \lep{7}{(-4.4,-8.2)}{Biztonsági validálás tervezése}{34mm}{liladoboz}
+  \lep{6}{(-4.4,-9.2)}{Üzemeltetés, karbantartás tervezése}{34mm}{liladoboz}
+  \foreach \a/\b in {1/2,2/3,3/4,4/5,12/13,13/14,14/16} \draw[nyilv] (n\a) -- (n\b);
+  \foreach \b in {9,10,11} \draw[nyilv] (n5.south) -- (n\b.north);
+  \foreach \b in {9,10,11} \draw[nyilv] (n\b.south) -- (n12.north -| n\b);
+  \draw[nyilv] (n5.west) -| (n8.north);
+  \foreach \a/\b in {8/12,7/13,6/14} \draw[nyilv, draw=peLila] (n\a.east) -- (n\b.west);
+  \draw[nyilv] (n14.east) -- (n15.west);
+  \draw[nyilv] (n15.north) -- ++(0,0.5) node[above, font=\tiny, text=peSzurke, align=center] {vissza a megfelelő\\életciklus-fázisba} -- ++(0,6.2) -- (n3.east -| n15) -- (n3.east);
+  \node[font=\scriptsize\bfseries, text=peLila, align=center] at (-4.4,-6.4) {a teljes életciklus\\tervezése};
+  % fázisok csoportjai
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, peKek, line width=0.7pt] (-6.6,0.4) -- (-6.6,-4.45) node[midway, left=6pt, font=\scriptsize, text=peKek, align=right] {elemzés\\(1--5)};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, peZold, line width=0.7pt] (-6.6,-4.75) -- (-6.6,-8.7) node[midway, left=6pt, font=\scriptsize, text=peZold, align=right] {megvalósítás\\(6--13)};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, peSotet, line width=0.7pt] (-6.6,-8.85) -- (-6.6,-10.6) node[midway, left=6pt, font=\scriptsize, text=peSotet, align=right] {üzemeltetés\\(14--16)};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,17 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[node distance=5mm and 8mm, every node/.append style={font=\footnotesize}]
+  \node[sotetdoboz=40mm, font=\footnotesize\bfseries] (a) {biztonsági érvelés (állítások, érvek, bizonyítékok, feltevések)};
+  \node[doboz=34mm, right=of a] (b) {üzemeltetés: a feltevések mutatókká alakítva};
+  \node[doboz=34mm, right=of b] (c) {megfigyelés: próbák, igények, események, változások};
+  \node[diamond, aspect=2.2, draw=peKiemel, fill=peKiemelH, line width=1pt, align=center, inner sep=0pt, below=of c, font=\scriptsize] (d) {érvényes-e\\minden feltevés?};
+  \node[zolddoboz=32mm, below=8mm of d] (e) {az érvelés érvényes, folyamatos megfigyelés};
+  \node[kiemeltdoboz=36mm, left=12mm of d] (f) {az érintett állítások felülvizsgálata, új bizonyíték vagy intézkedés};
+  \draw[nyil] (a) -- (b); \draw[nyil] (b) -- (c); \draw[nyil] (c) -- (d);
+  \draw[nyil] (d) -- node[right, font=\scriptsize]{igen} (e);
+  \draw[nyil] (d) -- node[above, font=\scriptsize]{nem} (f);
+  \draw[nyil] (f.west) -| (a.south);
+  \draw[nyilv, szaggatott] (e.east) -- ++(0.6,0) |- (c.east);
+\end{tikzpicture}
+\end{document}

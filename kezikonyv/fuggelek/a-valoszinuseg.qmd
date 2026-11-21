@@ -1,0 +1,83 @@
+# Valószínűségszámítási összefoglaló {#sec-valoszinuseg}
+
+Ez a függelék a könyvben használt valószínűségszámítási fogalmakat és összefüggéseket foglalja össze. Nem helyettesít egy tankönyvet, hanem a fejezetekben felhasznált eszközök gyors felidézését szolgálja; a részletes tárgyalás például Rausand, Barros és Høyland [@rausand2020], valamint Modarres, Kaminskiy és Krivtsov [@modarres2016] könyvében található.
+
+## Események és valószínűség {#sec-a-esemenyek}
+
+Egy véletlen kísérlet lehetséges kimeneteinek halmaza az **eseménytér** $\Omega$, ennek részhalmazai az **események**. A $P$ valószínűség Kolmogorov axiómái szerint: $P(A) \ge 0$; $P(\Omega) = 1$; egymást kizáró eseményekre $P(A \cup B) = P(A) + P(B)$. Ebből következik a komplementer szabálya, $P(\bar{A}) = 1 - P(A)$, és két tetszőleges eseményre
+
+$$
+P(A \cup B) = P(A) + P(B) - P(A \cap B) .
+$$
+
+Több eseményre a **szita-formula** (inklúzió–exklúzió) általánosítja ezt; a hibafa csúcseseményének pontos valószínűsége ezzel számolható a minimális vágatokból ([-@sec-csucs-valoszinuseg]. szakasz). Ha az események valószínűsége kicsi, a metszetek elhanyagolhatók, és $P(\bigcup A_i) \approx \sum P(A_i)$: ez a **ritkaesemény-közelítés**, amely koherens rendszerekre mindig felső korlát.
+
+A **feltételes valószínűség** $P(A \mid B) = P(A \cap B)/P(B)$, ha $P(B) > 0$. Két esemény **független**, ha $P(A \cap B) = P(A)\,P(B)$, azaz $P(A \mid B) = P(A)$. A függetlenség és a kizárólagosság két különböző fogalom: két egymást kizáró, pozitív valószínűségű esemény sosem független. A redundáns rendszerek számításában a függetlenség feltevése a legkritikusabb; a közös okú meghibásodások éppen ennek sérülését írják le ([-@sec-ccf-hibafa]. szakasz).
+
+Ha $B_1, \dots, B_n$ az eseménytér egy felosztása, a **teljes valószínűség tétele** szerint $P(A) = \sum_i P(A \mid B_i)\,P(B_i)$, és a **Bayes-tétel** szerint
+
+$$
+P(B_j \mid A) = \frac{P(A \mid B_j)\,P(B_j)}{\sum_i P(A \mid B_i)\,P(B_i)} .
+$$
+
+::: {.pelda title="Mit jelent egy riasztás?"}
+Egy berendezésnél a veszélyes hiba előfordulási valószínűsége egy adott ellenőrzéskor 1%. A diagnosztika a valódi hibát 99%-os valószínűséggel jelzi, de hibátlan állapotban is 5%-os valószínűséggel ad téves riasztást. Ha riasztás van, mekkora a valódi hiba valószínűsége? A Bayes-tétel szerint $0{,}01\cdot0{,}99/(0{,}01\cdot0{,}99 + 0{,}99\cdot0{,}05) = 0{,}167$. A riasztások hatoda valódi: egy ritka hibánál még egy jó diagnosztika is többségében téves riasztást ad. Ez a jelenség a riasztáskezelés és a kezelői bizalom egyik alapproblémája ([-@sec-riasztaskezeles]. szakasz).
+:::
+
+## Valószínűségi változók és eloszlások {#sec-a-eloszlasok}
+
+Egy $X$ valószínűségi változó **eloszlásfüggvénye** $F(x) = P(X \le x)$; folytonos esetben a **sűrűségfüggvény** $f(x) = F'(x)$. A **várható érték** $E[X] = \int x f(x)\,dx$, a **szórásnégyzet** $\text{Var}(X) = E[(X - E[X])^2]$. Ha $X$ egy elem élettartama, akkor $F(t)$ a meghibásodási valószínűség, $R(t) = 1 - F(t)$ a megbízhatóság, és $\text{MTTF} = E[X] = \int_0^\infty R(t)\,dt$ ([-@sec-megbizhatosag]. fejezet). A könyvben használt fő eloszlásokat a [-@tbl-eloszlasok]. táblázat foglalja össze.
+
+| Eloszlás | Sűrűség- vagy valószínűségfüggvény | Várható érték | Alkalmazás a könyvben |
+|:--|:--|:--|:--|
+| binomiális $(n, p)$ | $\binom{n}{k}p^k(1-p)^{n-k}$ | $np$ | k-ból-n rendszerek |
+| Poisson $(\mu)$ | $\mu^k e^{-\mu}/k!$ | $\mu$ | meghibásodások száma adott idő alatt |
+| exponenciális $(\lambda)$ | $\lambda e^{-\lambda t}$ | $1/\lambda$ | állandó meghibásodási ráta, Markov-modellek |
+| Weibull $(\beta, \eta)$ | $\frac{\beta}{\eta}\left(\frac{t}{\eta}\right)^{\beta-1} e^{-(t/\eta)^\beta}$ | $\eta\,\Gamma(1 + 1/\beta)$ | korai, véletlen és elhasználódásos meghibásodások |
+| normális $(\mu, \sigma)$ | $\frac{1}{\sigma\sqrt{2\pi}} e^{-(x-\mu)^2/(2\sigma^2)}$ | $\mu$ | mérési hibák, közelítések |
+| lognormális $(\mu, \sigma)$ | $\frac{1}{x\sigma\sqrt{2\pi}} e^{-(\ln x-\mu)^2/(2\sigma^2)}$ | $e^{\mu+\sigma^2/2}$ | bizonytalan paraméterek, javítási idők |
+| gamma $(a, b)$ | $\frac{b^a}{\Gamma(a)} x^{a-1} e^{-bx}$ | $a/b$ | a meghibásodási ráta bayesi becslése |
+| $\chi^2$ $(\nu)$ | a gamma $(\nu/2, 1/2)$ speciális esete | $\nu$ | a ráta konfidenciakorlátai |
+
+: A könyvben használt fő eloszlások {#tbl-eloszlasok}
+
+A **lognormális eloszlás** a valószínűségi biztonsági elemzések szokásos modellje a bizonytalan paraméterekre. Ha $\ln X$ normális eloszlású $\mu$ várható értékkel és $\sigma$ szórással, akkor $X$ mediánja $e^{\mu}$, és a **hibatényező** $\text{EF} = e^{1{,}645\sigma}$ a 95%-os és az 50%-os kvantilis hányadosa [@modarres2016]. Például $\text{EF} = 3$ esetén $\sigma = 0{,}668$, és a várható érték a medián 1,25-szöröse; ezért a [-@sec-fta-bizonytalansag]. szakasz Monte Carlo-szimulációjában a csúcsesemény várható értéke nagyobb volt a pontbecslésnél.
+
+## A Poisson-folyamat {#sec-a-poisson}
+
+Ha a meghibásodások egymástól függetlenül, állandó $\lambda$ intenzitással következnek be (és a meghibásodott elemet azonnal kicseréljük), a $(0, t]$ időszakban bekövetkező meghibásodások száma $\lambda t$ paraméterű Poisson-eloszlású:
+
+$$
+P(N(t) = k) = \frac{(\lambda t)^k}{k!}\,e^{-\lambda t}, \qquad k = 0, 1, 2, \dots
+$$
+
+Az első meghibásodásig eltelt idő exponenciális eloszlású, és a folyamat **emlékezet nélküli**: $P(T > t + s \mid T > t) = P(T > s)$. Egy már $t$ ideje működő elem további élettartama tehát ugyanolyan eloszlású, mint egy újé. Ez a tulajdonság teszi lehetővé a Markov-modellek egyszerű felírását ([-@sec-markov]. fejezet), de egyben a korlátja is: öregedő elemekre nem érvényes.
+
+Kis $\lambda t$ esetén $P(N(t) \ge 1) = 1 - e^{-\lambda t} \approx \lambda t$, és két vagy több meghibásodás valószínűsége elhanyagolható. Például $\lambda t = 0{,}1$ mellett $P(N \ge 1) = 0{,}095$, $P(N = 2) = 0{,}0045$.
+
+## A meghibásodási ráta becslése {#sec-a-becsles}
+
+Ha $T$ összes üzemidő alatt $r$ meghibásodást figyeltünk meg (időcenzúrázott adat), a ráta maximum likelihood becslése $\hat{\lambda} = r/T$, és az egyoldali $1-\alpha$ szintű felső konfidenciakorlát
+
+$$
+\lambda_{1-\alpha} = \frac{\chi^2_{1-\alpha}(2r + 2)}{2T} ,
+$$
+
+ahol $\chi^2_{1-\alpha}(\nu)$ a $\nu$ szabadsági fokú $\chi^2$-eloszlás $1-\alpha$ kvantilise ([-@sec-megbizhatosag]. fejezet). Hibamentes tapasztalat ($r = 0$) esetén ebből $\lambda_{1-\alpha} = -\ln\alpha/T$; ez a [-@sec-mennyi-teszt]. szakasz becslésének alapja.
+
+A **bayesi becslés** az előzetes tudást (például iparági adatbázisok értékét) kombinálja a saját megfigyelésekkel. Ha a ráta előzetes eloszlása gamma $(a, b)$, és $T$ idő alatt $r$ meghibásodás történt, az utólagos eloszlás gamma $(a + r, b + T)$, várható értéke $(a + r)/(b + T)$.
+
+::: {.pelda title="Bayesi frissítés"}
+A [-@sec-megbizhatosag]. fejezet távadóiról 250 darab négy éven át gyűjtött adata szerint $T = 8{,}76\cdot10^{6}$ óra alatt $r = 3$ meghibásodás történt ($\hat{\lambda} = 3{,}42\cdot10^{-7}\,\text{h}^{-1}$). Tegyük fel, hogy egy iparági adatbázis alapján az előzetes várakozás $5\cdot10^{-7}\,\text{h}^{-1}$, amelyet egy gyengén informatív, $a = 2$, $b = 4\cdot10^{6}$ óra paraméterű gamma-eloszlással írunk le. Az utólagos eloszlás gamma $(5;\ 1{,}276\cdot10^{7}\,\text{h})$, várható értéke $3{,}92\cdot10^{-7}\,\text{h}^{-1}$, 90%-os felső korlátja $6{,}26\cdot10^{-7}\,\text{h}^{-1}$. A saját adatok a becslést az iparági értéknél kedvezőbb irányba mozdították, de nem annyira, mint a puszta maximum likelihood becslés, mert az előzetes tudás is számít.
+:::
+
+## Hasznos közelítések {#sec-a-kozelitesek}
+
+A biztonsági számításokban gyakran használt közelítések, amelyek kis valószínűségeknél ($x \ll 1$) pontosak:
+
+- $1 - e^{-x} \approx x$, így $F(t) \approx \lambda t$, ha $\lambda t \ll 1$;
+- $1 - \prod_i (1 - q_i) \approx \sum_i q_i$ (a VAGY-kapu és a soros rendszer ritkaesemény-közelítése);
+- egy periodikusan, $T_1$ időközönként tesztelt elem átlagos meghibásodási valószínűsége $\frac{1}{T_1}\int_0^{T_1} \lambda t\,dt = \lambda T_1/2$;
+- két egyszerre tesztelt elem együttes meghibásodási valószínűségének időátlaga $\frac{1}{T_1}\int_0^{T_1} (\lambda t)^2\,dt = \lambda^2 T_1^2/3$, ami az egyedi átlagok szorzatának 4/3-szorosa ([-@sec-hibafa]. fejezet).
+
+Mindegyik közelítésnél érdemes ellenőrizni, hogy a feltétel ($\lambda t \ll 1$, kis $q_i$) valóban teljesül-e; például egy évtizedes nagyjavítási időközzel számolt, rejtett meghibásodásoknál ($\lambda T_M \approx 0{,}2$) a lineáris közelítés már néhány százalékos hibát okoz ([-@sec-nem-tokeletes-teszt]. szakasz).

@@ -1,0 +1,19 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  % vezérlőegység keret
+  \draw[peKek, line width=1pt, rounded corners=3pt, fill=peHalvany!40] (-0.3,-3.9) rectangle (7.0,1.2);
+  \node[font=\small\bfseries, text=peKek, anchor=north west] at (-0.2,1.15) {motorvezérlő mikrokontroller};
+  \node[doboz=62mm, minimum height=9mm] (l1) at (3.35,0.1) {\textbf{1. szint – funkció:} a motorvezérlés teljes funkcionalitása (nyomaték- és befecskendezés-számítás)};
+  \node[zolddoboz=62mm, minimum height=9mm] (l2) at (3.35,-1.25) {\textbf{2. szint – funkciófelügyelet:} a megengedett nyomaték független, egyszerűsített számítása, összevetése a tényleges nyomatékkal; külön memóriaterület};
+  \node[liladoboz=62mm, minimum height=8mm] (l3a) at (3.35,-2.95) {\textbf{3. szint – a vezérlő felügyelete:} kérdés–válasz kommunikáció, programfutás- és memóriatesztek};
+  \node[liladoboz=36mm, minimum height=16mm] (mon) at (10.0,-2.45) {\textbf{független felügyelő modul}\\(külön hardver)\\kérdéseket küld, a válaszokat ellenőrzi};
+  \draw[ketnyil, draw=peLila] (l3a.east) -- node[above, font=\tiny]{kérdés / válasz} (mon.west |- l3a.east);
+  \draw[nyil, draw=peZold] (l1.east) -- ++(0.35,0) |- (l2.east);
+  \node[pirosdoboz=34mm, minimum height=9mm] (off) at (10.0,0.05) {\textbf{lekapcsolási út}\\befecskendezés tiltása, nyomatékkorlátozás};
+  \draw[nyil, draw=pePiros] (l2.east) -- ++(0.6,0) |- (off.west);
+  \draw[nyil, draw=pePiros] (mon.north) -- node[right, font=\tiny]{független lekapcsolás} (off.south);
+  \node[felirat, font=\tiny, text width=70mm, anchor=north west, align=left] at (-0.2,-4.05) {A 2. szint a funkció hibáit (például szoftverhibából eredő túl nagy nyomaték), a 3. szint a számítóegység hardverhibáit fedi fel; mindkettő a funkciótól független úton állítja biztonságos állapotba a motort.};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,35 @@
+# LOPA és eseményfa {#sec-gy-lopa}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- egy forgatókönyvre LOPA-táblázatot készíteni, és meghatározni a biztonsági funkció szükséges PFD-jét és SIL-jét;
+- a független védelmi rétegek négy kritériumát alkalmazni, és indokolni, ha egy védelem nem számítható be;
+- értékelni a feltételes módosítók hatását, és a forgatókönyvet eseményfaként is értelmezni.
+:::
+
+**Háttér:** [a kézikönyv 11. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/11-esemenyfa.html); a forgatókönyvek a [3. gyakorlat](03-hazop.qmd) HAZOP-jegyzőkönyvéből származnak.
+
+## Alkalmazás: LOPA és eseményfa
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/lopa.html" title="LOPA és eseményfa" loading="lazy" style="width:100%;height:1250px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/lopa.html)
+
+## Feladatok az alkalmazással
+
+1. Töltsd be a ReaktorVéd példát, és ellenőrizd az eredményt (RRF ≥ 500, SIL 2). Miért nem számítható be a TIC-103 és az RD-101?
+2. Tegyük fel, hogy a hasadótárcsa kétfázisú méretezését igazolták. Jelöld be mind a négy kritériumot: hogyan változik a SIL-követelmény? Milyen új kérdéseket vet fel ez a döntés?
+3. Kapcsold be a feltételes módosítókat. Mennyivel enyhül a követelmény? Miért tiltja ezt sok vállalat?
+4. Töltsd be a benzintartály-példát. Melyik réteg sérti a függetlenség, melyik az auditálhatóság és melyik a hatásosság követelményét? Kapcsold össze a kézikönyv Buncefield-elemzésével: melyik réteg hibája játszott ott szerepet?
+5. Végezd el a LOPA-t a saját HAZOP-jegyzőkönyved két súlyos forgatókönyvére.
+
+::: {.prompt title="Mintapromptok"}
+*„LOPA-t végzek az alábbi forgatókönyvre: […]. A független védelmi rétegként beszámított védelmek: […]. Vizsgáld meg mindegyiket a négy IPL-kritérium (hatásos, független, megbízható, auditálható) szerint, és kérdezz rá azokra az információkra, amelyek a döntéshez hiányoznak! A CCPS-irodalom tipikus értékeit csak tájékoztatásul említsd, és jelöld, ha bizonytalan vagy.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó LOPA-ban a kezdő esemény gyakorisága és a rétegek PFD-je forráshoz kötött, minden beszámított réteg függetlensége indokolt, a feltételes módosítók használata a vállalati szabállyal összhangban van, és a szükséges SIL mellett a nem beszámított védelmek sorsáról is döntés születik.

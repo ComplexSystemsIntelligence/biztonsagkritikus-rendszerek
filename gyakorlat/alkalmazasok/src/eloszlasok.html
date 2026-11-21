@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Élettartam-eloszlások és kádgörbe</title>
+<style>/*KOZOS_CSS*/
+.ertek{font-variant-numeric:tabular-nums;font-weight:600;color:var(--kek)}
+</style></head><body>
+<header class="app"><h1>Élettartam-eloszlások és kádgörbe</h1><p>Biztonságkritikus rendszerek – 6. gyakorlat. Az exponenciális, a Weibull- és a lognormális eloszlás sűrűség-, megbízhatósági és meghibásodásiráta-függvénye, valamint a kádgörbe felépítése.</p></header>
+<main>
+<div class="racs">
+ <div class="kartya"><h2>Eloszlás</h2>
+  <select id="tipus"><option value="exp">exponenciális</option><option value="weib" selected>Weibull</option><option value="logn">lognormális</option><option value="kad">kádgörbe (három Weibull-mechanizmus)</option></select>
+  <div id="param"></div></div>
+ <div class="kartya eredmeny"><h2>Jellemzők</h2><div id="jell"></div></div>
+</div>
+<div class="racs">
+ <div class="kartya"><h2>Sűrűségfüggvény f(t)</h2><div id="g1"></div></div>
+ <div class="kartya"><h2>Megbízhatóság R(t) és eloszlásfüggvény F(t)</h2><div id="g2"></div></div>
+</div>
+<div class="kartya"><h2>Meghibásodási ráta h(t)</h2><div id="g3"></div><p class="megj" id="mag"></p></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc</footer>
+<script>/*KOZOS_JS*/
+const PAR = {
+ exp: [['lambda', 'λ [1/h]', 1e-4, 1e-5, 1e-3, 1e-5]],
+ weib: [['beta', 'β alakparaméter', 2.0, 0.3, 6, 0.05], ['eta', 'η skálaparaméter [h]', 10000, 1000, 40000, 100]],
+ logn: [['mu', 'μ (ln t várható értéke)', 9.0, 6, 11, 0.05], ['sigma', 'σ (ln t szórása)', 0.6, 0.1, 2, 0.05]],
+ kad: [['b1', 'korai: β₁', 0.5, 0.2, 0.95, 0.05], ['e1', 'korai: η₁ [h]', 2e5, 1e4, 1e6, 1e4], ['l2', 'véletlen: λ [1/h]', 2e-5, 0, 1e-4, 1e-6], ['b3', 'elhasználódás: β₃', 4, 1.5, 8, 0.1], ['e3', 'elhasználódás: η₃ [h]', 60000, 20000, 150000, 1000]]
+};
+let p = {};
+function gammaF(z) { // Lanczos-közelítés
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gammaF(1 - z));
+  z -= 1; const g = 7, c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61503916999185, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  let x = c[0]; for (let i = 1; i < g + 2; i++) x += c[i] / (z + i); const t = z + g + 0.5; return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x; }
+function Phi(x) { // standard normális eloszlásfüggvény (Abramowitz–Stegun 7.1.26)
+  const t = 1 / (1 + 0.3275911 * Math.abs(x) / Math.SQRT2); const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x / 2);
+  return x >= 0 ? 0.5 * (1 + y) : 0.5 * (1 - y); }
+function modell() { const t = $('tipus').value;
+  if (t === 'exp') { const l = p.lambda; return {R: x => Math.exp(-l * x), h: x => l, f: x => l * Math.exp(-l * x), mttf: 1 / l, tmax: 4 / l}; }
+  if (t === 'weib') { const b = p.beta, e = p.eta; return {R: x => Math.exp(-Math.pow(x / e, b)), h: x => b / e * Math.pow(Math.max(x, 1e-9) / e, b - 1), f: x => b / e * Math.pow(Math.max(x, 1e-9) / e, b - 1) * Math.exp(-Math.pow(x / e, b)), mttf: e * gammaF(1 + 1 / b), tmax: e * Math.pow(-Math.log(0.002), 1 / b)}; }
+  if (t === 'logn') { const m = p.mu, s = p.sigma; const R = x => x <= 0 ? 1 : 1 - Phi((Math.log(x) - m) / s), f = x => x <= 0 ? 0 : Math.exp(-Math.pow(Math.log(x) - m, 2) / (2 * s * s)) / (x * s * Math.sqrt(2 * Math.PI));
+    return {R, f, h: x => f(x) / Math.max(R(x), 1e-300), mttf: Math.exp(m + s * s / 2), tmax: Math.exp(m + 3 * s)}; }
+  const {b1, e1, l2, b3, e3} = p; const H = x => Math.pow(x / e1, b1) + l2 * x + Math.pow(x / e3, b3);
+  const h = x => b1 / e1 * Math.pow(Math.max(x, 1) / e1, b1 - 1) + l2 + b3 / e3 * Math.pow(x / e3, b3 - 1);
+  return {R: x => Math.exp(-H(x)), h, f: x => h(x) * Math.exp(-H(x)), mttf: null, tmax: e3 * 1.4, h1: x => b1 / e1 * Math.pow(Math.max(x, 1) / e1, b1 - 1), h3: x => b3 / e3 * Math.pow(x / e3, b3 - 1)}; }
+function csuszkak() { const t = $('tipus').value; const d = $('param'); d.innerHTML = ''; p = {};
+  PAR[t].forEach(([k, nev, v, lo, hi, lep]) => { p[k] = v; const sp = el('span', {class: 'ertek'}, fmt(v));
+    d.append(el('label', {}, nev + ': ', sp), el('input', {type: 'range', min: lo, max: hi, step: lep, value: v, oninput: e => { p[k] = Number(e.target.value); sp.textContent = fmt(p[k]); rajz(); }})); });
+  rajz(); }
+function kvantilis(R, tmax, q) { let lo = 0, hi = tmax * 20; for (let i = 0; i < 100; i++) { const m = (lo + hi) / 2; if (R(m) > 1 - q) lo = m; else hi = m; } return (lo + hi) / 2; }
+function rajz() { const M = modell(), n = 300, T = M.tmax; const ts = Array.from({length: n}, (_, i) => (i + 0.5) * T / n);
+  vonaldiagram($('g1'), {sorok: [{nev: 'f(t)', pontok: ts.map(t => [t, M.f(t)])}], xcimke: 'idő t [h]', ycimke: 'f(t)'});
+  vonaldiagram($('g2'), {sorok: [{nev: 'R(t)', pontok: ts.map(t => [t, M.R(t)])}, {nev: 'F(t)', szin: '#E07B39', pontok: ts.map(t => [t, 1 - M.R(t)])}], xcimke: 'idő t [h]', ymin: 0, ymax: 1});
+  const sorok = [{nev: 'h(t)', pontok: ts.map(t => [t, M.h(t)])}];
+  if ($('tipus').value === 'kad') { sorok.push({nev: 'korai', szin: '#B83A3A', szaggatott: true, pontok: ts.map(t => [t, M.h1(t)])}, {nev: 'véletlen', szin: '#3E8E63', szaggatott: true, pontok: ts.map(t => [t, p.l2])}, {nev: 'elhasználódás', szin: '#E07B39', szaggatott: true, pontok: ts.map(t => [t, M.h3(t)])}); }
+  const hmax = Math.max(...ts.map(t => M.h(t))); const ymax = Math.min(hmax, 20 * M.h(T * 0.5) + 1e-12);
+  vonaldiagram($('g3'), {sorok, xcimke: 'idő t [h]', ycimke: 'h(t) [1/h]', ymin: 0, ymax});
+  // jellemzők
+  let mttf = M.mttf; if (mttf === null) { let s = 0, dt = T * 4 / 4000; for (let i = 0; i < 4000; i++) s += M.R((i + 0.5) * dt) * dt; mttf = s; }
+  const b10 = kvantilis(M.R, T, 0.10), med = kvantilis(M.R, T, 0.5);
+  $('jell').innerHTML = `<table><tr><td>MTTF (átlagos élettartam)</td><td class="szam"><b>${fmt(mttf)}</b> h</td></tr><tr><td>medián élettartam</td><td class="szam">${fmt(med)} h</td></tr>
+   <tr><td>B<sub>10</sub> (10% meghibásodott)</td><td class="szam">${fmt(b10)} h</td></tr><tr><td>R(MTTF)</td><td class="szam">${fmt(M.R(mttf))}</td></tr></table>`;
+  const t = $('tipus').value; $('mag').textContent = t === 'exp' ? 'Állandó ráta: az emlékezetnélküliség miatt R(MTTF) = e⁻¹ ≈ 0,368, függetlenül λ-tól.' :
+   t === 'weib' ? (p.beta < 1 ? 'β < 1: csökkenő ráta – korai meghibásodások (gyártási hibák, beégés).' : Math.abs(p.beta - 1) < 0.03 ? 'β = 1: állandó ráta – az exponenciális eloszlás speciális esete.' : 'β > 1: növekvő ráta – elhasználódás (kopás, fáradás).') :
+   t === 'logn' ? 'A lognormális eloszlás rátája előbb nő, majd csökken: jellemző a javítási időkre és egyes fáradásos meghibásodásokra.' : 'A kádgörbe a három mechanizmus rátájának összege; a valóságban gyakran csak egy-két szakasza figyelhető meg.'; }
+$('tipus').onchange = csuszkak; csuszkak();
+</script></body></html>

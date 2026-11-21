@@ -1,0 +1,26 @@
+# Quarto kimenetek
+/_site/
+.quarto/
+*_files/
+/kezikonyv/*.tex
+/gyakorlat/*.tex
+*.log
+*.aux
+
+# a pre-render által másolt webes betűk
+/kezikonyv/assets/fonts/
+/gyakorlat/assets/fonts/
+
+# az ábrák fordítási mellékterméke (a gen/ mappa PDF és SVG fájljai verziókövetettek)
+/*/abrak/tikz/*.pdf
+/*/abrak/tikz/*.aux
+/*/abrak/tikz/*.log
+
+# Python, Jupyter
+__pycache__/
+.ipynb_checkpoints/
+.venv/
+
+# rendszer
+.DS_Store
+Thumbs.db

@@ -1,0 +1,25 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  \def\c#1#2#3#4{\node[draw=white, line width=1pt, fill=#3, minimum width=#4, minimum height=9mm, text width=#4-2mm, align=center, inner sep=1pt] at #1 {#2};}
+  \foreach \x/\t in {1.2/{szint},3.6/{ki kormányoz és gyorsít/fékez?},6.4/{ki figyeli a környezetet?},9.2/{ki a tartalék hiba esetén?},12.0/{működési tartomány}} \node[font=\scriptsize\bfseries, text=peSotet, text width=26mm, align=center, anchor=south] at (\x,0.5) {\t};
+  \foreach \l/\nev/\a/\b/\d/\e [count=\i] in {
+      0/{nincs automatizálás}/vezető/vezető/vezető/{–},
+      1/{vezetéstámogatás}/{vezető és rendszer}/vezető/vezető/korlátozott,
+      2/{részleges automatizálás}/rendszer/vezető/vezető/korlátozott,
+      3/{feltételes automatizálás}/rendszer/rendszer/{vezető (átvételi kérésre)}/korlátozott,
+      4/{magas fokú automatizálás}/rendszer/rendszer/rendszer/korlátozott,
+      5/{teljes automatizálás}/rendszer/rendszer/rendszer/korlátlan} {
+    \pgfmathsetmacro{\y}{-(\i-1)*0.95}
+    \ifnum\l<3 \def\fc{peHalvany}\else\def\fc{peZoldH}\fi
+    \c{(1.2,\y)}{\textbf{\l}: \nev}{peSzurkeH}{24mm}
+    \c{(3.6,\y)}{\a}{\fc}{24mm}
+    \c{(6.4,\y)}{\b}{\fc}{28mm}
+    \c{(9.2,\y)}{\d}{\fc}{28mm}
+    \c{(12.0,\y)}{\e}{peSzurkeH}{24mm}
+  }
+  \draw[pePiros, line width=1.2pt, dashed] (-0.2,-2.375) -- (13.3,-2.375);
+  \node[font=\tiny\bfseries, text=pePiros, anchor=west, text width=24mm, align=left] at (13.4,-2.375) {itt kerül a környezet figyelése a vezetőtől a rendszerhez};
+\end{tikzpicture}
+\end{document}

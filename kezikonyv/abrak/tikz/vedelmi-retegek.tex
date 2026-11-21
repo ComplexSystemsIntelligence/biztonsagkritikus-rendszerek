@@ -1,0 +1,33 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\r{1.25}\def\w{0.66}
+  \foreach \i/\szin/\txt in {
+      8/peSargaH/{lakossági vészhelyzeti reagálás},
+      7/peSargaH/{üzemi vészhelyzeti reagálás},
+      6/peKiemelH/{kibocsátás utáni fizikai védelem (gát, felfogó medence)},
+      5/peKiemelH/{fizikai védelem (hasadótárcsa, biztonsági szelep)},
+      4/peZoldH/{biztonsági műszeres rendszer (SIS)},
+      3/peZoldH/{kritikus riasztások és kezelői beavatkozás},
+      2/peHalvany/{alapfolyamat-irányítás (BPCS)}} {
+    \pgfmathsetmacro{\R}{\r+(\i-1)*\w}
+    \fill[\szin, draw=white, line width=1.2pt] (-\R,0) arc (180:0:\R) -- cycle;
+  }
+  \fill[peKek, draw=white, line width=1.2pt] (-\r,0) arc (180:0:\r) -- cycle;
+  \node[font=\scriptsize\bfseries, text=white, align=center] at (0,0.5) {folyamat-\\tervezés};
+  \foreach \i/\txt in {2/{alapfolyamat-irányítás (BPCS)}, 3/{riasztások és kezelői beavatkozás}, 4/{biztonsági műszeres rendszer (SIS)},
+      5/{fizikai védelem (hasadótárcsa, szelep)}, 6/{kibocsátás utáni védelem (gát, felfogó)}, 7/{üzemi vészhelyzeti reagálás}, 8/{lakossági vészhelyzeti reagálás}} {
+    \pgfmathsetmacro{\R}{\r+(\i-1.5)*\w}
+    \node[font=\scriptsize, text=peSzoveg] at (0,\R) {\txt};
+  }
+  \draw[peSotet, line width=0.8pt] (-6.2,0) -- (6.2,0);
+  % csoportok jobbra
+  \def\br#1#2#3#4{\pgfmathsetmacro{\a}{\r+(#1-2)*\w+0.04}\pgfmathsetmacro{\b}{\r+(#2-1)*\w-0.04}
+     \draw[decorate, decoration={brace, amplitude=4pt}, #4, line width=0.8pt] (6.0,\b) -- (6.0,\a); \node[font=\scriptsize\bfseries, text=#4, anchor=west, align=left] at (6.2,{(\a+\b)/2}) {#3};}
+  \br{2}{4}{megelőzés}{peZold}
+  \br{5}{6}{következmény-\\csökkentés}{peKiemel}
+  \br{7}{8}{vészhelyzeti\\reagálás}{peSarga}
+  \node[font=\tiny, text=peSzurke, anchor=north] at (0,-0.1) {a LOPA a független védelmi rétegeket (IPL) számítja be a kockázatcsökkentésbe};
+\end{tikzpicture}
+\end{document}

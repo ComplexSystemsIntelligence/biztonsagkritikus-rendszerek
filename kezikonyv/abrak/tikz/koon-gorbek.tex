@@ -1,0 +1,17 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=10cm, height=7cm, domain=0:1, samples=101, xmin=0, xmax=1, ymin=0, ymax=1,
+  xlabel={egy csatorna megbízhatósága $p$}, ylabel={a rendszer megbízhatósága $R$},
+  tick label style={font=\footnotesize}, label style={font=\footnotesize}, grid=major, grid style={peSzurkeH},
+  axis line style={peSotet}, legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.9, at={(0.03,0.97)}, anchor=north west}, legend cell align=left]
+  \addplot[peZold, line width=1.4pt] {1-(1-x)^2}; \addlegendentry{1oo2: $2p-p^2$}
+  \addplot[peKek, line width=1.4pt] {3*x^2-2*x^3}; \addlegendentry{2oo3: $3p^2-2p^3$}
+  \addplot[peSotet, line width=1.1pt, szaggatott] {x}; \addlegendentry{1oo1: $p$}
+  \addplot[pePiros, line width=1.4pt] {x^2}; \addlegendentry{2oo2: $p^2$}
+  \fill[peKek] (axis cs:0.5,0.5) circle (2pt);
+  \node[font=\scriptsize, text=peKek, anchor=north west, align=left] at (axis cs:0.56,0.33) {$p=0{,}5$: a 2oo3 csak e fölött\\jobb az egycsatornásnál};
+\end{axis}
+\end{tikzpicture}
+\end{document}

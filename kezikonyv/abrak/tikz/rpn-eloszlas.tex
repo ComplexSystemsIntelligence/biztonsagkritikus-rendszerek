@@ -1,0 +1,13 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=12cm, height=5.2cm, xmin=0, xmax=1010, ymin=0, ymax=27,
+  xlabel={RPN $= S\cdot O\cdot D$}, ylabel={kombinációk száma},
+  tick label style={font=\footnotesize}, label style={font=\footnotesize},
+  axis line style={peSotet}, ymajorgrids, grid style={peSzurkeH}]
+  \addplot[ycomb, peKek, line width=1.1pt, mark=*, mark size=1.1pt, mark options={fill=peKek}] coordinates {(1,1) (2,3) (3,3) (4,6) (5,3) (6,9) (7,3) (8,10) (9,6) (10,9) (12,15) (14,6) (15,6) (16,12) (18,15) (20,15) (21,6) (24,21) (25,3) (27,7) (28,9) (30,18) (32,12) (35,6) (36,21) (40,21) (42,12) (45,9) (48,21) (49,3) (50,9) (54,15) (56,12) (60,24) (63,9) (64,10) (70,12) (72,24) (75,3) (80,21) (81,6) (84,12) (90,21) (96,15) (98,3) (100,12) (105,6) (108,15) (112,9) (120,24) (125,1) (126,12) (128,6) (135,6) (140,12) (144,18) (147,3) (150,9) (160,15) (162,9) (168,12) (175,3) (180,21) (189,6) (192,9) (196,3) (200,12) (210,12) (216,13) (224,6) (225,3) (240,18) (243,3) (245,3) (250,3) (252,9) (256,3) (270,12) (280,12) (288,9) (294,3) (300,9) (315,6) (320,9) (324,6) (336,6) (343,1) (350,6) (360,15) (378,6) (384,3) (392,3) (400,9) (405,3) (420,6) (432,6) (441,3) (448,3) (450,6) (480,6) (486,3) (490,3) (500,3) (504,6) (512,1) (540,6) (560,6) (567,3) (576,3) (600,3) (630,6) (640,3) (648,3) (700,3) (720,6) (729,1) (800,3) (810,3) (900,3) (1000,1)};
+  \node[font=\scriptsize, text=peKiemel, anchor=west, align=left] at (axis cs:330,22.5) {1000 kombináció, de csak 120 különböző érték;\\a 60, a 72 és a 120 egyaránt 24-féleképpen áll elő;\\720 fölött mindössze öt érték lehetséges};
+\end{axis}
+\end{tikzpicture}
+\end{document}

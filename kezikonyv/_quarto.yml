@@ -1,0 +1,112 @@
+project:
+  type: book
+  output-dir: ../_site/kezikonyv
+  pre-render: ../_shared/scripts/prepare.py
+  post-render: ../_shared/scripts/postrender.py
+  resources:
+    - assets/fonts/*.woff2
+
+book:
+  title: "Biztonságkritikus rendszerek"
+  subtitle: "Kockázat, megbízhatóság és funkcionális biztonság a veszélyazonosítástól a biztonsági érvelésig"
+  author: "Abonyi János"
+  date: "2026"
+  date-format: "YYYY"
+  publisher: "Pannon Egyetem"
+  publisher-place: "Veszprém"
+  description: "Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság."
+  output-file: biztonsagkritikus-rendszerek
+  site-url: https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/
+  repo-url: https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek
+  repo-subdir: kezikonyv
+  repo-actions: [edit, issue, source]
+  downloads: [pdf, epub]
+  search: true
+  open-graph: true
+  sidebar:
+    style: docked
+    collapse-level: 1
+  page-navigation: true
+  page-footer:
+    left: "© 2026 Abonyi János · Pannon Egyetem · CC BY-NC-SA 4.0"
+    right: "[Gyakorlati útmutató](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/)"
+  chapters:
+    - index.qmd
+    - part: "I. rész – Alapok"
+      chapters:
+        - fejezetek/01-balesetek.qmd
+        - fejezetek/02-fogalmak.qmd
+        - fejezetek/03-kockazatertekeles.qmd
+        - fejezetek/04-eletciklus.qmd
+    - part: "II. rész – Veszélyazonosítás"
+      chapters:
+        - fejezetek/05-veszelyazonositas.qmd
+        - fejezetek/06-fmea.qmd
+        - fejezetek/07-stpa.qmd
+    - part: "III. rész – Kvantitatív megbízhatóság és biztonság"
+      chapters:
+        - fejezetek/08-megbizhatosag.qmd
+        - fejezetek/09-rbd.qmd
+        - fejezetek/10-hibafa.qmd
+        - fejezetek/11-esemenyfa.qmd
+        - fejezetek/12-markov.qmd
+        - fejezetek/13-sil.qmd
+    - part: "IV. rész – Tervezés biztonságra"
+      chapters:
+        - fejezetek/14-architekturak.qmd
+        - fejezetek/15-szoftver.qmd
+        - fejezetek/16-ember.qmd
+    - part: "V. rész – Bizonyítás és új kihívások"
+      chapters:
+        - fejezetek/17-biztonsagi-erveles.qmd
+        - fejezetek/18-uj-kihivasok.qmd
+    - irodalom.qmd
+  appendices:
+    - fuggelek/a-valoszinuseg.qmd
+    - fuggelek/b-esettanulmanyok.qmd
+    - fuggelek/c-szoszedet.qmd
+    - fuggelek/d-szabvanyok.qmd
+
+lang: hu
+language: ../_shared/_language-hu.yml
+bibliography: ../_shared/references.bib
+link-citations: true
+crossref:
+  chapters: true
+number-sections: true
+filters:
+  - ../_shared/filters/dobozok.lua
+  - ../_shared/filters/kepformatum.lua
+
+format:
+  html:
+    theme:
+      light: [cosmo, ../_shared/pe.scss]
+    toc: true
+    toc-depth: 3
+    toc-title: "Ezen az oldalon"
+    number-depth: 3
+    fig-align: center
+    code-copy: true
+    smooth-scroll: true
+    citations-hover: true
+    footnotes-hover: true
+    reference-location: margin
+    lightbox: false
+    html-math-method: mathjax
+  pdf:
+    documentclass: scrbook
+    classoption: [paper=b5, fontsize=10.5pt, open=any, headings=standardclasses]
+    pdf-engine: xelatex
+    geometry: [top=22mm, bottom=24mm, inner=20mm, outer=20mm]
+    toc: true
+    toc-depth: 1
+    number-depth: 3
+    fig-pos: "htbp"
+    include-in-header: ../_shared/latex/preamble.tex
+    colorlinks: true
+    keep-tex: false
+  epub:
+    css: ../_shared/epub.css
+    toc: true
+    toc-depth: 2

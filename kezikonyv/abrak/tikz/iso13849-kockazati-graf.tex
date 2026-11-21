@@ -1,0 +1,29 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  csp/.style={circle, fill=peSotet, inner sep=0, minimum size=1.8mm},
+  pl/.style={draw=#1, fill=#1!18, rounded corners=1.5pt, minimum width=9mm, minimum height=5.6mm, font=\footnotesize\bfseries, text=peSotet},
+  lab/.style={font=\scriptsize\bfseries, text=peKek, fill=white, inner sep=1pt}]
+  \node[csp] (o) at (0,0) {};
+  \node[font=\scriptsize, anchor=east] at (-0.15,0) {kezdőpont};
+  \node[csp] (s1) at (1.6,1.9) {}; \node[csp] (s2) at (1.6,-1.9) {};
+  \draw[peSotet, line width=0.8pt] (o) -- node[lab, sloped, above]{S1} (s1); \draw[peSotet, line width=0.8pt] (o) -- node[lab, sloped, below]{S2} (s2);
+  \node[csp] (f11) at (3.4,2.85) {}; \node[csp] (f12) at (3.4,0.95) {};
+  \node[csp] (f21) at (3.4,-0.95) {}; \node[csp] (f22) at (3.4,-2.85) {};
+  \draw[peSotet, line width=0.8pt] (s1) -- node[lab, above]{F1} (f11); \draw[peSotet, line width=0.8pt] (s1) -- node[lab, below]{F2} (f12);
+  \draw[peSotet, line width=0.8pt] (s2) -- node[lab, above]{F1} (f21); \draw[peSotet, line width=0.8pt] (s2) -- node[lab, below]{F2} (f22);
+  \foreach \f/\y/\a/\b in {f11/3.32/a/b, f12/1.42/b/c, f21/-0.48/c/d, f22/-2.38/d/e} {
+    \coordinate (p1) at (5.6,\y); \coordinate (p2) at (5.6,\y-0.95);
+    \draw[peSotet, line width=0.8pt] (\f) -- node[lab, above, pos=0.6]{P1} (p1);
+    \draw[peSotet, line width=0.8pt] (\f) -- node[lab, below, pos=0.6]{P2} (p2);
+  }
+  \foreach \y/\t/\c in {3.32/a/peZold, 2.37/b/peZold, 1.42/b/peZold, 0.47/c/peSarga, -0.48/c/peSarga, -1.43/d/peKiemel, -2.38/d/peKiemel, -3.33/e/pePiros}
+    \node[pl=\c, anchor=west] at (5.65,\y) {PL\textsubscript{r} \t};
+  \node[font=\scriptsize, align=left, anchor=north west, text width=70mm] at (7.4,3.5) {%
+    \textbf{S} -- a sérülés súlyossága\\ \quad S1: könnyű, visszafordítható\\ \quad S2: súlyos, maradandó vagy halálos\\[3pt]
+    \textbf{F} -- a veszélynek való kitettség gyakorisága, időtartama\\ \quad F1: ritka vagy rövid ideig tartó\\ \quad F2: gyakori vagy hosszú ideig tartó\\[3pt]
+    \textbf{P} -- az elkerülés lehetősége, a bekövetkezés valószínűsége\\ \quad P1: bizonyos feltételek mellett lehetséges\\ \quad P2: alig lehetséges\\[5pt]
+    {\color{peSzurke}A PL\textsubscript{r} a biztonsági funkcióhoz megkövetelt teljesítményszint;\\ a növekvő betű nagyobb kockázatcsökkentést jelent.}};
+\end{tikzpicture}
+\end{document}

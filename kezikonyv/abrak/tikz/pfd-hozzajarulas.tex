@@ -1,0 +1,25 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[xbar stacked, width=12.5cm, height=5.6cm, bar width=7mm, xmin=0, xmax=3.0,
+  ytick={0,1,2}, yticklabels={{alapterv\\(évenkénti teljes próba)},{nem tökéletes próba\\(PTC = 90\%)},{részleges löketpróbával\\(havonta, DC = 60\%)}},
+  yticklabel style={font=\scriptsize, align=right}, y dir=reverse,
+  xlabel={PFD$_{\text{avg}}$ ($\times10^{-3}$)}, xlabel style={font=\scriptsize},
+  tick label style={font=\scriptsize}, axis line style={peSotet}, xmajorgrids, grid style={peSzurkeH},
+  legend style={font=\tiny, at={(0.5,-0.3)}, anchor=north, legend columns=4, draw=none, column sep=4pt},
+  enlarge y limits=0.22, clip=false]
+  
+  \addplot[fill=peZold, draw=peZold] coordinates {(0.0917,0) (0.0917,1) (0.0917,2)};
+  \addplot[fill=peSzurke, draw=peSzurke] coordinates {(0.050,0) (0.050,1) (0.050,2)};
+  \addplot[fill=peKek, draw=peKek] coordinates {(0.1301,0) (0.4685,1) (0.0265,2)};
+  \addplot[fill=peKiemel, draw=peKiemel] coordinates {(1.097,0) (2.0823,1) (0.4948,2)};
+  \legend{távadók, logika, szelepek (független), szelepek (közös ok)}
+  \draw[pePiros, line width=1.2pt, dashed] (axis cs:2,-0.6) -- (axis cs:2,2.6);
+  \node[font=\scriptsize\bfseries, text=pePiros, anchor=south] at (axis cs:2,-0.6) {LOPA-követelmény: $2\cdot10^{-3}$};
+  \node[font=\scriptsize\bfseries, anchor=west] at (axis cs:1.40,0) {1,37};
+  \node[font=\scriptsize\bfseries, anchor=west, text=pePiros] at (axis cs:2.72,1) {2,69};
+  \node[font=\scriptsize\bfseries, anchor=west] at (axis cs:0.69,2) {0,66};
+\end{axis}
+\end{tikzpicture}
+\end{document}

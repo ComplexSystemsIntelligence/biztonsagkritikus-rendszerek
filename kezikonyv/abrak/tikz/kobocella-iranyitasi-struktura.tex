@@ -1,0 +1,33 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ir/.style={doboz=34mm, font=\scriptsize, minimum height=10mm},
+  em/.style={liladoboz=34mm, font=\scriptsize, minimum height=10mm},
+  bi/.style={zolddoboz=34mm, font=\scriptsize, minimum height=10mm},
+  ak/.style={font=\tiny, align=left, text=peSotet},
+  vi/.style={font=\tiny, align=left, text=peKozep}]
+  \node[ir] (mes) at (0,6.6) {\textbf{termelésirányítás (MES)}\\rendelések, ütem};
+  \node[ir] (plc) at (0,4.6) {\textbf{cellavezérlő (PLC)}\\műveletsor, munkadarab-kezelés};
+  \node[em] (op) at (-6.4,4.6) {\textbf{szerelő}\\kezelőpanel, jóváhagyó gomb};
+  \node[ir] (rc) at (0,2.6) {\textbf{robotvezérlő}\\pályatervezés, mozgásvezérlés};
+  \node[bi] (sc) at (6.0,2.6) {\textbf{biztonsági vezérlő}\\sebesség- és távolságfelügyelet};
+  \node[sotetdoboz=34mm, minimum height=10mm] (rob) at (0,0.4) {robotkar és megfogó};
+  \node[szurkedoboz=30mm, font=\scriptsize] (scan) at (6.0,0.4) {lézerszkenner};
+  \node[liladoboz=30mm, font=\scriptsize] (hum) at (-6.4,0.4) {a szerelő teste\\a munkatérben};
+  % akciók lefelé
+  \draw[nyil] ($(mes.south)+(-0.4,0)$) -- node[ak, left] {rendelés indítása} ($(plc.north)+(-0.4,0)$);
+  \draw[nyil, draw=peKozep] ($(plc.north)+(0.4,0)$) -- node[vi, right] {állapot, darabszám} ($(mes.south)+(0.4,0)$);
+  \draw[nyil] ($(plc.south)+(-0.4,0)$) -- node[ak, left] {program, sebesség-alapjel} ($(rc.north)+(-0.4,0)$);
+  \draw[nyil, draw=peKozep] ($(rc.north)+(0.4,0)$) -- node[vi, right] {pozíció, hibák} ($(plc.south)+(0.4,0)$);
+  \draw[nyil] ($(rc.south)+(-0.4,0)$) -- node[ak, left] {mozgásparancs} ($(rob.north)+(-0.4,0)$);
+  \draw[nyil, draw=peKozep] ($(rob.north)+(0.4,0)$) -- node[vi, right] {jeladók} ($(rc.south)+(0.4,0)$);
+  \draw[nyil, draw=peZold] (sc.west) -- node[ak, above, text=peZold] {sebességkorlát,} node[ak, below, text=peZold] {biztonsági leállítás} (rc.east);
+  \draw[nyil, draw=peKozep] (scan.north) -- node[vi, right] {személy a zónában} (sc.south);
+  \draw[nyilv] (hum.east) -- node[font=\tiny, above, text=peSzurke] {mozgás} (rob.west);
+  \draw[nyilv] (hum.south) -- ++(0,-0.45) -| node[pos=0.25, below, font=\tiny, text=peSzurke] {a szkenner észleli} (scan.south);
+  \draw[nyil, draw=peLila] (op.east) -- node[ak, above, text=peLila] {indítás, jóváhagyás,} node[ak, below, text=peLila] {nyugtázás} (plc.west);
+    \draw[nyil, draw=peLila] (op.south) -- node[ak, left, text=peLila] {saját mozgás} (hum.north);
+  \draw[nyil, draw=peKozep] ($(rc.west)+(0,0.25)$) -- ++(-1.2,0) |- node[pos=0.75, above, vi] {kijelző: üzemmód, sebesség} ($(op.south east)+(0,0.25)$);
+\end{tikzpicture}
+\end{document}

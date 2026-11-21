@@ -1,0 +1,24 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[draw=peKek, fill=peHalvany, rounded corners=2pt, line width=0.9pt, minimum width=62mm, minimum height=26mm] (c) at (0,2.6) {};
+  \node[font=\small\bfseries, text=peSotet, anchor=north] at (0,3.85) {irányító};
+  \node[doboz=24mm, font=\scriptsize, minimum height=10mm] (alg) at (-1.45,2.25) {irányítási\\algoritmus};
+  \node[kiemeltdoboz=24mm, font=\scriptsize, minimum height=10mm] (pm) at (1.45,2.25) {folyamatmodell\\{\tiny (az irányító képe a folyamatról)}};
+  \draw[nyilv] (pm.west) -- (alg.east);
+  \node[szurkedoboz=26mm, font=\scriptsize] (act) at (-3.6,0) {beavatkozó szerv};
+  \node[szurkedoboz=26mm, font=\scriptsize] (sen) at (3.6,0) {érzékelő};
+  \node[sotetdoboz=46mm, minimum height=11mm] (p) at (0,-1.7) {irányított folyamat};
+  \draw[nyil] (alg.south) -- ++(0,-0.25) -| node[pos=0.78, left, font=\scriptsize] {irányítási akció} (act.north);
+  \draw[nyil] (act.south) |- (p.west);
+  \draw[nyil] (p.east) -| (sen.south);
+  \draw[nyil] (sen.north) |- node[pos=0.22, right, font=\scriptsize] {visszacsatolás} ($(pm.south)+(0.6,-0.25)$) -- ($(pm.south)+(0.6,0)$);
+  \draw[nyilv] (0,-3.1) node[below, font=\scriptsize, text=peSzurke] {zavarások, más irányítók} -- (p.south);
+  % hibalehetőségek
+  \node[font=\tiny, text=pePiros, align=left, anchor=west] at (3.3,2.7) {hiányos vagy hibás modell\\(nem frissül, rossz feltevés)};
+  \node[font=\tiny, text=pePiros, align=right, anchor=east] at (-3.3,2.7) {hibás vagy hiányos\\algoritmus};
+  \node[font=\tiny, text=pePiros, align=left, anchor=west] at (4.95,0) {hiányzó, késő,\\pontatlan jel};
+  \node[font=\tiny, text=pePiros, align=right, anchor=east] at (-4.95,0) {az akció nem\\hajtódik végre};
+\end{tikzpicture}
+\end{document}

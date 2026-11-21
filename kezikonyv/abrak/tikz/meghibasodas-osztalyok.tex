@@ -1,0 +1,22 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\w{3.4} \def\h{1.5}
+  \fill[peZoldH] (\w,\h) rectangle (2*\w,2*\h);
+  \fill[peZoldH!60] (2*\w,\h) rectangle (3*\w,2*\h);
+  \fill[peKiemelH] (\w,0) rectangle (2*\w,\h);
+  \fill[pePirosH] (2*\w,0) rectangle (3*\w,\h);
+  \draw[white, line width=1.5pt] (2*\w,0) -- (2*\w,2*\h) (\w,\h) -- (3*\w,\h);
+  \node[font=\footnotesize\bfseries, text=peSotet] at (1.5*\w,2*\h+0.3) {diagnosztikával észlelt};
+  \node[font=\footnotesize\bfseries, text=peSotet] at (2.5*\w,2*\h+0.3) {rejtve marad};
+  \node[font=\footnotesize\bfseries, text=peZold, align=right, anchor=east] at (\w-0.1,1.5*\h) {biztonságos\\(safe)};
+  \node[font=\footnotesize\bfseries, text=pePiros, align=right, anchor=east] at (\w-0.1,0.5*\h) {veszélyes\\(dangerous)};
+  \node[align=center, font=\scriptsize] at (1.5*\w,1.5*\h) {$\lambda_{SD}$\\téves leállítás, de\\a hiba kiderül};
+  \node[align=center, font=\scriptsize] at (2.5*\w,1.5*\h) {$\lambda_{SU}$\\téves leállítást\\okozhat};
+  \node[align=center, font=\scriptsize] at (1.5*\w,0.5*\h) {$\lambda_{DD}$\\a diagnosztika jelzi,\\javítható};
+  \node[align=center, font=\scriptsize] at (2.5*\w,0.5*\h) {$\lambda_{DU}$\\\textbf{igénykor derül ki}\\(csak proof teszt tárja fel)};
+  \draw[peSotet, line width=0.6pt] (\w,0) rectangle (3*\w,2*\h);
+  \node[font=\scriptsize, text=peSzurke, anchor=north] at (2*\w,-0.15) {$\lambda = \lambda_{SD}+\lambda_{SU}+\lambda_{DD}+\lambda_{DU}$\qquad diagnosztikai lefedettség: $DC=\lambda_{DD}/(\lambda_{DD}+\lambda_{DU})$};
+\end{tikzpicture}
+\end{document}

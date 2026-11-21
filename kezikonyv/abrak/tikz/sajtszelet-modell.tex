@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\szelet#1#2#3{% x, cím, lyukak (y-koordináták)
+    \begin{scope}[shift={(#1,0)}]
+      \fill[peSargaH, draw=peSarga, line width=0.7pt] (0,0) -- (0.9,0.55) -- (0.9,4.25) -- (0,3.7) -- cycle;
+      \foreach \y/\r in {#3} \fill[white, draw=peSarga!70!black, line width=0.4pt] (0.45,\y+0.27) ellipse (0.13 and \r);
+      \node[font=\scriptsize, text width=24mm, align=center, anchor=north] at (0.45,-0.12) {#2};
+    \end{scope}}
+  \szelet{0}{szervezeti döntések,\\biztonsági kultúra}{2.9/0.22, 1.2/0.17, 2.0/0.12}
+  \szelet{2.6}{tervezési\\megoldások}{2.0/0.25, 3.1/0.14}
+  \szelet{5.2}{alapfolyamat-\\irányítás}{2.0/0.22, 0.9/0.16}
+  \szelet{7.8}{riasztás, kezelői\\beavatkozás}{2.0/0.2, 3.0/0.15}
+  \szelet{10.4}{biztonsági\\műszerezett rendszer}{2.0/0.18, 1.1/0.13}
+  % veszély és baleset
+  \node[pirosdoboz=20mm, font=\scriptsize\bfseries] (v) at (-1.7,2.27) {veszély\\(energia,\\anyag)};
+  \node[pirosdoboz=18mm, font=\scriptsize\bfseries, fill=pePiros, text=white] (b) at (13.4,2.27) {baleset,\\kár};
+  \draw[-{Stealth[length=3mm]}, draw=pePiros, line width=1.6pt] (v.east) -- (b.west);
+  % feliratok
+  \node[font=\scriptsize, text=peSzurke, align=left, anchor=west] at (-0.2,5.0) {\textbf{latens feltételek:} évekig rejtve maradó, szervezeti és tervezési eredetű gyengeségek};
+  \node[font=\scriptsize, text=peSzurke, align=left, anchor=west] at (6.6,-1.55) {\textbf{aktív hibák:} a baleset közvetlen előzményei};
+  \draw[peSzurke, line width=0.4pt, -{Stealth[length=1.6mm]}] (1.2,4.85) -- (0.5,3.25);
+  \draw[peSzurke, line width=0.4pt, -{Stealth[length=1.6mm]}] (8.4,-1.35) -- (8.25,0.2);
+\end{tikzpicture}
+\end{document}

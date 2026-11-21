@@ -1,0 +1,19 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[xbar stacked, width=11.5cm, height=6cm, xmin=0, xmax=560, bar width=4.6mm,
+  symbolic y coords={Tápegység,Kimeneti fokozat,Mikrovezérlő,A/D átalakító,RTD érzékelőelem},
+  ytick=data, y tick label style={font=\footnotesize}, x tick label style={font=\footnotesize},
+  xlabel={meghibásodási ráta [FIT $=10^{-9}\,\mathrm{h}^{-1}$]}, xlabel style={font=\footnotesize},
+  legend style={font=\scriptsize, at={(0.98,0.03)}, anchor=south east, draw=none, fill=white, fill opacity=0.9},
+  legend cell align=left, axis line style={peSotet}, xmajorgrids, grid style={peSzurkeH}, enlarge y limits=0.14]
+  \addplot[fill=peZold, draw=peZold] coordinates {(150,Tápegység) (200,{Kimeneti fokozat}) (0,Mikrovezérlő) (0,{A/D átalakító}) (150,{RTD érzékelőelem})};
+  \addlegendentry{biztonságos ($\lambda_{S}$)}
+  \addplot[fill=peKiemel, draw=peKiemel] coordinates {(0,Tápegység) (90,{Kimeneti fokozat}) (270,Mikrovezérlő) (140,{A/D átalakító}) (100,{RTD érzékelőelem})};
+  \addlegendentry{veszélyes, észlelt ($\lambda_{DD}$)}
+  \addplot[fill=pePiros, draw=pePiros] coordinates {(0,Tápegység) (60,{Kimeneti fokozat}) (30,Mikrovezérlő) (60,{A/D átalakító}) (250,{RTD érzékelőelem})};
+  \addlegendentry{veszélyes, rejtett ($\lambda_{DU}$)}
+\end{axis}
+\end{tikzpicture}
+\end{document}

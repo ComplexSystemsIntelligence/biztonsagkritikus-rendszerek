@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+  \node[allapotjo, minimum size=17mm] (u) at (0,0) {0\\működik};
+  \node[allapotveszely, minimum size=17mm] (h) at (3.6,0) {1\\javítás\\alatt};
+  \draw[atmenet] (u) to[bend left=35] node[atmenetcimke, above]{$\lambda$} (h);
+  \draw[atmenet] (h) to[bend left=35] node[atmenetcimke, below]{$\mu = 1/\text{MTTR}$} (u);
+  \node[font=\scriptsize, align=center, text width=52mm] at (1.8,-2.1) {$\mathbf{Q}=\begin{pmatrix}-\lambda & \lambda\\ \mu & -\mu\end{pmatrix}$, \quad $A_\infty = \dfrac{\mu}{\lambda+\mu}$};
+  \begin{axis}[at={(6cm,-2.4cm)}, width=8cm, height=5.2cm, xmin=0, xmax=30, ymin=0, ymax=1.05, domain=0:30, samples=150,
+    xlabel={idő $t$ [h]}, ylabel={valószínűség}, tick label style={font=\scriptsize}, label style={font=\scriptsize},
+    axis line style={peSotet}, grid=major, grid style={peSzurkeH},
+    legend style={font=\tiny, at={(0.98,0.40)}, anchor=east, draw=none, fill=white, fill opacity=0.85, text opacity=1}]
+    \addplot[peKek, line width=1.2pt] {0.5/0.6 + 0.1/0.6*exp(-0.6*x)};
+    \addplot[peKiemel, line width=1.2pt, dashed] {exp(-0.1*x)};
+    \addplot[peSzurke, line width=0.6pt, dotted] {0.5/0.6};
+    \legend{rendelkezésre állás $A(t)$, megbízhatóság $R(t)=e^{-\lambda t}$, $A_\infty = 0{,}833$}
+  \end{axis}
+  \node[font=\tiny, text=peSzurke] at (9.6,1.75) {illusztráció: $\lambda = 0{,}1$/h, $\mu = 0{,}5$/h};
+\end{tikzpicture}
+\end{document}

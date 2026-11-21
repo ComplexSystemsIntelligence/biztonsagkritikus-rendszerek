@@ -1,0 +1,16 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[node distance=4mm and 7mm, every node/.append style={font=\footnotesize}]
+  \node[sotetdoboz=34mm, font=\footnotesize\bfseries] (a) {1. feladatelemzés};
+  \node[doboz=34mm, right=of a] (b) {2. a lehetséges hibák azonosítása};
+  \node[doboz=34mm, right=of b] (c) {3. ábrázolás: emberi eseményfa, hibafa};
+  \node[doboz=34mm, below=of c] (d) {4. számszerűsítés: THERP, HEART, SPAR-H};
+  \node[doboz=34mm, left=of d] (e) {5. függőségek a lépések között};
+  \node[doboz=34mm, left=of e] (f) {6. beépítés a kockázati modellbe (LOPA, PSA)};
+  \node[zolddoboz=60mm, below=of e] (g) {7. a hibavalószínűség csökkentése: kijelzők, eljárások, képzés, idő, automatizálás};
+  \draw[nyil] (a) -- (b); \draw[nyil] (b) -- (c); \draw[nyil] (c) -- (d); \draw[nyil] (d) -- (e); \draw[nyil] (e) -- (f);
+  \draw[nyil] (f.south) |- (g.west);
+  \draw[nyilv, szaggatott] (g.east) -| node[pos=0.75, right, font=\scriptsize, text=peSzurke]{iteráció} (d.south);
+\end{tikzpicture}
+\end{document}

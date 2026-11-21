@@ -1,0 +1,46 @@
+# HAZOP a ReaktorVéd adagolókörére {#sec-gy-hazop}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- egy csomópont tervezési szándékát pontosan megfogalmazni;
+- a vezérszavak és a paraméterek szisztematikus kombinálásával eltéréseket, okokat és következményeket azonosítani;
+- a meglévő védelmeket és a szükséges javaslatokat rögzíteni, és a súlyos forgatókönyveket a LOPA-ba továbbadni.
+:::
+
+**Háttér:** [a kézikönyv 5. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/05-veszelyazonositas.html) (a ReaktorVéd folyamatábrája és a hűtőkör HAZOP-részlete).
+
+## A csomópont
+
+**2. csomópont: a B reaktáns adagolása** a tárolótartálytól a P-101 szivattyún és a két sorba kötött gyorszáró szelepen (XV-101, XV-102) át a reaktorig, a FIC-102 áramlásszabályozóval. **Tervezési szándék:** a B reaktáns 0,8–1,0 m³/h áramlással, 20–30 °C-on, a reakcióhőmérséklet (70 ± 3 °C) elérése után, legfeljebb a recept szerinti összmennyiségig kerüljön a reaktorba.
+
+A kézikönyv egyszerűsített folyamatábrájához képest a gyakorlathoz két elemet feltételezünk: az adagolást a FIC-102 áramlásszabályozó (FT-102 áramlásmérő, FV-102 szabályozószelep) tartja az alapjelen, és az FAH-102 nagyáramlás-riasztás a kezelőt figyelmezteti. A vezeték visszacsapó szelepet nem tartalmaz.
+
+## Feladatok
+
+1. Készíts HAZOP-jegyzőkönyvet a csomópontra az alábbi oszlopokkal: vezérszó és paraméter, eltérés, okok, következmények (a védelmek figyelmen kívül hagyásával), meglévő védelmek, javaslat, felelős. Legalább a következő kombinációkat vizsgáld: NINCS / TÖBB / KEVESEBB / FORDÍTOTT áramlás; TÖBB / KEVESEBB hőmérséklet; MÁS MINT összetétel; KORÁN / KÉSŐN (az adagolás időzítése); TÖBB mennyiség.
+2. Jelöld meg azokat a forgatókönyveket, amelyek súlyos következményhez (megfutó reakció, mérgező kibocsátás) vezethetnek. Ezek kerülnek a [9. gyakorlat](09-lopa.qmd) LOPA-elemzésébe.
+3. Vizsgáld meg, hogy a meglévő védelmek közül melyik független a kezdő eseménytől. Például: véd-e a FIC-102 szabályozó a saját meghibásodása ellen?
+4. Fogalmazz meg legalább három javaslatot, amelyek közül legalább egy inherens megoldás legyen ([a kézikönyv 14. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/14-architekturak.html)).
+
+| Vezérszó + paraméter | Eltérés | Okok | Következmények | Védelmek | Javaslat |
+|:--|:--|:--|:--|:--|:--|
+| TÖBB áramlás | a B adagolása a tervezettnél gyorsabb | FIC-102 hibája; a szabályozószelep nyitva ragad; kezelői beállítási hiba | a B felhalmozódik, a hőfejlődés meghaladja a hűtés kapacitását, megfutó reakció | FAH-102 riasztás; SIF (TT-101/102 → XV-101/102) | az adagolás fizikai korlátozása szűkítőperemmel; LOPA |
+
+: Minta a jegyzőkönyv egy sorára {#tbl-hazop-minta}
+
+::: {.prompt title="Mintaprompt a vezérszavas ötletgyűjtéshez"}
+*„Egy félszakaszos reaktor B reaktáns adagolókörének HAZOP-vizsgálatát végezzük. A tervezési szándék: [lásd fent]. Az elemek: tárolótartály, P-101 szivattyú, FIC-102 áramlásszabályozó (FT-102, FV-102), FAH-102 riasztás, XV-101 és XV-102 gyorszáró szelep, visszacsapó szelep nincs. Vedd sorra a KORÁN, KÉSŐN és FORDÍTOTT vezérszót az adagolásra! Minden eltérésnél sorolj fel okokat (berendezés, ember, közmű, külső hatás) és következményeket a védelmek figyelmen kívül hagyásával. Jelöld, ha egy állításod bizonytalan, és ne adj meg konkrét számértéket.”*
+:::
+
+::: {.onell}
+Ellenőrizd a jegyzőkönyvedet: szerepel-e benne a következő négy, gyakran kimaradó forgatókönyv?
+
+::: {.megoldas}
+(1) **KORÁN:** az adagolás a reakcióhőmérséklet elérése előtt indul, a B nem reagál, felhalmozódik, majd egyszerre reagál el (a kézikönyv hűtőkörös HAZOP-jának harmadik sorához hasonló „rejtett” veszély). (2) **FORDÍTOTT áramlás:** a szivattyú leállásakor a reaktor tartalma visszaáramolhat a B tárolótartályba, ahol nem kívánt reakció indulhat; visszacsapó szelep vagy reteszelés kell. (3) **MÁS MINT összetétel:** rossz anyag vagy szennyezett B kerül a reaktorba (címkézés, mintavétel, betöltési eljárás). (4) **TÖBB mennyiség:** a teljes adagolt mennyiség meghaladja a receptet, mert a mennyiségmérés hibás vagy a szakaszt kétszer indítják; adagoltmennyiség-felügyelet és szakaszos reteszelés kell.
+:::
+:::
+
+## Ellenőrző szempontok
+
+A jó jegyzőkönyvben a tervezési szándék számszerű, az okok konkrét eszközökhöz vagy tevékenységekhez kötődnek, a következmények a védelmek nélkül értendők, a védelmeknél a függetlenség is szerepel, és a javaslatok között az inherens megoldások is megjelennek.

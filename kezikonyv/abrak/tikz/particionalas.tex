@@ -1,0 +1,24 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  % térbeli
+  \node[font=\small\bfseries, text=peSotet] at (2.6,3.3) {térbeli particionálás};
+  \draw[peSotet, line width=0.8pt, fill=peSzurkeH] (0,0) rectangle (5.2,2.9);
+  \node[pirosdoboz=14mm, minimum height=16mm, inner sep=2pt] at (0.95,1.65) {partíció 1\\ASIL D\\fékvezérlés};
+  \node[sargadoboz/.style={}, draw=peSarga, fill=peSargaH, rounded corners=2pt, text width=14mm, minimum height=16mm, align=center, inner sep=2pt] at (2.6,1.65) {partíció 2\\ASIL B\\kijelzés};
+  \node[szurkedoboz=14mm, minimum height=16mm, inner sep=2pt] at (4.25,1.65) {partíció 3\\QM\\diagnosztika};
+  \node[sotetdoboz=48mm, minimum height=6mm, font=\scriptsize\bfseries] at (2.6,0.4) {RTOS / hypervisor + memóriavédelem (MPU/MMU)};
+  \node[felirat, font=\tiny, align=center, text width=52mm] at (2.6,-0.45) {egy partíció nem írhat egy másik memóriájába; a hibás alacsonyabb integritású szoftver nem ronthatja el a biztonsági funkciót};
+  % időbeli
+  \begin{scope}[shift={(7.0,0)}]
+  \node[font=\small\bfseries, text=peSotet] at (3.0,3.3) {időbeli particionálás};
+  \foreach \x/\w/\c/\t in {0/1.4/pePiros/{P1},1.4/0.9/peSarga/{P2},2.3/0.7/peSzurke/{P3},3.0/1.4/pePiros/{P1},4.4/0.9/peSarga/{P2},5.3/0.7/peSzurke/{P3}} {
+    \fill[\c!30, draw=\c] (\x,1.2) rectangle ++(\w,0.9); \node at (\x+\w/2,1.65) {\t}; }
+  \draw[nyilv] (0,0.9) -- (6.3,0.9) node[right, font=\tiny]{idő};
+  \draw[peSotet] (0,0.75) -- (0,1.05) (3.0,0.75) -- (3.0,1.05) (6.0,0.75) -- (6.0,1.05);
+  \node[font=\tiny] at (1.5,0.55) {fő ciklus (például 10 ms)}; \node[font=\tiny] at (4.5,0.55) {fő ciklus};
+  \node[felirat, font=\tiny, align=center, text width=60mm] at (3.0,-0.45) {rögzített időrés minden partíciónak; egy végtelen ciklusba került partíció sem veheti el a biztonsági funkció processzoridejét};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

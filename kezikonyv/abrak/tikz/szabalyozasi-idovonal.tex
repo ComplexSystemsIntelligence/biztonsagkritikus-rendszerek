@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  % 2024.0 -> x=0 ; 1 év = 3 cm
+  \def\xx#1{#1}
+  \draw[peSotet, line width=1.2pt, -{Stealth[length=3mm]}] (0,0) -- (14.6,0);
+  \foreach \y [count=\i from 0] in {2024,2025,2026,2027,2028} { \draw[peSotet, line width=0.8pt] (3*\i,-0.12) -- (3*\i,0.12); \node[font=\scriptsize\bfseries, anchor=north] at (3*\i,-0.15) {\y}; }
+  \def\ev#1#2#3#4#5{% x (év), szint (y), szín, cím, szöveg
+    \pgfmathsetmacro{\px}{3*(#1-2024)}
+    \draw[#3, line width=0.7pt] (\px,0) -- (\px,#2);
+    \fill[#3] (\px,0) circle (0.07);
+    \node[draw=#3, fill=#3!10, rounded corners=2pt, text width=27mm, align=left, inner sep=2pt, anchor=\ifdim#2pt>0pt south\else north\fi] at (\px,#2) {\textbf{#4}\\#5};}
+  \ev{2024.58}{0.6}{peLila}{2024. aug. 1.}{az MI-rendelet hatályba lép}
+  \ev{2024.95}{-1.0}{peKek}{2024. dec. 10.}{a kiberrezilienciáról szóló jogszabály hatályba lép}
+  \ev{2025.09}{2.3}{peLila}{2025. febr. 2.}{tiltott MI-gyakorlatok}
+  \ev{2025.58}{0.6}{peLila}{2025. aug. 2.}{általános célú MI-modellek kötelezettségei}
+  \ev{2026.58}{2.3}{peLila}{2026. aug. 2.}{az MI-rendelet legtöbb rendelkezése}
+  \ev{2026.70}{-1.0}{peKek}{2026. szept. 11.}{CRA: jelentési kötelezettség}
+  \ev{2027.05}{0.6}{peZold}{2027. jan. 20.}{a gépekre vonatkozó rendelet alkalmazandó}
+  \ev{2027.92}{-1.0}{peKek}{2027. dec. 11.}{CRA: teljes alkalmazás}
+  \ev{2027.92}{2.3}{peLila}{2027. dec. 2.}{önálló (III. melléklet) nagy kockázatú MI-rendszerek}
+  \ev{2028.58}{0.6}{peLila}{2028. aug. 2.}{termékbe épített (I. melléklet) nagy kockázatú MI}
+  \node[font=\tiny, text=peSzurke, anchor=north west, text width=140mm, align=left] at (0,-2.4) {\textcolor{peLila}{\rule{2mm}{2mm}} MI-rendelet \quad \textcolor{peKek}{\rule{2mm}{2mm}} kiberrezilienciáról szóló jogszabály (CRA) \quad \textcolor{peZold}{\rule{2mm}{2mm}} gépekre vonatkozó rendelet \quad -- a nagy kockázatú MI-rendszerek határideje a 2026-os digitális omnibusz-rendelet szerint};
+\end{tikzpicture}
+\end{document}

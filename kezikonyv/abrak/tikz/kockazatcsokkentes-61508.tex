@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[nyil] (0,0) -- (13,0) node[anchor=north east, font=\scriptsize] at (13,-0.1) {növekvő kockázat};
+  \foreach \x/\t/\c in {1.2/{maradó\\kockázat}/peZold, 4.0/{tolerálható\\kockázat}/peSarga!70!black, 12.0/{az irányított\\berendezés kockázata}/pePiros} {
+    \draw[\c, line width=1.2pt] (\x,-0.15) -- (\x,0.9);
+    \node[font=\scriptsize\bfseries, text=\c, align=center, anchor=south] at (\x,0.95) {\t};
+  }
+  \draw[ketnyil] (4.0,-0.7) -- node[fill=white, font=\scriptsize, inner sep=1pt] {szükséges kockázatcsökkentés} (12.0,-0.7);
+  \draw[ketnyil, draw=peKek] (1.2,-1.5) -- node[fill=white, font=\scriptsize, inner sep=1pt, text=peKek] {ténylegesen elért kockázatcsökkentés} (12.0,-1.5);
+  \fill[peHalvany, draw=peKek, line width=0.6pt] (1.2,-3.1) rectangle (4.6,-2.2);
+  \node[font=\scriptsize, align=center] at (2.9,-2.65) {külső kockázatcsökkentő\\intézkedések};
+  \fill[peZoldH, draw=peZold, line width=0.6pt] (4.6,-3.1) rectangle (8.6,-2.2);
+  \node[font=\scriptsize, align=center] at (6.6,-2.65) {E/E/PE biztonsági\\funkciók (SIL)};
+  \fill[peLilaH, draw=peLila, line width=0.6pt] (8.6,-3.1) rectangle (12.0,-2.2);
+  \node[font=\scriptsize, align=center] at (10.3,-2.65) {más technológiájú\\biztonsági rendszerek};
+  \node[font=\scriptsize, text=peSotet, anchor=north west] at (1.2,-3.35) {A biztonsági funkcióra jutó szükséges csökkentés:\quad $RRF_{\mathrm{SIF}}=\dfrac{F_{\mathrm{EUC}}\cdot\prod_j PFD_j}{F_{\mathrm{tol}}}$,\qquad $PFD_{\mathrm{SIF}}\le 1/RRF_{\mathrm{SIF}}$};
+\node[font=\tiny, text=peSzurke, anchor=north west] at (1.2,-4.25) {$F_{\mathrm{EUC}}$: a veszélyes esemény gyakorisága védelem nélkül;\quad $PFD_j$: a többi független védelmi réteg igénykori meghibásodási valószínűsége;\quad $F_{\mathrm{tol}}$: tolerálható gyakoriság};
+\end{tikzpicture}
+\end{document}

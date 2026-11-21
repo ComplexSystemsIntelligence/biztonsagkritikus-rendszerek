@@ -1,0 +1,18 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=10cm, height=7cm, xmode=log, ymode=log, xmin=1, xmax=1000, ymin=1e-9, ymax=1e-2,
+  xlabel={áldozatok száma, $N$}, ylabel={$N$ vagy több áldozatot követelő\\balesetek gyakorisága, $F$ [1/év]},
+  ylabel style={align=center}, grid=major, grid style={peSzurkeH}, axis line style={peSotet},
+  tick label style={font=\footnotesize}, label style={font=\footnotesize}, legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.85, at={(0.98,0.98)}, anchor=north east}]
+  \addplot[name path=fels, pePiros, line width=1.4pt, domain=1:1000, samples=50] {1e-3/x^2};
+  \addlegendentry{kritérium: $F=10^{-3}/N^{2}$}
+  \addplot[peZold, line width=1.0pt, szaggatott, domain=1:1000, samples=50] {1e-5/x^2};
+  \addlegendentry{elhanyagolható: $F=10^{-5}/N^{2}$}
+  \addplot[peKek, line width=1.6pt, const plot] coordinates {(1,2e-5) (3,2e-5) (3,6e-6) (10,6e-6) (10,1.2e-6) (40,1.2e-6) (40,2e-7) (120,2e-7) (120,1e-8) (300,1e-8)};
+  \addlegendentry{a vizsgált üzem F--N görbéje}
+  \node[font=\scriptsize, text=pePiros, rotate=-31, anchor=south] at (axis cs:5,4e-5) {nem tolerálható};
+\end{axis}
+\end{tikzpicture}
+\end{document}

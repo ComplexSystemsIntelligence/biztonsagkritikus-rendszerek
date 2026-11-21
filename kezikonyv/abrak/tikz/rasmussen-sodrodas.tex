@@ -1,0 +1,30 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % határok
+  \fill[pePirosH] (0,0) -- (0,5.6) -- (1.2,5.6) .. controls (0.9,3.5) and (1.4,1.5) .. (0.9,0) -- cycle;
+  \draw[pePiros, line width=1.2pt] (1.2,5.6) .. controls (0.9,3.5) and (1.4,1.5) .. (0.9,0);
+  \node[font=\scriptsize\bfseries, text=pePiros, rotate=90] at (0.45,2.8) {a balesethez vezető működés határa};
+  \fill[peSzurkeH] (11,0) -- (11,5.6) -- (9.6,5.6) .. controls (9.9,4) and (9.4,2) .. (9.8,0) -- cycle;
+  \draw[peSzurke, line width=1.2pt] (9.6,5.6) .. controls (9.9,4) and (9.4,2) .. (9.8,0);
+  \node[font=\scriptsize\bfseries, text=peSzurke, rotate=90] at (10.45,2.8) {gazdasági kudarc határa};
+  \fill[peSzurkeH] (1.5,5.6) -- (9.4,5.6) -- (9.4,6.4) -- (1.5,6.4) -- cycle;
+  \draw[peSzurke, line width=1.2pt] (1.5,5.6) -- (9.4,5.6);
+  \node[font=\scriptsize\bfseries, text=peSzurke] at (5.45,6.0) {elviselhetetlen munkaterhelés határa};
+  % biztonsági tartalék
+  \draw[pePiros, szaggatott, line width=0.8pt] (2.6,5.4) .. controls (2.3,3.5) and (2.8,1.5) .. (2.3,0.2);
+  \node[font=\scriptsize, text=pePiros, align=center, fill=white, inner sep=1pt] at (2.55,2.2) {a hivatalos\\biztonsági\\tartalék};
+  % nyomások
+  \draw[-{Stealth[length=3mm]}, draw=peSotet, line width=2pt] (8.8,1.0) -- (6.4,1.0);
+  \node[font=\scriptsize, align=center, anchor=north] at (7.6,0.85) {gazdasági nyomás\\(hatékonyság, költség)};
+  \draw[-{Stealth[length=3mm]}, draw=peSotet, line width=2pt] (5.5,5.3) -- (5.5,3.6);
+  \node[font=\scriptsize, align=right, anchor=east] at (5.35,4.6) {törekvés a kisebb\\erőfeszítésre};
+  % sodródó pont
+  \foreach \x/\y/\a in {7.6/3.0/100, 6.7/3.3/85, 5.8/2.7/70, 4.9/3.1/55, 4.0/2.6/40, 3.2/2.9/25} {
+    \fill[peKek!\a] (\x,\y) circle (1.6mm); }
+  \draw[-{Stealth[length=2.4mm]}, draw=peKek, line width=0.9pt] (7.4,3.0) .. controls (6.2,3.6) and (5.2,2.3) .. (3.4,2.9);
+  \node[font=\scriptsize, text=peKek, align=center] at (6.4,2.15) {a működés sodródása};
+  \node[font=\scriptsize, text=peZold, align=center] at (8.1,4.35) {\textbf{elfogadható}\\\textbf{működési tartomány}};
+\end{tikzpicture}
+\end{document}

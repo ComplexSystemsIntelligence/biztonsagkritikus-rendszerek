@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \node[sotetdoboz=34mm, minimum height=14mm] (euc) at (0,0) {Irányított berendezés\\{\scriptsize\mdseries (EUC: reaktor, gép, jármű)}};
+  \node[doboz=34mm, minimum height=13mm] (bpcs) at (-4.4,3.0) {\textbf{Alapfolyamat-irányítás}\\{\scriptsize (BPCS) folyamatosan aktív,\\a hibái hamar kiderülnek}};
+  \node[zolddoboz=34mm, minimum height=13mm] (sis) at (4.4,3.0) {\textbf{Biztonsági rendszer}\\{\scriptsize (SIS) passzív, ritkán működik,\\rejtett hibái lehetnek}};
+  \node[szurkedoboz=24mm, font=\scriptsize] (s1) at (-4.4,0.6) {érzékelők};
+  \node[szurkedoboz=24mm, font=\scriptsize] (a1) at (-4.4,-0.6) {beavatkozók};
+  \node[szurkedoboz=24mm, font=\scriptsize, draw=peZold] (s2) at (4.4,0.6) {külön érzékelők};
+  \node[szurkedoboz=24mm, font=\scriptsize, draw=peZold] (a2) at (4.4,-0.6) {külön beavatkozók};
+  \draw[nyilv] (euc.west |- s1) -- (s1.east); \draw[nyilv] (s1.north) -- (bpcs.south);
+  \draw[nyilv] (bpcs.south west) ++(0.3,0) |- (a1.west); \draw[nyilv] (a1.east) -- (euc.west |- a1);
+  \draw[nyilv, draw=peZold] (euc.east |- s2) -- (s2.west); \draw[nyilv, draw=peZold] (s2.north) -- (sis.south);
+  \draw[nyilv, draw=peZold] (sis.south east) ++(-0.3,0) |- (a2.east); \draw[nyilv, draw=peZold] (a2.west) -- (euc.east |- a2);
+  \node[szurkedoboz=26mm, font=\scriptsize] (op) at (0,4.6) {kezelő, riasztások};
+  \draw[nyilv] (bpcs.north) |- (op.west); \draw[nyilv, draw=peZold] (sis.north) |- (op.east);
+  \draw[pePiros, line width=1pt, szaggatott] (0,1.25) -- (0,3.9);
+  \node[font=\scriptsize, text=pePiros, align=center, fill=white, inner sep=1pt] at (0,2.55) {függetlenség:\\külön érzékelés,\\logika, beavatkozás};
+\end{tikzpicture}
+\end{document}

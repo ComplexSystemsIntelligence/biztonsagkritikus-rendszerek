@@ -1,0 +1,29 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  % bal: CCF nélkül
+  \node[font=\small\bfseries, text=peSotet] at (1.5,1.2) {független elemek};
+  \node[fa esemeny=30mm] (t1) at (1.5,0.4) {mindkét szelep zárási hibája};
+  \node[es kapu] (g1) at (1.5,-0.6) {};
+  \draw[fael] (t1) -- (g1.output);
+  \node[fa alap] (a) at (0.7,-1.8) {V1}; \node[fa alap] (b) at (2.3,-1.8) {V2};
+  \draw[fael] (g1.input 1) |- ++(0,-0.25) -| (a); \draw[fael] (g1.input 2) |- ++(0,-0.25) -| (b);
+  \node[font=\scriptsize, align=center, text width=40mm] at (1.5,-3.0) {$Q \approx q_V^2 = 1{,}20\cdot10^{-4}$};
+  \draw[nyilv, line width=1pt] (3.6,-0.8) -- node[above, font=\scriptsize]{$\beta$-tényező} (5.0,-0.8);
+  % jobb: CCF-fel
+  \begin{scope}[shift={(8.6,0)}]
+  \node[font=\small\bfseries, text=peSotet] at (0,1.2) {közös okú meghibásodással};
+  \node[fa esemeny=30mm] (t2) at (0,0.4) {mindkét szelep zárási hibája};
+  \node[vagy kapu] (g2) at (0,-0.6) {};
+  \draw[fael] (t2) -- (g2.output);
+  \node[es kapu] (g3) at (-1.6,-1.8) {};
+  \node[fa ismetlodo, minimum size=11mm, font=\tiny\bfseries, align=center] (c) at (1.6,-2.0) {CCF\\V1,V2};
+  \draw[fael] (g2.input 1) |- ++(0,-0.25) -| (g3.output); \draw[fael] (g2.input 2) |- ++(0,-0.25) -| (c);
+  \node[fa alap, font=\tiny\bfseries] (ai) at (-2.4,-3.1) {V1$_\text{f}$}; \node[fa alap, font=\tiny\bfseries] (bi) at (-0.8,-3.1) {V2$_\text{f}$};
+  \draw[fael] (g3.input 1) |- ++(0,-0.25) -| (ai); \draw[fael] (g3.input 2) |- ++(0,-0.25) -| (bi);
+  \node[font=\scriptsize, align=left, anchor=west, text width=56mm] at (-3.0,-4.5) {$Q \approx [(1-\beta)q_V]^2 + \beta q_V = 9{,}7\cdot10^{-5} + 1{,}10\cdot10^{-3}$\\[1pt]
+   $\beta = 10\%$ mellett a közös okú tag tizenegyszer nagyobb, mint a független kombináció};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,38 @@
+# Megbízhatósági blokkdiagramok {#sec-gy-rbd}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- soros, párhuzamos és k-ból-n struktúrák megbízhatóságát és MTTF-jét kiszámolni;
+- nem soros-párhuzamos rendszereket minimális utakkal kezelni;
+- értékelni a komponensadatok bizonytalanságát és a közös okú meghibásodás hatását.
+:::
+
+**Háttér:** [a kézikönyv 9. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/09-rbd.html).
+
+## Alkalmazás: blokkdiagram
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/rbd.html" title="Megbízhatósági blokkdiagram" loading="lazy" style="width:100%;height:1150px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/rbd.html)
+
+## Feladatok az alkalmazással
+
+1. Hasonlítsd össze az 1oo2, a 2oo3 és az 1oo1 struktúra megbízhatóságát az idő függvényében azonos elemekkel. Ellenőrizd, hogy a 2oo3 MTTF-je $5/(6\lambda)$, azaz kisebb, mint egyetlen elemé!
+2. Töltsd be a hídkapcsolást, és ellenőrizd, hogy $t_0 = 1053{,}6$ óránál (ahol egy elem megbízhatósága 0,9) a rendszeré 0,97848. Melyik elem Birnbaum-fontossága a legnagyobb, és miért?
+3. Próbáld meg a hídkapcsolást kifejezéssel leírni úgy, hogy az E elem kétszer szerepel. Miért ad hibás eredményt? (Az alkalmazás figyelmeztet.)
+4. A ReaktorVéd példában melyik alrendszer javítása növeli leginkább a rendszer megbízhatóságát?
+
+## Notebook: hídkapcsolás, Monte Carlo, közös ok
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/07_rbd_hid_mc.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/07_rbd_hid_mc.ipynb)
+
+::: {.prompt title="Mintaprompt"}
+*„Egy 2oo3 szavazású érzékelőrendszer megbízhatóságát számoltam binomiális képlettel: […]. Ellenőrizd a levezetést, és magyarázd el, miért lehet a 2oo3 hosszú távon rosszabb, mint egyetlen érzékelő! Ne a végeredményt add meg, hanem a gondolatmenet hibáit jelöld.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó megoldás tudatosan kezeli a függetlenségi feltevést, a többször előforduló elemeket minimális utakkal vagy dekompozícióval számolja, és a redundancia értékét a közös okú meghibásodás figyelembevételével ítéli meg.

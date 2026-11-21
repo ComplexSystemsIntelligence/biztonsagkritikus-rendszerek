@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, node distance=5mm, every node/.append style={font=\footnotesize}]
+  \node[sotetdoboz=58mm, font=\footnotesize\bfseries] (s1) at (0,0) {1. forgatókönyv kiválasztása\\(HAZOP, veszélyelemzés)};
+  \node[doboz=58mm, below=of s1] (s2) {2. következmény és tolerálható gyakoriság ($F_{\mathrm{tol}}$)};
+  \node[doboz=58mm, below=of s2] (s3) {3. kezdő esemény és gyakorisága ($f_{\mathrm{IE}}$)};
+  \node[doboz=58mm, below=of s3] (s4) {4. feltételt teremtő tényezők és feltételes módosítók};
+  \node[doboz=58mm, below=of s4] (s5) {5. független védelmi rétegek (IPL) azonosítása};
+  \node[doboz=58mm, below=of s5] (s6) {6. a csökkentett gyakoriság:\\ $f = f_{\mathrm{IE}} \cdot \prod_k P_k \cdot \prod_j PFD_j$};
+  \node[diamond, aspect=2.2, draw=peKiemel, fill=peKiemelH, line width=1pt, align=center, inner sep=1pt, below=of s6] (d) {$f \le F_{\mathrm{tol}}$?};
+  \node[zolddoboz=40mm, below=8mm of d] (ok) {7. dokumentálás, az IPL-ek fenntartásának előírása};
+  \node[kiemeltdoboz=42mm, right=14mm of d] (uj) {további IPL vagy biztonsági funkció; a SIF szükséges PFD-je: $F_{\mathrm{tol}}/f$};
+  \foreach \a/\b in {s1/s2,s2/s3,s3/s4,s4/s5,s5/s6,s6/d} \draw[nyil] (\a) -- (\b);
+  \draw[nyil] (d) -- node[right, font=\scriptsize]{igen} (ok);
+  \draw[nyil] (d) -- node[above, font=\scriptsize]{nem} (uj);
+  \draw[nyil] (uj.north) |- (s6.east);
+  % IPL-kritériumok
+  \node[szurkedoboz=48mm, anchor=west, align=left, font=\scriptsize] (krit) at ([xshift=14mm]s4.east) {\textbf{IPL-kritériumok}\\[2pt]
+    \textbf{hatásos:} megakadályozza a következményt, időben\\
+    \textbf{független:} a kezdő eseménytől és a többi rétegtől\\
+    \textbf{megbízható:} a beszámított PFD igazolható\\
+    \textbf{auditálható:} tesztelhető, karbantartott, dokumentált};
+  \draw[nyilv, szaggatott] (krit.west) -- ++(-0.5,0) |- (s5.east);
+\end{tikzpicture}
+\end{document}

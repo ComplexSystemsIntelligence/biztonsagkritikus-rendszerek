@@ -1,0 +1,131 @@
+% peabra.sty -- közös TikZ-stílus a Pannon Egyetem nyílt tankönyvsorozatához
+% (Rendszermérnökség, Biztonságkritikus rendszerek, ...).
+% Pannon Egyetem-arculathoz illeszkedő színek és betűk.
+% Minden ábra önálló standalone dokumentum, amely ezt a csomagot tölti be.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{peabra}[2026/11/20 PE abrastilus]
+
+\RequirePackage{fontspec}
+% A betűket családnévvel töltjük be: XeLaTeX és LuaLaTeX alatt is működik,
+% ha a _shared/fonts/ttf betűk telepítve vannak (pl. ~/.fonts).
+\setmainfont{IBM Plex Sans}[BoldFont={IBM Plex Sans SemiBold},
+  ItalicFont={IBM Plex Sans Italic}, BoldItalicFont={IBM Plex Sans Bold Italic}]
+\setsansfont{IBM Plex Sans}[BoldFont={IBM Plex Sans SemiBold},
+  ItalicFont={IBM Plex Sans Italic}, BoldItalicFont={IBM Plex Sans Bold Italic}]
+\setmonofont{IBM Plex Mono}[Scale=0.9]
+\newfontfamily\cimbetu{Raleway ExtraBold}[BoldFont={Raleway Black}]
+\RequirePackage{amsmath}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18, /pgf/number format/use comma, /pgf/number format/1000 sep={\,}, /pgf/number format/min exponent for 1000 sep=4}
+\usetikzlibrary{arrows.meta,positioning,calc,shapes.geometric,shapes.misc,
+  shapes.gates.logic.US,shapes.arrows,shapes.symbols,backgrounds,fit,
+  decorations.pathreplacing,decorations.pathmorphing,matrix,patterns,trees}
+\usepgfplotslibrary{fillbetween}
+
+% --- Színpaletta (a sorozatban egységes) -----------------------------
+\definecolor{peKek}{HTML}{285780}      % PE elsődleges kék
+\definecolor{peSotet}{HTML}{1B3A57}    % sötét változat
+\definecolor{peKozep}{HTML}{4F7FAD}    % középkék
+\definecolor{peVilagos}{HTML}{A9C4DE}  % világoskék
+\definecolor{peHalvany}{HTML}{E6EEF6}  % háttérárnyalat
+\definecolor{peKiemel}{HTML}{E07B39}   % kiemelés (narancs)
+\definecolor{peKiemelH}{HTML}{FBE7D9}  % halvány narancs
+\definecolor{peZold}{HTML}{3E8E63}     % ellenőrzés, siker, biztonságos állapot
+\definecolor{peZoldH}{HTML}{DDEFE4}
+\definecolor{pePiros}{HTML}{B83A3A}    % kockázat, hiba, veszélyes állapot
+\definecolor{pePirosH}{HTML}{F6DEDE}
+\definecolor{peLila}{HTML}{7A5C99}
+\definecolor{peLilaH}{HTML}{ECE5F3}
+\definecolor{peSarga}{HTML}{D9A520}    % átmeneti (ALARP) tartomány
+\definecolor{peSargaH}{HTML}{FAF0D2}
+\definecolor{peSzurke}{HTML}{6B7280}
+\definecolor{peSzurkeH}{HTML}{F1F2F4}
+\definecolor{peSzoveg}{HTML}{1F2933}
+% Esettanulmány-színek (betűjelhez kötve, a sorozatban azonos)
+\colorlet{esetA}{peKek}     % ReaktorVéd -- folyamatipari védelmi rendszer
+\colorlet{esetB}{peZold}    % VészFék -- vészfékező asszisztens és fékrendszer
+\colorlet{esetC}{peLila}    % KoboCella -- kollaboratív robotcella
+
+% --- Alapstílusok ----------------------------------------------------
+\tikzset{
+  every picture/.style={line cap=round, line join=round, font=\small, text=peSzoveg},
+  nyil/.style={-{Stealth[length=2.6mm,width=2mm]}, line width=0.9pt, draw=peSotet},
+  nyilv/.style={-{Stealth[length=2.2mm,width=1.7mm]}, line width=0.6pt, draw=peSzurke},
+  ketnyil/.style={{Stealth[length=2.4mm]}-{Stealth[length=2.4mm]}, line width=0.8pt, draw=peSotet},
+  szaggatott/.style={dash pattern=on 3pt off 2pt},
+  doboz/.style={draw=peKek, fill=peHalvany, rounded corners=2pt, line width=0.8pt,
+    align=center, inner sep=4pt, minimum height=8mm, text width=#1},
+  doboz/.default=30mm,
+  sotetdoboz/.style={draw=peSotet, fill=peKek, text=white, rounded corners=2pt,
+    line width=0.8pt, align=center, inner sep=4pt, minimum height=8mm, text width=#1,
+    font=\small\bfseries},
+  sotetdoboz/.default=30mm,
+  kiemeltdoboz/.style={draw=peKiemel, fill=peKiemelH, rounded corners=2pt, line width=1.1pt,
+    align=center, inner sep=4pt, minimum height=8mm, text width=#1},
+  kiemeltdoboz/.default=30mm,
+  zolddoboz/.style={draw=peZold, fill=peZoldH, rounded corners=2pt, line width=0.8pt,
+    align=center, inner sep=4pt, minimum height=8mm, text width=#1},
+  zolddoboz/.default=30mm,
+  pirosdoboz/.style={draw=pePiros, fill=pePirosH, rounded corners=2pt, line width=0.8pt,
+    align=center, inner sep=4pt, minimum height=8mm, text width=#1},
+  pirosdoboz/.default=30mm,
+  liladoboz/.style={draw=peLila, fill=peLilaH, rounded corners=2pt, line width=0.8pt,
+    align=center, inner sep=4pt, minimum height=8mm, text width=#1},
+  liladoboz/.default=30mm,
+  szurkedoboz/.style={draw=peSzurke, fill=peSzurkeH, rounded corners=2pt, line width=0.6pt,
+    align=center, inner sep=4pt, minimum height=8mm, text width=#1},
+  szurkedoboz/.default=30mm,
+  felirat/.style={font=\footnotesize, text=peSzurke, align=center},
+  cim/.style={font=\cimbetu\large, text=peSotet},
+  alcim/.style={font=\cimbetu\normalsize, text=peKek},
+  panelcim/.style={font=\cimbetu\small, text=peSotet, anchor=west},
+}
+
+% --- Hibafa- és sikerfa-szimbólumok (IEC 61025 szerinti jelölés) -------
+\tikzset{
+  fa esemeny/.style={draw=peKek, fill=peHalvany, rounded corners=1.5pt, line width=0.6pt,
+    align=center, font=\footnotesize, minimum height=9mm, text width=#1, inner sep=2pt},
+  fa esemeny/.default=29mm,
+  fa csucs/.style={draw=peSotet, fill=peKek, text=white, rounded corners=1.5pt, line width=0.7pt,
+    align=center, font=\footnotesize\bfseries, minimum height=9mm, text width=#1, inner sep=2pt},
+  fa csucs/.default=40mm,
+  fa alap/.style={circle, draw=peKek, fill=white, line width=0.6pt, minimum size=9mm,
+    inner sep=0pt, font=\scriptsize\bfseries},
+  fa ismetlodo/.style={fa alap, draw=peKiemel, fill=peKiemelH, line width=1pt},
+  fa nemfejtett/.style={diamond, draw=peKek, fill=white, line width=0.6pt, minimum size=10mm,
+    inner sep=0pt, font=\scriptsize\bfseries},
+  fa haz/.style={draw=peKek, fill=white, line width=0.6pt, minimum width=9mm, minimum height=7mm,
+    font=\scriptsize\bfseries, inner sep=0pt},
+  fa atvitel/.style={regular polygon, regular polygon sides=3, draw=peKek, fill=white,
+    line width=0.6pt, minimum size=9mm, inner sep=0pt},
+  es kapu/.style={and gate US, draw=peKek, fill=white, rotate=90, logic gate inputs=nn,
+    minimum size=7mm, line width=0.7pt},
+  vagy kapu/.style={or gate US, draw=peKek, fill=white, rotate=90, logic gate inputs=nn,
+    minimum size=7mm, line width=0.7pt},
+  kapucimke/.style={font=\scriptsize\bfseries, text=peKek},
+  facimke/.style={font=\scriptsize, text=peSotet, align=center, text width=#1},
+  facimke/.default=20mm,
+  fael/.style={draw=peKek, line width=0.6pt},
+}
+
+% --- Megbízhatósági blokkdiagram ----------------------------------------
+\tikzset{
+  blokk/.style={draw=peKek, fill=peHalvany, line width=0.7pt, minimum width=12mm,
+    minimum height=7mm, font=\small\bfseries, text=peSotet, inner sep=2pt},
+  blokkhibas/.style={blokk, draw=pePiros, fill=pePirosH},
+  csatlakozo/.style={circle, fill=peSotet, inner sep=0pt, minimum size=1.6mm},
+  rbdel/.style={draw=peSotet, line width=0.7pt},
+}
+
+% --- Markov-állapotgráf -------------------------------------------------
+\tikzset{
+  allapot/.style={circle, draw=peKek, fill=peHalvany, line width=0.8pt, minimum size=12mm,
+    align=center, font=\footnotesize, inner sep=1pt},
+  allapotjo/.style={allapot, draw=peZold, fill=peZoldH},
+  allapotveszely/.style={allapot, draw=pePiros, fill=pePirosH},
+  atmenet/.style={-{Stealth[length=2.2mm]}, line width=0.7pt, draw=peSotet},
+  atmenetcimke/.style={font=\scriptsize, fill=white, inner sep=1pt},
+}
+\endinput

@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[node distance=5mm and 8mm, every node/.append style={font=\footnotesize}]
+  \node[sotetdoboz=46mm, font=\footnotesize\bfseries] (a) {biztonsági követelmény-\\specifikáció (SIL, igénymód)};
+  \node[doboz=46mm, below=of a] (b) {architektúra: alrendszerek, szavazás (MooN), tesztelési stratégia};
+  \node[doboz=46mm, below=of b] (c) {adatok: $\lambda_{DU}$, $\lambda_{DD}$, $\lambda_S$ (FMEDA), $\beta$, $T_1$, MTTR, PTC};
+  \node[doboz=46mm, below=of c] (d) {1. PFD$_{\text{avg}}$ vagy PFH alrendszerenként és összesen};
+  \node[doboz=46mm, below=of d] (e) {2. architekturális korlátok (HFT, SFF, típus)};
+  \node[doboz=46mm, below=of e] (f) {3. szisztematikus képesség (SC), korábbi használat};
+  \node[diamond, aspect=2.4, draw=peKiemel, fill=peKiemelH, line width=1pt, align=center, inner sep=0pt, below=of f, font=\scriptsize] (g) {mind a három\\teljesül?};
+  \node[zolddoboz=46mm, below=8mm of g] (h) {dokumentálás; a feltevések (próbák, MTTR, PTC) átadása az üzemeltetésnek};
+  \node[kiemeltdoboz=40mm, right=12mm of d] (j) {javítás: redundancia, diagnosztika, rövidebb $T_1$, részleges löketpróba, diverzitás, jobb elemek};
+  \node[szurkedoboz=40mm, right=12mm of h, align=left, font=\scriptsize] (k) {téves leállások gyakorisága (STR, MTTF$_S$) külön ellenőrizendő};
+  \foreach \x/\y in {a/b,b/c,c/d,d/e,e/f,f/g} \draw[nyil] (\x) -- (\y);
+  \draw[nyil] (g) -- node[right, font=\scriptsize]{igen} (h);
+  \draw[nyil] (g.east) -| node[pos=0.25, above, font=\scriptsize]{nem} (j.south);
+  \draw[nyil] (j.north) |- (b.east);
+  \draw[nyilv, szaggatott] (h.east) -- (k.west);
+\end{tikzpicture}
+\end{document}

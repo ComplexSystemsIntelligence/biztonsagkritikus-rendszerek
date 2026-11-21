@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Élettartam-eloszlások és kádgörbe</title>
+<style>@font-face{font-family:'IBM Plex Sans';font-weight:400;src:url(../assets/fonts/ibm-plex-sans-400.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Sans';font-weight:600;src:url(../assets/fonts/ibm-plex-sans-600.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Raleway';font-weight:800;src:url(../assets/fonts/raleway-800.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Mono';font-weight:400;src:url(../assets/fonts/ibm-plex-mono-400.woff2) format('woff2');font-display:swap}
+:root{--kek:#285780;--sotet:#1B3A57;--kozep:#4F7FAD;--vilagos:#A9C4DE;--halvany:#E6EEF6;--kiemel:#E07B39;--kiemelh:#FBE7D9;--zold:#3E8E63;--zoldh:#DDEFE4;--piros:#B83A3A;--pirosh:#F6DEDE;--lila:#7A5C99;--sarga:#D9A520;--sargah:#FAF0D2;--szurke:#6B7280;--szurkeh:#F1F2F4;--szoveg:#1F2933}
+*{box-sizing:border-box}
+body{margin:0;font-family:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--szoveg);background:#fff;font-size:15px;line-height:1.45}
+header.app{background:var(--kek);color:#fff;padding:12px 18px;position:relative;overflow:hidden}
+header.app::after{content:"";position:absolute;right:-40px;top:0;bottom:0;width:180px;background:var(--kiemel);transform:skewX(-20deg);opacity:.9}
+header.app h1{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.25rem;margin:0;position:relative;z-index:1}
+header.app p{margin:.2rem 0 0;font-size:.85rem;opacity:.9;position:relative;z-index:1;max-width:75%}
+main{padding:14px 18px 30px;max-width:1180px;margin:0 auto}
+.kartya{border:1px solid #d8dee6;border-left:4px solid var(--kek);border-radius:4px;padding:10px 14px;margin:12px 0;background:#fff}
+.kartya h2{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.02rem;color:var(--sotet);margin:.1rem 0 .5rem}
+.kartya.eredmeny{border-left-color:var(--zold);background:#fbfdfc}
+.kartya.figyelem{border-left-color:var(--kiemel);background:#fffaf6}
+.racs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+label{font-size:.85rem;color:var(--sotet);display:block;margin:.35rem 0 .1rem}
+input[type=text],input[type=number],select,textarea{font:inherit;font-size:.9rem;padding:4px 6px;border:1px solid #c5ced9;border-radius:3px;width:100%;background:#fff}
+textarea{font-family:'IBM Plex Mono',monospace;font-size:.82rem;min-height:9rem}
+input[type=range]{width:100%;accent-color:var(--kek)}
+button{font:inherit;font-size:.85rem;background:var(--kek);color:#fff;border:0;border-radius:3px;padding:5px 11px;margin:3px 4px 3px 0;cursor:pointer}
+button.masodlagos{background:#fff;color:var(--kek);border:1px solid var(--kek)}
+button:hover{filter:brightness(1.1)}
+table{border-collapse:collapse;width:100%;font-size:.86rem;margin:.4rem 0}
+th{background:var(--halvany);color:var(--sotet);text-align:left;font-weight:600;padding:5px 6px;border-bottom:2px solid var(--kek)}
+td{padding:4px 6px;border-bottom:1px solid #e3e8ee;vertical-align:top}
+td input,td select{padding:2px 4px;font-size:.85rem}
+td.szam,th.szam{text-align:right;font-variant-numeric:tabular-nums}
+.cimke{display:inline-block;padding:1px 7px;border-radius:9px;font-size:.78rem;font-weight:600}
+.c-H,.c-magas{background:var(--pirosh);color:var(--piros)}.c-M,.c-kozepes{background:var(--sargah);color:#8a6a10}.c-L,.c-alacsony{background:var(--zoldh);color:var(--zold)}
+.nagyszam{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.6rem;color:var(--sotet)}
+.megj{font-size:.8rem;color:var(--szurke)}
+.hiba{color:var(--piros);font-weight:600}
+.ok{color:var(--zold);font-weight:600}
+svg text{font-family:'IBM Plex Sans',sans-serif}
+.diagram{width:100%;overflow-x:auto}
+footer.app{font-size:.75rem;color:var(--szurke);padding:8px 18px;border-top:1px solid #e3e8ee}
+@media (max-width:640px){header.app p{max-width:100%}}
+
+.ertek{font-variant-numeric:tabular-nums;font-weight:600;color:var(--kek)}
+</style></head><body>
+<header class="app"><h1>Élettartam-eloszlások és kádgörbe</h1><p>Biztonságkritikus rendszerek – 6. gyakorlat. Az exponenciális, a Weibull- és a lognormális eloszlás sűrűség-, megbízhatósági és meghibásodásiráta-függvénye, valamint a kádgörbe felépítése.</p></header>
+<main>
+<div class="racs">
+ <div class="kartya"><h2>Eloszlás</h2>
+  <select id="tipus"><option value="exp">exponenciális</option><option value="weib" selected>Weibull</option><option value="logn">lognormális</option><option value="kad">kádgörbe (három Weibull-mechanizmus)</option></select>
+  <div id="param"></div></div>
+ <div class="kartya eredmeny"><h2>Jellemzők</h2><div id="jell"></div></div>
+</div>
+<div class="racs">
+ <div class="kartya"><h2>Sűrűségfüggvény f(t)</h2><div id="g1"></div></div>
+ <div class="kartya"><h2>Megbízhatóság R(t) és eloszlásfüggvény F(t)</h2><div id="g2"></div></div>
+</div>
+<div class="kartya"><h2>Meghibásodási ráta h(t)</h2><div id="g3"></div><p class="megj" id="mag"></p></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc</footer>
+<script>// Közös segédfüggvények a PE tankönyvsorozat böngészős alkalmazásaihoz (MIT licenc)
+const $ = id => document.getElementById(id);
+function el(tag, attrs = {}, ...ch) { const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) { if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); }
+  for (const c of ch.flat()) e.append(c instanceof Node ? c : document.createTextNode(c)); return e; }
+const SUP = {'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function fmt(x, sig = 3) {
+  if (x === null || x === undefined || isNaN(x)) return '–';
+  if (!isFinite(x)) return '∞';
+  if (x === 0) return '0';
+  const a = Math.abs(x);
+  if (a >= 0.01 && a < 1e5) { let d = Math.max(0, sig - 1 - Math.floor(Math.log10(a))); d = Math.min(d, 6);
+    return x.toFixed(d).replace('.', ','); }
+  const e = Math.floor(Math.log10(a)); const m = x / Math.pow(10, e);
+  return m.toFixed(sig - 1).replace('.', ',') + '·10' + String(e).split('').map(c => SUP[c]).join('');
+}
+function szam(s) { if (typeof s === 'number') return s; if (s === undefined || s === null) return NaN;
+  const t = String(s).trim().replace(/\s/g, '').replace(',', '.'); return t === '' ? NaN : Number(t); }
+function ment(kulcs, obj) { try { localStorage.setItem('pe-bkr-' + kulcs, JSON.stringify(obj)); } catch (e) {} }
+function betolt(kulcs) { try { const s = localStorage.getItem('pe-bkr-' + kulcs); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function letolt(nev, szoveg, mime = 'text/plain;charset=utf-8') { const b = new Blob([szoveg], {type: mime});
+  const a = el('a', {href: URL.createObjectURL(b), download: nev}); document.body.append(a); a.click(); a.remove(); }
+const SZINEK = ['#285780', '#E07B39', '#3E8E63', '#B83A3A', '#7A5C99', '#D9A520', '#4F7FAD', '#6B7280'];
+function tengelyLepes(min, max, n = 5) { const r = max - min; if (r <= 0) return [min];
+  const nyers = r / n, p = Math.pow(10, Math.floor(Math.log10(nyers))), f = nyers / p;
+  const l = (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * p; const t = []; for (let v = Math.ceil(min / l) * l; v <= max + 1e-12 * r; v += l) t.push(+v.toPrecision(12)); return t; }
+// Vonaldiagram SVG-ben. series: [{nev, szin, pontok:[[x,y],...], szaggatott}]
+function vonaldiagram(tarolo, o) {
+  const W = o.szel || 640, H = o.mag || 300, m = {b: 64, j: 14, f: 14, a: 44};
+  const pts = o.sorok.flatMap(s => s.pontok).filter(p => isFinite(p[0]) && isFinite(p[1]) && (!o.logy || p[1] > 0));
+  if (!pts.length) { tarolo.innerHTML = '<p class="megj">Nincs megjeleníthető adat.</p>'; return; }
+  let xmin = o.xmin ?? Math.min(...pts.map(p => p[0])), xmax = o.xmax ?? Math.max(...pts.map(p => p[0]));
+  let ymin = o.ymin ?? Math.min(...pts.map(p => p[1])), ymax = o.ymax ?? Math.max(...pts.map(p => p[1]));
+  if (o.logy) { ymin = Math.log10(ymin); ymax = Math.log10(ymax); ymin = Math.floor(ymin); ymax = Math.ceil(ymax); if (ymax === ymin) ymax++; }
+  else { if (ymax === ymin) { ymax += 1; } if (o.ymin === undefined && ymin > 0 && ymin < 0.3 * ymax) ymin = 0; }
+  const X = x => m.b + (x - xmin) / (xmax - xmin) * (W - m.b - m.j);
+  const Y = y => { const v = o.logy ? Math.log10(y) : y; return H - m.a - (v - ymin) / (ymax - ymin) * (H - m.a - m.f); };
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px" role="img">`;
+  const xt = tengelyLepes(xmin, xmax, 6);
+  const yt = o.logy ? Array.from({length: ymax - ymin + 1}, (_, i) => ymin + i) : tengelyLepes(ymin, ymax, 5);
+  for (const t of yt) { const yy = o.logy ? H - m.a - (t - ymin) / (ymax - ymin) * (H - m.a - m.f) : Y(t);
+    s += `<line x1="${m.b}" x2="${W - m.j}" y1="${yy}" y2="${yy}" stroke="#e6e9ee"/><text x="${m.b - 6}" y="${yy + 4}" font-size="11" text-anchor="end" fill="#4b5563">${o.logy ? '10' + String(t).split('').map(c => SUP[c]).join('') : fmt(t, 3)}</text>`; }
+  for (const t of xt) { const xx = X(t); s += `<line x1="${xx}" x2="${xx}" y1="${m.f}" y2="${H - m.a}" stroke="#f0f2f5"/><text x="${xx}" y="${H - m.a + 15}" font-size="11" text-anchor="middle" fill="#4b5563">${fmt(t, 3)}</text>`; }
+  s += `<line x1="${m.b}" x2="${W - m.j}" y1="${H - m.a}" y2="${H - m.a}" stroke="#1B3A57"/><line x1="${m.b}" x2="${m.b}" y1="${m.f}" y2="${H - m.a}" stroke="#1B3A57"/>`;
+  s += `<text x="${(W + m.b) / 2}" y="${H - 8}" font-size="12" text-anchor="middle" fill="#1B3A57">${o.xcimke || ''}</text>`;
+  s += `<text transform="translate(14,${(H - m.a) / 2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#1B3A57">${o.ycimke || ''}</text>`;
+  o.sorok.forEach((sr, i) => { const szin = sr.szin || SZINEK[i % SZINEK.length];
+    const d = sr.pontok.filter(p => isFinite(p[1]) && (!o.logy || p[1] > 0)).map((p, k) => (k ? 'L' : 'M') + X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)).join('');
+    s += `<path d="${d}" fill="none" stroke="${szin}" stroke-width="${sr.vastag || 2}" ${sr.szaggatott ? 'stroke-dasharray="6 4"' : ''}/>`; });
+  let ly = m.f + 4; o.sorok.forEach((sr, i) => { if (!sr.nev) return; const szin = sr.szin || SZINEK[i % SZINEK.length];
+    s += `<line x1="${W - m.j - 190}" x2="${W - m.j - 170}" y1="${ly + 6}" y2="${ly + 6}" stroke="${szin}" stroke-width="2.5" ${sr.szaggatott ? 'stroke-dasharray="6 4"' : ''}/><text x="${W - m.j - 165}" y="${ly + 10}" font-size="11" fill="#1F2933">${sr.nev}</text>`; ly += 16; });
+  tarolo.innerHTML = s + '</svg>';
+}
+// Vízszintes oszlopdiagram. adatok: [{nev, ertek, szin}], log: logaritmikus tengely
+function oszlopdiagram(tarolo, adatok, o = {}) {
+  const W = o.szel || 640, sor = 26, m = {b: o.balmargo || 190, j: 70, f: 8}; const H = m.f * 2 + sor * adatok.length + 22;
+  const ert = adatok.map(a => a.ertek).filter(v => v > 0); if (!ert.length) { tarolo.innerHTML = ''; return; }
+  let lo = o.log ? Math.floor(Math.log10(Math.min(...ert))) : 0, hi = o.log ? Math.ceil(Math.log10(Math.max(...ert))) : Math.max(...ert) * 1.05;
+  if (o.log && hi === lo) hi++;
+  const X = v => m.b + ((o.log ? Math.log10(v) : v) - lo) / (hi - lo) * (W - m.b - m.j);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px">`;
+  adatok.forEach((a, i) => { const y = m.f + i * sor; const x1 = X(Math.max(a.ertek, o.log ? Math.pow(10, lo) : 0));
+    s += `<text x="${m.b - 6}" y="${y + 16}" font-size="11.5" text-anchor="end" fill="#1F2933">${a.nev}</text>`;
+    s += `<rect x="${m.b}" y="${y + 4}" width="${Math.max(0, x1 - m.b)}" height="${sor - 8}" fill="${a.szin || '#285780'}" rx="2"/>`;
+    s += `<text x="${x1 + 5}" y="${y + 16}" font-size="11" fill="#1F2933">${a.felirat ?? fmt(a.ertek)}</text>`; });
+  if (o.vonal !== undefined) { const xv = X(o.vonal); s += `<line x1="${xv}" x2="${xv}" y1="${m.f}" y2="${H - 20}" stroke="#B83A3A" stroke-width="1.5" stroke-dasharray="5 3"/><text x="${xv}" y="${H - 6}" font-size="11" text-anchor="middle" fill="#B83A3A">${o.vonalcimke || ''}</text>`; }
+  tarolo.innerHTML = s + '</svg>';
+}
+function osszegzes(ertekek) { return ertekek.reduce((a, b) => a + b, 0); }
+
+const PAR = {
+ exp: [['lambda', 'λ [1/h]', 1e-4, 1e-5, 1e-3, 1e-5]],
+ weib: [['beta', 'β alakparaméter', 2.0, 0.3, 6, 0.05], ['eta', 'η skálaparaméter [h]', 10000, 1000, 40000, 100]],
+ logn: [['mu', 'μ (ln t várható értéke)', 9.0, 6, 11, 0.05], ['sigma', 'σ (ln t szórása)', 0.6, 0.1, 2, 0.05]],
+ kad: [['b1', 'korai: β₁', 0.5, 0.2, 0.95, 0.05], ['e1', 'korai: η₁ [h]', 2e5, 1e4, 1e6, 1e4], ['l2', 'véletlen: λ [1/h]', 2e-5, 0, 1e-4, 1e-6], ['b3', 'elhasználódás: β₃', 4, 1.5, 8, 0.1], ['e3', 'elhasználódás: η₃ [h]', 60000, 20000, 150000, 1000]]
+};
+let p = {};
+function gammaF(z) { // Lanczos-közelítés
+  if (z < 0.5) return Math.PI / (Math.sin(Math.PI * z) * gammaF(1 - z));
+  z -= 1; const g = 7, c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61503916999185, 12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  let x = c[0]; for (let i = 1; i < g + 2; i++) x += c[i] / (z + i); const t = z + g + 0.5; return Math.sqrt(2 * Math.PI) * Math.pow(t, z + 0.5) * Math.exp(-t) * x; }
+function Phi(x) { // standard normális eloszlásfüggvény (Abramowitz–Stegun 7.1.26)
+  const t = 1 / (1 + 0.3275911 * Math.abs(x) / Math.SQRT2); const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x / 2);
+  return x >= 0 ? 0.5 * (1 + y) : 0.5 * (1 - y); }
+function modell() { const t = $('tipus').value;
+  if (t === 'exp') { const l = p.lambda; return {R: x => Math.exp(-l * x), h: x => l, f: x => l * Math.exp(-l * x), mttf: 1 / l, tmax: 4 / l}; }
+  if (t === 'weib') { const b = p.beta, e = p.eta; return {R: x => Math.exp(-Math.pow(x / e, b)), h: x => b / e * Math.pow(Math.max(x, 1e-9) / e, b - 1), f: x => b / e * Math.pow(Math.max(x, 1e-9) / e, b - 1) * Math.exp(-Math.pow(x / e, b)), mttf: e * gammaF(1 + 1 / b), tmax: e * Math.pow(-Math.log(0.002), 1 / b)}; }
+  if (t === 'logn') { const m = p.mu, s = p.sigma; const R = x => x <= 0 ? 1 : 1 - Phi((Math.log(x) - m) / s), f = x => x <= 0 ? 0 : Math.exp(-Math.pow(Math.log(x) - m, 2) / (2 * s * s)) / (x * s * Math.sqrt(2 * Math.PI));
+    return {R, f, h: x => f(x) / Math.max(R(x), 1e-300), mttf: Math.exp(m + s * s / 2), tmax: Math.exp(m + 3 * s)}; }
+  const {b1, e1, l2, b3, e3} = p; const H = x => Math.pow(x / e1, b1) + l2 * x + Math.pow(x / e3, b3);
+  const h = x => b1 / e1 * Math.pow(Math.max(x, 1) / e1, b1 - 1) + l2 + b3 / e3 * Math.pow(x / e3, b3 - 1);
+  return {R: x => Math.exp(-H(x)), h, f: x => h(x) * Math.exp(-H(x)), mttf: null, tmax: e3 * 1.4, h1: x => b1 / e1 * Math.pow(Math.max(x, 1) / e1, b1 - 1), h3: x => b3 / e3 * Math.pow(x / e3, b3 - 1)}; }
+function csuszkak() { const t = $('tipus').value; const d = $('param'); d.innerHTML = ''; p = {};
+  PAR[t].forEach(([k, nev, v, lo, hi, lep]) => { p[k] = v; const sp = el('span', {class: 'ertek'}, fmt(v));
+    d.append(el('label', {}, nev + ': ', sp), el('input', {type: 'range', min: lo, max: hi, step: lep, value: v, oninput: e => { p[k] = Number(e.target.value); sp.textContent = fmt(p[k]); rajz(); }})); });
+  rajz(); }
+function kvantilis(R, tmax, q) { let lo = 0, hi = tmax * 20; for (let i = 0; i < 100; i++) { const m = (lo + hi) / 2; if (R(m) > 1 - q) lo = m; else hi = m; } return (lo + hi) / 2; }
+function rajz() { const M = modell(), n = 300, T = M.tmax; const ts = Array.from({length: n}, (_, i) => (i + 0.5) * T / n);
+  vonaldiagram($('g1'), {sorok: [{nev: 'f(t)', pontok: ts.map(t => [t, M.f(t)])}], xcimke: 'idő t [h]', ycimke: 'f(t)'});
+  vonaldiagram($('g2'), {sorok: [{nev: 'R(t)', pontok: ts.map(t => [t, M.R(t)])}, {nev: 'F(t)', szin: '#E07B39', pontok: ts.map(t => [t, 1 - M.R(t)])}], xcimke: 'idő t [h]', ymin: 0, ymax: 1});
+  const sorok = [{nev: 'h(t)', pontok: ts.map(t => [t, M.h(t)])}];
+  if ($('tipus').value === 'kad') { sorok.push({nev: 'korai', szin: '#B83A3A', szaggatott: true, pontok: ts.map(t => [t, M.h1(t)])}, {nev: 'véletlen', szin: '#3E8E63', szaggatott: true, pontok: ts.map(t => [t, p.l2])}, {nev: 'elhasználódás', szin: '#E07B39', szaggatott: true, pontok: ts.map(t => [t, M.h3(t)])}); }
+  const hmax = Math.max(...ts.map(t => M.h(t))); const ymax = Math.min(hmax, 20 * M.h(T * 0.5) + 1e-12);
+  vonaldiagram($('g3'), {sorok, xcimke: 'idő t [h]', ycimke: 'h(t) [1/h]', ymin: 0, ymax});
+  // jellemzők
+  let mttf = M.mttf; if (mttf === null) { let s = 0, dt = T * 4 / 4000; for (let i = 0; i < 4000; i++) s += M.R((i + 0.5) * dt) * dt; mttf = s; }
+  const b10 = kvantilis(M.R, T, 0.10), med = kvantilis(M.R, T, 0.5);
+  $('jell').innerHTML = `<table><tr><td>MTTF (átlagos élettartam)</td><td class="szam"><b>${fmt(mttf)}</b> h</td></tr><tr><td>medián élettartam</td><td class="szam">${fmt(med)} h</td></tr>
+   <tr><td>B<sub>10</sub> (10% meghibásodott)</td><td class="szam">${fmt(b10)} h</td></tr><tr><td>R(MTTF)</td><td class="szam">${fmt(M.R(mttf))}</td></tr></table>`;
+  const t = $('tipus').value; $('mag').textContent = t === 'exp' ? 'Állandó ráta: az emlékezetnélküliség miatt R(MTTF) = e⁻¹ ≈ 0,368, függetlenül λ-tól.' :
+   t === 'weib' ? (p.beta < 1 ? 'β < 1: csökkenő ráta – korai meghibásodások (gyártási hibák, beégés).' : Math.abs(p.beta - 1) < 0.03 ? 'β = 1: állandó ráta – az exponenciális eloszlás speciális esete.' : 'β > 1: növekvő ráta – elhasználódás (kopás, fáradás).') :
+   t === 'logn' ? 'A lognormális eloszlás rátája előbb nő, majd csökken: jellemző a javítási időkre és egyes fáradásos meghibásodásokra.' : 'A kádgörbe a három mechanizmus rátájának összege; a valóságban gyakran csak egy-két szakasza figyelhető meg.'; }
+$('tipus').onchange = csuszkak; csuszkak();
+</script></body></html>

@@ -1,0 +1,39 @@
+# Élettartam-eloszlások és megbízhatósági becslés {#sec-gy-megbizhatosag}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- értelmezni az exponenciális, a Weibull- és a lognormális eloszlás függvényeit és a kádgörbét;
+- terepi adatokból állandó meghibásodási rátát becsülni konfidenciakorlátokkal;
+- Weibull-eloszlást illeszteni cenzúrázott adatokra, és a becslés bizonytalanságát bootstrap-módszerrel számszerűsíteni.
+:::
+
+**Háttér:** [a kézikönyv 8. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/08-megbizhatosag.html) és az [A függelék](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fuggelek/a-valoszinuseg.html).
+
+## Alkalmazás: élettartam-eloszlások
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/eloszlasok.html" title="Élettartam-eloszlások" loading="lazy" style="width:100%;height:1150px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/eloszlasok.html)
+
+## Feladatok az alkalmazással
+
+1. Állítsd a Weibull-eloszlás alakparaméterét 0,5-re, 1-re és 3,5-re. Hogyan változik a meghibásodási ráta és a B10-élettartam? Melyik esetben értelmes a megelőző csere?
+2. Exponenciális eloszlásnál ellenőrizd, hogy $R(\text{MTTF}) = e^{-1} \approx 0{,}368$ bármely $\lambda$-ra. Mi ennek a gyakorlati jelentése?
+3. A kádgörbe nézetben változtasd a korai szakasz paramétereit (β₁, η₁). Mennyi idő után csökken az összesített ráta a hasznos élettartam szintjére? Ebből becsüld meg, mennyi ideig érdemes beégetni (*burn-in*) az eszközöket, és mi szól a beégetés ellen (költség, élettartam-fogyasztás).
+
+## Notebook: terepi becslés és Weibull-elemzés
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/06_megbizhatosag_weibull.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/06_megbizhatosag_weibull.ipynb)
+
+A notebook a kézikönyv két esetét számolja végig: a távadók terepi adataiból $\hat\lambda = 3{,}42\cdot10^{-7}$/h és a 70%-os felső korlát $5{,}44\cdot10^{-7}$/h; a KoboCella csapágyaira $\hat\beta = 2{,}73$, $\hat\eta = 10\,170$ h (rangregresszióval $3{,}19$ és $9460$ h), majd bootstrap-intervallumot ad: $\beta$ 90%-os intervalluma 1,83–4,87.
+
+::: {.prompt title="Mintaprompt"}
+*„Weibull-elemzést végeztem 12 csapágy adatán, amelyek közül három cenzúrázott. A ML-becslés β = 2,73, η = 10 170 h, a rangregresszió β = 3,19, η = 9460 h. Magyarázd el, miért térhet el a két módszer eredménye, és melyiket mikor érdemes előnyben részesíteni! Hivatkozz megbízható forrásra, ha tudsz, és jelöld, ha bizonytalan vagy.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó megoldás megkülönbözteti a pontbecslést és a konfidenciakorlátot, helyesen kezeli a cenzúrázott adatokat, és a karbantartási következtetést (csere vagy nem) az alakparaméterre és a bizonytalanságra alapozza.

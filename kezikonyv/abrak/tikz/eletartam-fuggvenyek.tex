@@ -1,0 +1,27 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\pgfplotsset{every axis/.style={width=6.4cm, height=4.4cm, domain=0:3000, samples=120, xmin=0, xmax=3000,
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}, title style={font=\small\bfseries, text=peSotet},
+  axis line style={peSotet}, grid=major, grid style={peSzurkeH}, xlabel={$t$ [h]},
+  scaled x ticks=false, xtick={0,1000,2000,3000}}}
+\def\b{2} \def\e{1000}
+\begin{axis}[name=a, title={sűrűségfüggvény $f(t)$}, ymin=0]
+  \addplot[peKek, line width=1.4pt] {\b/\e*(x/\e)^(\b-1)*exp(-(x/\e)^\b)};
+  \addplot[fill=peKek!20, draw=none, domain=600:1200] {\b/\e*(x/\e)^(\b-1)*exp(-(x/\e)^\b)} \closedcycle;
+  \node[font=\tiny, text=peKek, align=left] at (axis cs:1900,0.0006) {$P(600<\tau\le 1200)$\\$=\int_{600}^{1200} f(t)\,dt$};
+\end{axis}
+\begin{axis}[name=b, at={(a.east)}, anchor=west, xshift=1.2cm, title={$F(t)$ és $R(t)=1-F(t)$}, ymin=0, ymax=1.05]
+  \addplot[pePiros, line width=1.4pt] {1-exp(-(x/\e)^\b)}; \node[font=\scriptsize, text=pePiros] at (axis cs:2400,0.85) {$F(t)$};
+  \addplot[peZold, line width=1.4pt] {exp(-(x/\e)^\b)}; \node[font=\scriptsize, text=peZold] at (axis cs:2400,0.18) {$R(t)$};
+\end{axis}
+\begin{axis}[name=c, at={(a.south)}, anchor=north, yshift=-1.75cm, title={ráta $h(t)=f(t)/R(t)$}, ymin=0]
+  \addplot[peKiemel, line width=1.4pt] {\b/\e*(x/\e)^(\b-1)};
+\end{axis}
+\begin{axis}[name=d, at={(c.east)}, anchor=west, xshift=1.2cm, title={$H(t)=\int_0^t h$, \ $R=e^{-H}$}, ymin=0]
+  \addplot[peLila, line width=1.4pt] {(x/\e)^\b};
+\end{axis}
+\node[font=\scriptsize, text=peSzurke, anchor=north] at ($(c.south)!0.5!(d.south)+(0,-0.75)$) {Weibull-eloszlás, $\beta = 2$, $\eta = 1000$ h};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,17 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \foreach \i/\w/\t/\c/\cc in {0/12/{1. Inherensen biztonságos tervezés: a veszély megszüntetése vagy csökkentése (kevesebb energia, anyag, sebesség)}/peZoldH/peZold,
+      1/10/{2. Műszaki védőintézkedések: védőburkolat, reteszelés, biztonsági funkciók}/peHalvany/peKek,
+      2/8/{3. Kiegészítő védőintézkedések: vészleállítás, menekülési út}/peHalvany/peKozep,
+      3/6/{4. Tájékoztatás: jelölés, figyelmeztetés, kezelési utasítás}/peSargaH/peSarga,
+      4/4/{5. Szervezési intézkedések, egyéni védőeszköz}/peKiemelH/peKiemel} {
+    \pgfmathsetmacro{\y}{-\i*1.05}
+    \fill[\c, draw=\cc, line width=0.7pt, rounded corners=2pt] ({-\w/2},\y) rectangle ({\w/2},\y-0.85);
+    \node[font=\scriptsize, align=center, text width={(\w-0.4)*1cm}] at (0,\y-0.425) {\t};
+  }
+  \draw[nyil] (6.6,-0.1) -- (6.6,-5.1);
+  \node[font=\scriptsize, rotate=-90, anchor=south] at (6.75,-2.6) {csökkenő hatékonyság és megbízhatóság};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  \def\oszlop#1#2#3#4#5#6{% x, cím, állapot2 név, szín, leírás, példa
+    \begin{scope}[shift={(#1,0)}]
+      \node[font=\small\bfseries, text=peSotet] at (0,1.5) {#2};
+      \node[allapotjo, minimum size=13mm, font=\scriptsize] (n) at (0,0) {normál\\működés};
+      \node[draw=peKiemel, fill=peKiemelH, diamond, aspect=1.6, inner sep=1pt, font=\tiny, align=center] (h) at (0,-1.75) {hiba\\észlelve};
+      \node[allapot, minimum size=15mm, draw=#4, fill=#4!15, font=\scriptsize] (s) at (0,-3.6) {#3};
+      \draw[atmenet] (n) -- (h); \draw[atmenet] (h) -- (s);
+      \node[align=center, text width=33mm, anchor=north] at (0,-4.6) {#5};
+      \node[align=center, text width=33mm, anchor=north, text=peSzurke, font=\tiny] at (0,-5.7) {#6};
+    \end{scope}}
+  \oszlop{0}{hibabiztos}{biztonságos\\állapot}{peZold}{a rendszer leáll vagy egy előírt, biztonságos tartalékmódba kerül}{vasúti jelző tilosra vált; folyamatleállítás; teherautó-fék pneumatikus vészköre}
+  \oszlop{3.9}{hibára elnémuló}{kikapcsolt\\funkció}{peSzurke}{a hibás funkció kikapcsol és jelez; az alapfunkció megmarad}{ABS vagy vészfékező asszisztens kikapcsol, a hagyományos fék működik}
+  \oszlop{7.8}{csökkentett működésű}{korlátozott\\működés}{peSarga}{a funkció korlátozott teljesítménnyel folytatódik}{motor-vészüzem korlátozott nyomatékkal; robot csökkentett sebességgel}
+  \oszlop{11.7}{hibatűrő (működőképes)}{teljes\\működés}{peKek}{a funkció a hiba ellenére teljes egészében megmarad}{repülésvezérlés többszörös redundanciával; automatizált jármű kormánya és fékje}
+  \draw[nyil, draw=peSzurke] (-1.7,-7.0) -- node[below, font=\scriptsize, text=peSzurke]{növekvő redundancia, diagnosztika és költség} (13.4,-7.0);
+\end{tikzpicture}
+\end{document}

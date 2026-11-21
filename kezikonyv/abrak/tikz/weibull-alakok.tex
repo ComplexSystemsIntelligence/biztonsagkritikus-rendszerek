@@ -1,0 +1,22 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\pgfplotsset{every axis/.style={width=7cm, height=4.8cm, domain=0.01:2.5, samples=150, xmin=0, xmax=2.5,
+  tick label style={font=\scriptsize}, label style={font=\scriptsize}, title style={font=\small\bfseries, text=peSotet},
+  axis line style={peSotet}, grid=major, grid style={peSzurkeH}, xlabel={$t/\eta$}}}
+\begin{axis}[name=a, title={sűrűségfüggvény}, ymin=0, ymax=2.2,
+  legend style={font=\scriptsize, draw=none, fill=none, at={(0.98,0.98)}, anchor=north east}]
+  \addplot[peKiemel, line width=1.3pt] {0.5*x^(-0.5)*exp(-x^0.5)}; \addlegendentry{$\beta=0{,}5$}
+  \addplot[peZold, line width=1.3pt] {exp(-x)}; \addlegendentry{$\beta=1$}
+  \addplot[peKek, line width=1.3pt] {2*x*exp(-x^2)}; \addlegendentry{$\beta=2$}
+  \addplot[pePiros, line width=1.3pt] {3.5*x^2.5*exp(-x^3.5)}; \addlegendentry{$\beta=3{,}5$}
+\end{axis}
+\begin{axis}[name=b, at={(a.east)}, anchor=west, xshift=1.1cm, title={meghibásodási ráta}, ymin=0, ymax=4]
+  \addplot[peKiemel, line width=1.3pt] {0.5*x^(-0.5)};
+  \addplot[peZold, line width=1.3pt] {1};
+  \addplot[peKek, line width=1.3pt] {2*x};
+  \addplot[pePiros, line width=1.3pt] {3.5*x^2.5};
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,87 @@
+/*-- scss:defaults --*/
+// Pannon Egyetem-arculathoz illeszkedő webes megjelenés (a sorozatban közös)
+$pe-kek: #285780;
+$pe-sotet: #1B3A57;
+$pe-kozep: #4F7FAD;
+$pe-halvany: #E6EEF6;
+$pe-kiemel: #E07B39;
+$pe-zold: #3E8E63;
+$pe-piros: #B83A3A;
+$pe-lila: #7A5C99;
+$pe-szurke: #6B7280;
+
+$primary: $pe-kek;
+$link-color: $pe-kek;
+$body-color: #1F2933;
+$font-family-sans-serif: "IBM Plex Sans", system-ui, sans-serif;
+$font-family-serif: "IBM Plex Serif", Georgia, serif;
+$font-family-monospace: "IBM Plex Mono", ui-monospace, monospace;
+$font-family-base: $font-family-serif;
+$headings-font-family: "Raleway", $font-family-sans-serif;
+$headings-color: $pe-sotet;
+$headings-font-weight: 800;
+$font-size-base: 1.06rem;
+$line-height-base: 1.62;
+$sidebar-bg: #F7F9FC;
+$sidebar-fg: #2B3A4A;
+$code-color: $pe-sotet;
+$border-radius: 3px;
+
+/*-- scss:rules --*/
+@import "pe-fonts";
+
+body { font-feature-settings: "kern", "liga"; hyphens: auto; }
+h1, h2, h3, h4, .title, .quarto-title .title { letter-spacing: -0.01em; }
+h1.title, .quarto-title h1.title { font-weight: 900; color: $pe-sotet; }
+h2 { font-weight: 800; border-bottom: 2px solid $pe-halvany; padding-bottom: .25rem; margin-top: 2.2rem; }
+h3 { font-weight: 700; color: $pe-kek; }
+.chapter-number { color: $pe-kiemel; font-weight: 900; }
+
+// Ferde arculati sáv a fejléc fölött
+#quarto-header, .quarto-title-banner { border-bottom: 0; }
+body::before {
+  content: ""; display: block; height: 6px;
+  background: linear-gradient(100deg, $pe-kek 0 70%, $pe-kiemel 70% 72%, $pe-kek 72% 100%);
+}
+
+.sidebar-title { font-family: "Raleway", sans-serif; font-weight: 900; color: $pe-sotet; }
+.sidebar nav[role=doc-toc] ul > li > a.active, .sidebar-item .active { color: $pe-kek !important; font-weight: 600; }
+.sidebar-item-section > .sidebar-item-container .sidebar-item-text { font-family: "Raleway", sans-serif; font-weight: 800; }
+.sidebar, #TOC, .quarto-title-meta, figcaption, .table, .doboz, nav, .nav-footer { font-family: "IBM Plex Sans", sans-serif; }
+
+figure { margin: 1.6rem 0; }
+figure img { max-width: 100%; height: auto; }
+figcaption, .figure-caption { font-size: .9rem; color: #3E4C59; }
+figcaption .abraszam, .table-caption .abraszam { font-weight: 700; color: $pe-kek; }
+.table { font-size: .93rem; }
+.table thead th { border-bottom: 2px solid $pe-kek; color: $pe-sotet; }
+.math.display { overflow-x: auto; }
+
+// --- Kiemelődobozok -------------------------------------------------
+.doboz {
+  --szin: #{$pe-kek}; --hatter: #{rgba($pe-kek, .07)};
+  border-left: 4px solid var(--szin); background: var(--hatter);
+  padding: .15rem 1.1rem .55rem; margin: 1.5rem 0; border-radius: 0 3px 3px 0;
+  font-size: .97rem;
+}
+.doboz-cim { font-family: "Raleway", sans-serif; font-weight: 800; color: var(--szin);
+  margin: .6rem 0 .35rem; font-size: 1.02rem; letter-spacing: .01em; }
+.doboz-tartalom > :last-child { margin-bottom: .2rem; }
+.doboz-fogalom { --szin: #{$pe-sotet}; --hatter: #{rgba($pe-sotet, .06)}; }
+.doboz-eset, .doboz-pelda { --szin: #{$pe-kozep}; --hatter: #{rgba($pe-kozep, .08)}; }
+.doboz-esetA { --szin: #{$pe-kek}; --hatter: #{rgba($pe-kek, .07)}; }
+.doboz-esetB, .doboz-onell { --szin: #{$pe-zold}; --hatter: #{rgba($pe-zold, .09)}; }
+.doboz-esetC, .doboz-kitekintes { --szin: #{$pe-lila}; --hatter: #{rgba($pe-lila, .08)}; }
+.doboz-hiba, .doboz-baleset { --szin: #{$pe-piros}; --hatter: #{rgba($pe-piros, .06)}; }
+.doboz-projekt, .doboz-labor { --szin: #{$pe-kiemel}; --hatter: #{rgba($pe-kiemel, .09)}; }
+.doboz-prompt, .doboz-forras { --szin: #{$pe-szurke}; --hatter: #{rgba($pe-szurke, .07)}; }
+.doboz-prompt .doboz-tartalom { font-family: "IBM Plex Mono", monospace; font-size: .86rem; }
+details.megoldas { margin-top: .6rem; border-top: 1px dashed rgba($pe-zold, .5); padding-top: .4rem; }
+details.megoldas > summary { cursor: pointer; color: $pe-zold; font-weight: 600; font-family: "IBM Plex Sans", sans-serif; }
+
+// --- Beágyazott interaktív alkalmazások ---------------------------
+.alkalmazas { border: 1px solid $pe-halvany; border-radius: 4px; margin: 1.4rem 0; overflow: hidden; }
+.alkalmazas iframe { width: 100%; border: 0; display: block; background: #fff; }
+.alkalmazas .alkalmazas-lab { font-family: "IBM Plex Sans", sans-serif; font-size: .85rem;
+  background: #F7F9FC; padding: .35rem .8rem; color: $pe-szurke; }
+.colab-gomb img { vertical-align: middle; }

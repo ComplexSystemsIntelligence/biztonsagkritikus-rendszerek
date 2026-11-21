@@ -1,0 +1,19 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  \node[draw=peKek, line width=0.9pt, rounded corners=4pt, fill=peHalvany!50, minimum width=86mm, minimum height=26mm] (sa) at (4.5,0) {};
+  \node[font=\small\bfseries, text=peKek, anchor=north west] at (0.25,1.2) {helyzetismeret};
+  \node[doboz=24mm] (l1) at (1.7,-0.15) {\textbf{1. észlelés}\\a helyzet elemei};
+  \node[doboz=24mm] (l2) at (4.5,-0.15) {\textbf{2. megértés}\\mit jelentenek};
+  \node[doboz=24mm] (l3) at (7.3,-0.15) {\textbf{3. előrevetítés}\\mi fog történni};
+  \draw[nyil] (l1) -- (l2); \draw[nyil] (l2) -- (l3);
+  \node[sotetdoboz=22mm, font=\scriptsize\bfseries] (d) at (11.2,0) {döntés};
+  \node[sotetdoboz=22mm, font=\scriptsize\bfseries] (a) at (11.2,-2.6) {cselekvés};
+  \node[zolddoboz=40mm] (k) at (4.5,-2.6) {a rendszer és a környezet állapota};
+  \draw[nyil] (sa.east) -- (d); \draw[nyil] (d) -- (a); \draw[nyil] (a) -- (k);
+  \draw[nyil] (k.west) -- ++(-1.4,0) |- (l1.west);
+  \node[szurkedoboz=40mm, align=left, font=\tiny, anchor=north] at (4.5,2.9) {\textbf{befolyásoló tényezők:} a kijelzők és a riasztások kialakítása, a munkaterhelés, az automatizálás, a képzés és a tapasztalat, a figyelem és a stressz};
+  \draw[nyilv] (4.5,1.6) -- (sa.north);
+\end{tikzpicture}
+\end{document}

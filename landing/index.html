@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biztonságkritikus rendszerek – Abonyi János</title>
+<meta name="description" content="Nyílt hozzáférésű kézikönyv és gyakorlati útmutató a biztonságkritikus rendszerek tervezéséről és igazolásáról: kockázat, megbízhatóság, funkcionális biztonság, biztonsági érvelés.">
+<style>
+@font-face{font-family:'Raleway';font-weight:900;src:url(kezikonyv/assets/fonts/raleway-900.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Raleway';font-weight:700;src:url(kezikonyv/assets/fonts/raleway-700.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Serif';font-weight:400;src:url(kezikonyv/assets/fonts/ibm-plex-serif-400.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Sans';font-weight:400;src:url(kezikonyv/assets/fonts/ibm-plex-sans-400.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Sans';font-weight:600;src:url(kezikonyv/assets/fonts/ibm-plex-sans-600.woff2) format('woff2');font-display:swap}
+:root{--kek:#285780;--sotet:#1B3A57;--kozep:#4F7FAD;--halvany:#E6EEF6;--kiemel:#E07B39;--szoveg:#1F2933;--szurke:#5B6573}
+*{box-sizing:border-box}
+body{margin:0;font-family:'IBM Plex Serif',Georgia,serif;color:var(--szoveg);line-height:1.6;background:#fff}
+a{color:var(--kek)}
+header{background:var(--kek);color:#fff;position:relative;overflow:hidden;padding:64px 24px 88px}
+header::after{content:"";position:absolute;left:-5%;right:-5%;bottom:-40px;height:90px;background:var(--kiemel);transform:skewY(-3deg);transform-origin:left}
+header::before{content:"";position:absolute;left:-5%;right:-5%;bottom:-160px;height:188px;background:#fff;transform:skewY(-3deg);transform-origin:left;z-index:1}
+.belso{max-width:1040px;margin:0 auto;position:relative;z-index:2}
+.sorozat{font-family:'IBM Plex Sans',sans-serif;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin:0 0 12px}
+h1{font-family:'Raleway',sans-serif;font-weight:900;font-size:clamp(2.2rem,5vw,3.6rem);line-height:1.05;margin:0 0 16px}
+.alcim{font-size:1.2rem;max-width:760px;margin:0 0 20px;opacity:.95}
+.szerzo{font-family:'IBM Plex Sans',sans-serif;font-weight:600;margin:0}
+main{max-width:1040px;margin:0 auto;padding:24px 24px 48px}
+.bevezeto{font-size:1.08rem;max-width:820px}
+.kartyak{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin:32px 0}
+.kartya{border:1px solid #d8dee6;border-top:6px solid var(--kek);border-radius:4px;padding:24px 26px;background:#fff}
+.kartya.gyak{border-top-color:var(--kiemel)}
+.kartya h2{font-family:'Raleway',sans-serif;font-weight:900;color:var(--sotet);font-size:1.5rem;margin:0 0 8px}
+.kartya p{margin:0 0 14px}
+.gombok{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.gomb{font-family:'IBM Plex Sans',sans-serif;font-weight:600;font-size:.95rem;text-decoration:none;padding:9px 16px;border-radius:3px;border:1.5px solid var(--kek);color:var(--kek)}
+.gomb.fo{background:var(--kek);color:#fff}
+.gomb:hover{background:var(--sotet);border-color:var(--sotet);color:#fff}
+h3{font-family:'Raleway',sans-serif;font-weight:700;color:var(--sotet);font-size:1.25rem;margin:36px 0 10px}
+ol.reszek{padding-left:1.3em;columns:2;column-gap:40px}
+ol.reszek li{break-inside:avoid;margin-bottom:6px}
+.alkalmazasok{font-family:'IBM Plex Sans',sans-serif;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 24px;padding:0;list-style:none}
+.alkalmazasok a{text-decoration:none;border-bottom:1px solid var(--halvany)}
+.hivatkozas{font-family:'IBM Plex Sans',sans-serif;background:var(--halvany);border-left:4px solid var(--kek);padding:14px 18px;font-size:.95rem}
+footer{border-top:1px solid #d8dee6;font-family:'IBM Plex Sans',sans-serif;font-size:.85rem;color:var(--szurke);padding:18px 24px}
+footer .belso{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+@media (max-width:700px){ol.reszek{columns:1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="belso">
+    <p class="sorozat">Pannon Egyetem · nyílt hozzáférésű tankönyv</p>
+    <h1>Biztonságkritikus rendszerek</h1>
+    <p class="alcim">Kockázat, megbízhatóság és funkcionális biztonság a veszélyazonosítástól a biztonsági érvelésig</p>
+    <p class="szerzo">Abonyi János</p>
+  </div>
+</header>
+<main>
+  <p class="bevezeto">A kézikönyv a biztonságkritikus rendszerek tervezésének és igazolásának teljes ívét tárgyalja: a balesetmodellektől és a kockázatértékeléstől a HAZOP-, FMEA- és STPA-elemzésen, a hibafákon, a Markov-modelleken és a SIL-igazoláson át a biztonságos architektúrákig, a szoftver és az ember szerepéig, a biztonsági érvelésig, valamint a gépi tanulás és a kiberbiztonság új kérdéseiig. A módszereket három, a könyvön végigvezetett esettanulmány kapcsolja össze: egy vegyipari reaktor védelme, egy gépjármű vészfékező rendszere és egy kollaboratív robotcella. A gyakorlati útmutató böngészőben futó alkalmazásokkal, Colab-notebookokkal és mintapromptokkal teszi kipróbálhatóvá a módszereket.</p>
+
+  <div class="kartyak">
+    <section class="kartya">
+      <h2>Kézikönyv</h2>
+      <p>Tizennyolc fejezet és négy függelék: elmélet, kidolgozott esetek, módszer-összefoglalók, önellenőrző feladatok megoldással, szószedet és szabványjegyzék.</p>
+      <div class="gombok">
+        <a class="gomb fo" href="kezikonyv/">Olvasás a weben</a>
+        <a class="gomb" href="kezikonyv/biztonsagkritikus-rendszerek.pdf">PDF</a>
+        <a class="gomb" href="kezikonyv/biztonsagkritikus-rendszerek.epub">EPUB</a>
+      </div>
+    </section>
+    <section class="kartya gyak">
+      <h2>Gyakorlati útmutató</h2>
+      <p>Tizenkét gyakorlat: kilenc böngészős alkalmazás, hét Google Colab-notebook, mintapromptok a nagy nyelvi modellek felelős használatához és egy projektfeladat.</p>
+      <div class="gombok">
+        <a class="gomb fo" href="gyakorlat/">Olvasás a weben</a>
+        <a class="gomb" href="gyakorlat/biztonsagkritikus-rendszerek-gyakorlat.pdf">PDF</a>
+      </div>
+    </section>
+  </div>
+
+  <h3>A kézikönyv részei</h3>
+  <ol class="reszek">
+    <li>Alapok: balesetek és balesetmodellek, fogalmak, kockázatértékelés, a biztonsági életciklus</li>
+    <li>Veszélyazonosítás: HAZOP, FMEA és FMEDA, STAMP és STPA</li>
+    <li>Kvantitatív megbízhatóság és biztonság: élettartam-adatok, blokkdiagramok, hibafa, eseményfa és LOPA, Markov-modellek, PFD, PFH és SIL</li>
+    <li>Tervezés biztonságra: architektúrák, szoftver, emberi tényezők</li>
+    <li>Bizonyítás és új kihívások: biztonsági érvelés, SOTIF, gépi tanulás, kiberbiztonság, szabályozás</li>
+  </ol>
+
+  <h3>Az alkalmazások közvetlenül</h3>
+  <ul class="alkalmazasok">
+    <li><a href="gyakorlat/alkalmazasok/kockazati-matrix.html">Kockázati mátrix tervező</a></li>
+    <li><a href="gyakorlat/alkalmazasok/fmea.html">FMEA-munkalap</a></li>
+    <li><a href="gyakorlat/alkalmazasok/stpa.html">STPA-munkalap</a></li>
+    <li><a href="gyakorlat/alkalmazasok/eloszlasok.html">Élettartam-eloszlások</a></li>
+    <li><a href="gyakorlat/alkalmazasok/rbd.html">Megbízhatósági blokkdiagram</a></li>
+    <li><a href="gyakorlat/alkalmazasok/hibafa.html">Hibafa-elemző</a></li>
+    <li><a href="gyakorlat/alkalmazasok/lopa.html">LOPA és eseményfa</a></li>
+    <li><a href="gyakorlat/alkalmazasok/markov.html">Markov-modell szerkesztő</a></li>
+    <li><a href="gyakorlat/alkalmazasok/sil.html">PFD- és SIL-kalkulátor</a></li>
+  </ul>
+
+  <h3>Hivatkozás</h3>
+  <p class="hivatkozas">Abonyi János (2026): <em>Biztonságkritikus rendszerek. Kockázat, megbízhatóság és funkcionális biztonság a veszélyazonosítástól a biztonsági érvelésig.</em> Pannon Egyetem, Veszprém. A kiadások archivált változata és a kiadásonkénti DOI a <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/releases">GitHub-tároló kiadásainál</a> és a Zenodón érhető el.</p>
+
+  <p>A forrásszöveg, az ábrák, az alkalmazások és a notebookok a <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek">GitHub-tárolóban</a> találhatók. Hibát vagy javaslatot ott, az „Issues” felületen lehet bejelenteni.</p>
+</main>
+<footer>
+  <div class="belso">
+    <span>© 2026 Abonyi János · Pannon Egyetem</span>
+    <span>Szöveg és ábrák: CC BY-NC-SA 4.0 · Kód: MIT</span>
+  </div>
+</footer>
+</body>
+</html>

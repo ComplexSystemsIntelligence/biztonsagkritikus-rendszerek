@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kockázati mátrix tervező</title>
+<style>/*KOZOS_CSS*/
+.matrix{border-collapse:separate;border-spacing:3px;width:auto}
+.matrix td{width:92px;height:62px;text-align:center;font-size:.78rem;border-radius:3px;cursor:pointer;border:none;vertical-align:middle}
+.matrix th{background:none;border:none;font-size:.78rem;text-align:center;padding:2px}
+.szint-L{background:#DDEFE4}.szint-M{background:#FAF0D2}.szint-H{background:#F6DEDE}
+.pont{display:inline-block;background:#1B3A57;color:#fff;border-radius:9px;padding:0 6px;margin:1px;font-size:.72rem}
+</style></head><body>
+<header class="app"><h1>Kockázati mátrix tervező</h1><p>Biztonságkritikus rendszerek – 2. gyakorlat. Kalibrált kategóriák, forgatókönyvek elhelyezése és a mátrix rangsorhibáinak (Cox, 2008) kimutatása.</p></header>
+<main>
+<div class="racs">
+ <div class="kartya"><h2>1. Gyakorisági kategóriák [1/év]</h2>
+  <p class="megj">A kategóriák alsó határa; az 1. kategória alsó határa 0.</p>
+  <table id="tf"><tr><th>kategória</th><th>alsó határ</th><th>megnevezés</th></tr></table></div>
+ <div class="kartya"><h2>2. Súlyossági kategóriák</h2>
+  <p class="megj">A kategória alsó határa a következmény mértékében (például várható halálesetszám vagy pénzben kifejezett kár).</p>
+  <table id="ts"><tr><th>kategória</th><th>alsó határ</th><th>megnevezés</th></tr></table></div>
+ <div class="kartya"><h2>3. A mátrix színezése</h2>
+  <label>Szabály: a két kategóriaindex összege alapján</label>
+  <label>magas (H), ha az összeg legalább</label><input type="number" id="hkuszob" value="8" min="2" max="10">
+  <label>közepes (M), ha az összeg legalább</label><input type="number" id="mkuszob" value="6" min="2" max="10">
+  <p class="megj">Egy cellára kattintva a színezés kézzel is módosítható (L → M → H).</p>
+  <button onclick="kezi={};frissit()" class="masodlagos">kézi módosítások törlése</button></div>
+</div>
+<div class="kartya"><h2>4. Forgatókönyvek</h2>
+ <table id="tsz"><thead><tr><th>#</th><th>forgatókönyv</th><th class="szam">gyakoriság [1/év]</th><th class="szam">következmény</th><th></th></tr></thead><tbody></tbody></table>
+ <button onclick="ujsor()">új forgatókönyv</button>
+ <button class="masodlagos" onclick="betoltPelda('reaktor')">példa: ReaktorVéd</button>
+ <button class="masodlagos" onclick="betoltPelda('cox')">példa: Cox rangsorhibája</button>
+ <button class="masodlagos" onclick="exportCSV()">eredmény letöltése (CSV)</button>
+</div>
+<div class="racs">
+ <div class="kartya"><h2>A mátrix</h2><div id="matrix" class="diagram"></div>
+  <p class="megj">Függőleges tengely: gyakoriság, vízszintes: súlyosság. A számok a forgatókönyvek sorszámai.</p></div>
+ <div class="kartya eredmeny"><h2>Összevetés a kvantitatív kockázattal</h2><div id="osszevet"></div></div>
+</div>
+<div class="kartya figyelem"><h2>Rangsorhibák</h2><div id="hibak"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc · A kvantitatív kockázat itt a gyakoriság és a következmény szorzata.</footer>
+<script>/*KOZOS_JS*/
+let F = [{a:0,n:'nagyon ritka'},{a:1e-4,n:'ritka'},{a:1e-3,n:'alkalmi'},{a:1e-2,n:'valószínű'},{a:1e-1,n:'gyakori'}];
+let S = [{a:0,n:'csekély'},{a:0.001,n:'kisebb'},{a:0.01,n:'jelentős'},{a:0.1,n:'súlyos'},{a:1,n:'katasztrofális'}];
+let szk = [], kezi = {};
+const PELDAK = {
+ reaktor: [['reaktor felhasadása (SIF-fel)', 6.8e-6, 0.9], ['mérgező gőz kis szivárgása', 1e-2, 1e-4], ['tűz a betöltőnyílásnál', 1e-4, 0.1], ['kezelői megcsúszás a rámpán', 0.3, 1e-3], ['reaktor felhasadása (SIF nélkül)', 5e-3, 0.9]],
+ cox: [['A: magas színt kap', 0.011, 0.11], ['B: alacsonyabb szín, nyolcszor nagyobb kockázat', 0.099, 0.099], ['C: ugyanabban a cellában, mint B, 80-szor kisebb kockázat', 0.011, 0.011]]
+};
+function kat(lista, v) { let k = 0; lista.forEach((c, i) => { if (v >= c.a) k = i; }); return k; }
+function szint(fi, si) { const kulcs = fi + '-' + si; if (kezi[kulcs]) return kezi[kulcs];
+  const o = fi + si + 2, h = szam($('hkuszob').value), m = szam($('mkuszob').value); return o >= h ? 'H' : o >= m ? 'M' : 'L'; }
+function katTabla(id, lista) { const t = $(id); t.querySelectorAll('tr.adat').forEach(r => r.remove());
+  lista.forEach((c, i) => { const r = el('tr', {class: 'adat'}, el('td', {}, String(i + 1)),
+    el('td', {}, el('input', {type: 'text', value: i ? fmtE(c.a) : '0', oninput: e => { lista[i].a = szam(e.target.value) || 0; frissit(); }})),
+    el('td', {}, el('input', {type: 'text', value: c.n, oninput: e => { lista[i].n = e.target.value; frissit(); }})));
+    if (!i) r.querySelector('input').disabled = true; t.append(r); }); }
+function fmtE(v) { return v === 0 ? '0' : v.toExponential(0).replace('.', ','); }
+function ujsor(nev = 'új forgatókönyv', f = 1e-3, c = 0.01) { szk.push({nev, f, c}); sorok(); }
+function sorok() { const tb = $('tsz').querySelector('tbody'); tb.innerHTML = '';
+  szk.forEach((s, i) => tb.append(el('tr', {}, el('td', {}, String(i + 1)),
+    el('td', {}, el('input', {type: 'text', value: s.nev, oninput: e => { s.nev = e.target.value; frissit(); }})),
+    el('td', {class: 'szam'}, el('input', {type: 'text', value: String(s.f).replace('.', ','), oninput: e => { s.f = szam(e.target.value); frissit(); }})),
+    el('td', {class: 'szam'}, el('input', {type: 'text', value: String(s.c).replace('.', ','), oninput: e => { s.c = szam(e.target.value); frissit(); }})),
+    el('td', {}, el('button', {class: 'masodlagos', onclick: () => { szk.splice(i, 1); sorok(); }}, 'törlés')))));
+  frissit(); }
+function betoltPelda(k) { szk = PELDAK[k].map(([nev, f, c]) => ({nev, f, c})); sorok(); }
+function frissit() {
+  // mátrix
+  const cel = {}; szk.forEach((s, i) => { if (!(s.f > 0) || !(s.c > 0)) return; const k = kat(F, s.f) + '-' + kat(S, s.c); (cel[k] = cel[k] || []).push(i + 1); });
+  let h = '<table class="matrix"><tr><th></th>' + S.map((c, j) => `<th>${j + 1}<br>${c.n}</th>`).join('') + '</tr>';
+  for (let fi = F.length - 1; fi >= 0; fi--) { h += `<tr><th style="text-align:right">${F[fi].n} ${fi + 1}</th>`;
+    for (let si = 0; si < S.length; si++) { const sz = szint(fi, si); h += `<td class="szint-${sz}" data-k="${fi}-${si}"><b>${sz}</b><br>${(cel[fi + '-' + si] || []).map(n => `<span class="pont">${n}</span>`).join('')}</td>`; }
+    h += '</tr>'; }
+  $('matrix').innerHTML = h + '</table>';
+  $('matrix').querySelectorAll('td[data-k]').forEach(td => td.onclick = () => { const k = td.dataset.k, [fi, si] = k.split('-').map(Number);
+    const most = szint(fi, si); kezi[k] = most === 'L' ? 'M' : most === 'M' ? 'H' : 'L'; frissit(); });
+  // összevetés
+  const er = szk.map((s, i) => ({i: i + 1, nev: s.nev, R: s.f * s.c, sz: (s.f > 0 && s.c > 0) ? szint(kat(F, s.f), kat(S, s.c)) : '–', cell: (kat(F, s.f) + 1) + '/' + (kat(S, s.c) + 1)}));
+  const rang = [...er].sort((a, b) => b.R - a.R); rang.forEach((e, k) => e.rq = k + 1);
+  const ertek = {H: 3, M: 2, L: 1, '–': 0};
+  let t = '<table><tr><th>#</th><th>forgatókönyv</th><th>cella (F/S)</th><th>mátrix</th><th class="szam">kockázat (f·c)</th><th class="szam">kvantitatív rang</th></tr>';
+  er.forEach(e => t += `<tr><td>${e.i}</td><td>${e.nev}</td><td>${e.cell}</td><td><span class="cimke c-${e.sz}">${e.sz}</span></td><td class="szam">${fmt(e.R)}</td><td class="szam">${e.rq}</td></tr>`);
+  $('osszevet').innerHTML = t + '</table>';
+  // rangsorhibák
+  const hb = [];
+  for (let a = 0; a < er.length; a++) for (let b = 0; b < er.length; b++) { if (a === b) continue; const A = er[a], B = er[b];
+    if (ertek[A.sz] > ertek[B.sz] && A.R < B.R) hb.push(`<li><b>${A.i}</b> magasabb színt kap (${A.sz}), mint <b>${B.i}</b> (${B.sz}), pedig a kvantitatív kockázata ${fmt(B.R / A.R)}-szer <i>kisebb</i>.</li>`);
+    if (a < b && A.cell === B.cell && Math.max(A.R, B.R) / Math.min(A.R, B.R) >= 10) hb.push(`<li><b>${A.i}</b> és <b>${B.i}</b> ugyanabba a cellába esik, de kockázatuk ${fmt(Math.max(A.R, B.R) / Math.min(A.R, B.R))}-szeresen eltér (tartományösszevonás).</li>`); }
+  $('hibak').innerHTML = hb.length ? '<ul>' + hb.join('') + '</ul>' : '<p class="ok">A jelenlegi forgatókönyvekre a mátrix rangsora nem mond ellent a kvantitatív kockázatnak.</p>';
+  ment('matrix', {F, S, szk, kezi, h: $('hkuszob').value, m: $('mkuszob').value});
+}
+function exportCSV() { let s = 'sorszam;forgatokonyv;gyakorisag;kovetkezmeny;cella_F;cella_S;matrix;kockazat\n';
+  szk.forEach((x, i) => s += [i + 1, x.nev, x.f, x.c, kat(F, x.f) + 1, kat(S, x.c) + 1, szint(kat(F, x.f), kat(S, x.c)), x.f * x.c].join(';') + '\n');
+  letolt('kockazati_matrix.csv', s, 'text/csv;charset=utf-8'); }
+$('hkuszob').oninput = frissit; $('mkuszob').oninput = frissit;
+const mentett = betolt('matrix');
+if (mentett && mentett.szk) { F = mentett.F; S = mentett.S; szk = mentett.szk; kezi = mentett.kezi || {}; $('hkuszob').value = mentett.h; $('mkuszob').value = mentett.m; }
+else szk = PELDAK.reaktor.map(([nev, f, c]) => ({nev, f, c}));
+katTabla('tf', F); katTabla('ts', S); sorok();
+</script></body></html>

@@ -1,0 +1,39 @@
+# STPA-munkalap {#sec-gy-stpa}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- veszteségeket, rendszerszintű veszélyeket és biztonsági korlátokat megfogalmazni;
+- irányítási struktúrát felrajzolni irányítási műveletekkel és visszacsatolásokkal;
+- a négy típus szerint nem biztonságos irányítási műveleteket azonosítani, és mindegyikhez okozati forgatókönyveket és követelményeket rendelni.
+:::
+
+**Háttér:** [a kézikönyv 7. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/07-stpa.html).
+
+## Alkalmazás: STPA-munkalap
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/stpa.html" title="STPA-munkalap" loading="lazy" style="width:100%;height:1500px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/stpa.html)
+
+## Feladatok
+
+Válaszd a VészFék vagy a KoboCella esetet (a példák betölthetők), és egészítsd ki az elemzést:
+
+1. Legalább két veszteség és három rendszerszintű veszély, mindegyik veszélynél a kapcsolódó veszteségekkel.
+2. Az irányítási struktúra legalább két szinten (például a vezető vagy a szerelő mint irányító is szerepeljen).
+3. Minden irányítási műveletre mind a négy UCA-típus vizsgálata; ahol egy típus nem értelmezhető, indokold.
+4. Minden UCA-hoz legalább két okozati forgatókönyv (F1, F2…) a négy jellegzetes csoportból (hibás folyamatmodell, hiányos vagy késő visszacsatolás, a művelet nem hajtódik végre, külső zavar), és legalább egy követelmény (K1…).
+5. Az alkalmazás „Ellenőrzés” része jelzi a hiányosságokat; a végén töltsd le a munkalapot Markdown-fájlként.
+
+::: {.prompt title="Mintapromptok"}
+*„STPA-elemzést végzek egy kollaboratív robotcellára. Az irányítási struktúra: […]. Az irányítási műveletek: sebességcsökkentés, biztonságos megállás, újraindítás. Mind a négy UCA-típusra javasolj eseteket kontextussal! Utána kérdezz rá azokra a visszacsatolásokra, amelyek a javasolt UCA-k megelőzéséhez hiányoznak a struktúrámból.”*
+
+*„Az alábbi UCA-hoz írtam két okozati forgatókönyvet: […]. A négy jellegzetes forgatókönyvcsoport közül melyik hiányzik? Javasolj egyet abból a csoportból, és fogalmazz meg hozzá egy ellenőrizhető követelményt!”*
+:::
+
+## Ellenőrző szempontok
+
+A jó elemzésben a veszélyek rendszerállapotok (nem meghibásodások), az UCA-k kontextussal együtt szerepelnek, a forgatókönyvek az irányító folyamatmodelljének hibáit is vizsgálják, és a követelmények a forgatókönyvekből vezethetők le, nem általánosak.

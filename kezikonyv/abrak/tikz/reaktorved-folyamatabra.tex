@@ -1,0 +1,63 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  cso/.style={draw=peSotet, line width=1.1pt},
+  cw/.style={draw=peKozep, line width=1.1pt},
+  jel/.style={draw=peSzurke, line width=0.5pt, dash pattern=on 2pt off 1.5pt},
+  sisjel/.style={draw=peZold, line width=0.7pt, dash pattern=on 2pt off 1.5pt},
+  muszer/.style={circle, draw=peSotet, fill=white, line width=0.7pt, minimum size=9mm, inner sep=0pt, font=\tiny\bfseries, align=center},
+  sismuszer/.style={muszer, draw=peZold, fill=peZoldH},
+  szelep/.style={draw=peSotet, fill=white, line width=0.7pt},
+  cimke/.style={font=\scriptsize, text=peSotet, align=center}]
+  % reaktor
+  \draw[cso, fill=peHalvany] (0,0) -- (0,3.2) arc (180:0:1.6 and 0.55) -- (3.2,0) arc (0:-180:1.6 and 0.6);
+  \draw[cw, fill=peVilagos!40] (-0.3,0.3) -- (-0.3,2.6) -- (0,2.6) (3.2,2.6) -- (3.5,2.6) -- (3.5,0.3) -- (3.2,0.3) (0,0.3) -- (-0.3,0.3);
+  \node[cimke, font=\footnotesize\bfseries] at (1.6,1.85) {R-101};
+  \node[cimke] at (1.6,1.35) {félszakaszos\\reaktor, 6 m\textsuperscript{3}};
+  % keverő
+  \draw[cso] (1.6,3.75) -- (1.6,0.7); \draw[cso] (1.1,0.7) -- (2.1,0.7);
+  \node[circle, draw=peSotet, line width=0.7pt, minimum size=6mm, font=\tiny\bfseries] at (1.6,4.15) {M};
+  % adagoló vezeték B reaktáns
+  \draw[cso] (-6.2,3.3) -- (-0.2,3.3) -- (0.4,3.3) -- (0.4,3.6);
+  \node[cimke, anchor=east] at (-6.25,3.3) {B reaktáns\\tartályból};
+  \node[circle, draw=peSotet, fill=white, line width=0.7pt, minimum size=7mm] (p) at (-5.3,3.3) {};
+  \draw[peSotet, line width=0.6pt] (-5.62,3.2) -- (-5.05,3.55) (-5.62,3.4) -- (-5.05,3.05);
+  \node[cimke, anchor=north] at (-5.3,2.9) {P-101};
+  % gyorszáró szelepek
+  \foreach \x/\n in {-3.7/XV-101,-2.4/XV-102} {
+    \fill[szelep] (\x-0.25,3.1) -- (\x+0.25,3.5) -- (\x+0.25,3.1) -- (\x-0.25,3.5) -- cycle;
+    \draw[szelep] (\x-0.25,3.1) -- (\x+0.25,3.5) -- (\x+0.25,3.1) -- (\x-0.25,3.5) -- cycle;
+    \draw[peZold, line width=0.7pt] (\x,3.3) -- (\x,3.85); \draw[peZold, fill=peZoldH, line width=0.7pt] (\x-0.18,3.85) rectangle (\x+0.18,4.1);
+    \node[cimke, text=peZold, anchor=south] at (\x,4.12) {\textbf{\n}};
+  }
+  % hűtővíz
+  \draw[cw] (-6.2,0.6) -- (-1.5,0.6) -- (-0.3,0.6);
+  \node[cimke, anchor=east, text=peKozep] at (-6.25,0.6) {hűtővíz\\be};
+  \fill[szelep] (-2.65,0.4) -- (-2.15,0.8) -- (-2.15,0.4) -- (-2.65,0.8) -- cycle;
+  \draw[szelep] (-2.65,0.4) -- (-2.15,0.8) -- (-2.15,0.4) -- (-2.65,0.8) -- cycle;
+  \draw[peSotet, line width=0.6pt] (-2.4,0.6) -- (-2.4,1.0); \draw[peSotet, line width=0.6pt] (-2.6,1.0) arc (180:0:0.2) -- cycle;
+  \node[cimke, anchor=north] at (-2.4,0.35) {TV-103};
+  \draw[cw] (3.5,2.4) -- (5.4,2.4); \node[cimke, anchor=west, text=peKozep] at (5.45,2.4) {hűtővíz ki};
+  % szabályozó kör (BPCS)
+  \node[muszer] (tt3) at (4.6,1.0) {TT\\103};
+  \draw[jel] (3.2,1.0) -- (tt3.west);
+  \node[muszer] (tic) at (-2.4,1.95) {TIC\\103};
+  \draw[jel] (tt3.south) -- ++(0,-0.75) -| (-1.1,1.95) -- (tic.east);
+  \draw[jel] (tic.south) -- (-2.4,1.2);
+  \node[cimke, text=peSzurke, anchor=north west] at (-1.0,-0.75) {BPCS: hőmérséklet-szabályozás, magas hőmérséklet riasztás (TAH)};
+  % SIS
+  \node[sismuszer] (t1) at (4.6,3.25) {TT\\101}; \node[sismuszer] (t2) at (4.6,2.0) {TT\\102};
+  \draw[sisjel] (3.2,3.0) -- (t1.west); \draw[sisjel] (3.25,2.1) -- (t2.west);
+  \node[draw=peZold, fill=peZoldH, rounded corners=2pt, line width=0.8pt, font=\scriptsize, align=center, minimum width=26mm, minimum height=10mm] (ls) at (6.6,5.1) {\textbf{biztonsági PLC}\\1oo2 kiértékelés};
+  \draw[sisjel] (t1.north) |- (ls.west);
+  \draw[sisjel] (t2.east) -- ++(0.5,0) |- ($(ls.west)+(0,-0.25)$);
+  \draw[sisjel] (ls.north) -- ++(0,0.5) -| (-3.7,4.1);
+  \draw[sisjel] (-2.4,4.1) -- (-2.4,5.6);
+  \node[cimke, text=peZold, anchor=south west, align=left] at (-6.2,6.12) {SIS (SIL 2): ha TT-101 \emph{vagy} TT-102 $>$ 95 \textdegree C, zár XV-101 \emph{és} XV-102};
+  % hasadótárcsa
+  \draw[cso] (2.6,3.65) -- (2.6,4.6); \draw[pePiros, line width=1.2pt] (2.35,4.6) -- (2.85,4.6);
+  \node[cimke, text=pePiros, anchor=east, align=right] at (2.3,4.75) {RD-101\\hasadótárcsa};
+  \draw[cso, -{Stealth[length=2mm]}] (2.6,4.65) -- (2.6,5.3);
+\end{tikzpicture}
+\end{document}

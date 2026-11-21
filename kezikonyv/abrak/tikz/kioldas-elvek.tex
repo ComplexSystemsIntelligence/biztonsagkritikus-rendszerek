@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\szelep#1#2#3#4{% x, felirat, magyarázat, rugó (1/0)
+    \begin{scope}[shift={(#1,0)}]
+      \draw[peSotet, line width=1.1pt] (-1.6,0) -- (-0.3,0) (0.3,0) -- (1.6,0);
+      \fill[white] (-0.3,-0.25) -- (0.3,0.25) -- (0.3,-0.25) -- (-0.3,0.25) -- cycle;
+      \draw[peSotet, line width=0.7pt] (-0.3,-0.25) -- (0.3,0.25) -- (0.3,-0.25) -- (-0.3,0.25) -- cycle;
+      \draw[peSotet, line width=0.7pt] (0,0) -- (0,0.6);
+      \draw[peSotet, fill=peHalvany, line width=0.7pt] (-0.35,0.6) rectangle (0.35,1.2);
+      \node[font=\tiny] at (0,0.9) {M};
+      \ifnum#4=1 \draw[peZold, line width=0.7pt, decorate, decoration={zigzag, segment length=1.2mm, amplitude=1mm}] (-0.15,0.27) -- (-0.15,0.58); \node[font=\tiny, text=peZold, anchor=east] at (-0.3,0.42) {rugó}; \fi
+      \node[font=\small\bfseries, text=peSotet, anchor=south] at (0,1.55) {#2};
+      \node[font=\scriptsize, align=center, anchor=north, text width=58mm] at (0,-0.5) {#3};
+    \end{scope}}
+  \szelep{0}{energiával működtetett}{nyugalomban nyitva; a záráshoz áram kell.\\[2pt]\textcolor{pePiros}{\textbf{tápkiesés} $\Rightarrow$ igénykor nem zár: \textbf{veszélyes}}\\[1pt]a tápellátás a veszélyes hibafa alapeseménye}{0}
+  \szelep{7}{energiamentesítéssel működtetett}{üzemben árammal nyitva tartva; a rugó zár.\\[2pt]\textcolor{peZold}{\textbf{tápkiesés} $\Rightarrow$ a szelep zár: \textbf{biztonságos}}\\[1pt]a tápellátás csak a téves leállások hibafájában szerepel}{1}
+  \draw[peSzurke, line width=0.5pt, szaggatott] (3.5,-2.3) -- (3.5,1.9);
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,23 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  \foreach \i/\w/\szin/\nev/\leir [count=\k] in {
+      0/9.0/peKek/{inherens}/{a veszély megszüntetése vagy csökkentése a tervben},
+      1/7.4/peZold/{passzív}/{működés nélkül véd: gát, felfogó, nyomásálló kialakítás},
+      2/5.8/peSarga/{aktív}/{érzékel, dönt, beavatkozik: biztonsági funkció, riasztás},
+      3/4.2/peKiemel/{eljárási}/{emberi teendők: utasítás, engedélyezés, képzés}} {
+    \pgfmathsetmacro{\y}{-\i*1.15}
+    \fill[\szin!25, draw=\szin, line width=0.8pt] (-\w/2,\y) -- (\w/2,\y) -- ({\w/2-0.8},\y-1.0) -- ({-\w/2+0.8},\y-1.0) -- cycle;
+    \node[font=\small\bfseries, text=peSotet] at (0,\y-0.32) {\nev};
+    \node[text=peSzoveg] at (0,\y-0.72) {\leir};
+  }
+  \draw[nyil, draw=peSotet] (-5.4,0) -- node[left, font=\scriptsize, align=right, text width=22mm]{csökkenő megbízhatóság, növekvő emberi függés} (-5.4,-4.6);
+  % ReaktorVéd példák
+  \node[szurkedoboz=48mm, anchor=north west, align=left, font=\scriptsize] at (5.6,0.05) {\textbf{ReaktorVéd}\\[2pt]
+   \textbf{inherens:} a B reaktáns adagolása szűkítőperemmel korlátozva, hogy felhalmozódás se okozhasson megfutást; kisebb töltet\\[2pt]
+   \textbf{passzív:} a teljes reakcióhőt elviselő nyomásállóság vagy igazolt méretezésű hasadótárcsa és lefúvató tartály\\[2pt]
+   \textbf{aktív:} SIL 2 biztonsági funkció; riasztás és kezelői beavatkozás\\[2pt]
+   \textbf{eljárási:} indítási utasítás, kiiktatások engedélyezése};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,22 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, node distance=6mm]
+  \node[pirosdoboz=25mm] (v) at (0,0) {\textbf{veszély}\\[1pt]{\scriptsize potenciális kárforrás\\(energia, anyag, mozgás)}};
+  \node[kiemeltdoboz=25mm] (h) at (3.6,0) {\textbf{veszélyes helyzet}\\[1pt]{\scriptsize ember, érték vagy környezet ki van téve a veszélynek}};
+  \node[kiemeltdoboz=25mm, fill=peKiemel!30] (e) at (7.2,0) {\textbf{veszélyes esemény}\\[1pt]{\scriptsize a kár bekövetkezésére képes esemény}};
+  \node[pirosdoboz=25mm, fill=pePiros, text=white] (k) at (10.8,0) {\textbf{kár}\\[1pt]{\scriptsize sérülés, egészség-\\károsodás, környezeti\\vagy anyagi kár}};
+  \draw[nyil] (v) -- (h); \draw[nyil] (h) -- (e); \draw[nyil] (e) -- (k);
+  % gátak
+  \foreach \x/\t in {1.8/{elkerülés:\\kevesebb energia},5.4/{megelőzés:\\védelmi funkció},9.0/{következmény-\\csökkentés}} {
+    \draw[peZold, line width=3pt] (\x,-0.95) -- (\x,0.95);
+    \node[font=\scriptsize, text=peZold, align=center, anchor=north] at (\x,-1.05) {\t};
+  }
+  % valószínűség és súlyosság
+  \draw[decorate, decoration={brace, amplitude=6pt}, peKek, line width=0.8pt] (-1.25,1.25) -- (8.45,1.25)
+    node[midway, above=7pt, font=\scriptsize, text=peKek] {a bekövetkezés valószínűsége vagy gyakorisága ($F$)};
+  \draw[decorate, decoration={brace, amplitude=6pt}, peKek, line width=0.8pt] (9.55,1.25) -- (12.05,1.25)
+    node[midway, above=7pt, font=\scriptsize, text=peKek, align=center] {súlyosság ($C$)};
+  \node[font=\footnotesize\bfseries, text=peSotet] at (5.4,2.4) {kockázat $=$ a kár valószínűségének és súlyosságának együttese};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,42 @@
+# Kockázati mátrix, egyéni és társadalmi kockázat {#sec-gy-matrix}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- kalibrált kockázati mátrixot tervezni számszerű gyakorisági és súlyossági kategóriákkal;
+- kimutatni a mátrix rangsorhibáit és a tartományösszevonás hatását;
+- egyéni kockázatot (IRPA) és F–N görbét számolni, és kritériumokkal összevetni.
+:::
+
+**Háttér:** [a kézikönyv 3. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/03-kockazatertekeles.html).
+
+## Alkalmazás: kockázati mátrix tervező
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/kockazati-matrix.html" title="Kockázati mátrix tervező" loading="lazy" style="width:100%;height:1180px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/kockazati-matrix.html)
+
+## Feladatok az alkalmazással
+
+1. **Kalibrálás.** Töltsd be a ReaktorVéd példát. Nézd meg, melyik cellába kerül a reaktorfelhasadás a biztonsági funkcióval és anélkül. Mennyit változik a kvantitatív kockázat, és mennyit a mátrix színe?
+2. **Rangsorhiba.** Töltsd be a „Cox rangsorhibája” példát. Magyarázd meg, miért kap az A forgatókönyv magasabb színt, mint a nyolcszor nagyobb kockázatú B. Keress egy olyan színezési szabályt, amely ezt megszünteti; okoz-e ez máshol új ellentmondást?
+3. **Tartományösszevonás.** Keress két saját forgatókönyvet, amelyek ugyanabba a cellába esnek, de kockázatuk legalább százszorosan eltér. Mi a következménye ennek a döntéshozatalban?
+4. **Tervezés.** Javasolj a ReaktorVéd üzemre egy 5×5-ös mátrixot a vállalati kritériumokkal összhangban (a halálos kimenetelű forgatókönyv tolerálható gyakorisága $10^{-5}$/év). Indokold a kategóriahatárokat.
+
+## Notebook: egyéni kockázat és F–N görbe
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/02_kockazat_irpa_fn.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/02_kockazat_irpa_fn.ipynb)
+
+A notebook a kézikönyv IRPA-példáját reprodukálja (egy kezelő egyéni kockázata $4{,}3\cdot10^{-6}$/év), és egy kis létesítmény F–N görbéjét veti össze kockázatkerülő kritériumvonallal. Oldd meg a notebook három feladatát.
+
+::: {.prompt title="Mintapromptok"}
+*„Egy 5×5-ös kockázati mátrixot terveztem az alábbi kategóriahatárokkal: […]. Mutass rá, hol okozhat a mátrix rangsorhibát, és javasolj olyan forgatókönyvpárt, amely ezt szemlélteti! Számolj a gyakoriság és a következmény szorzatával, és ellenőrizd a számaidat.”*
+
+*„Magyarázd el egy vezetőnek közérthetően, miért nem szabad a kockázati mátrix színeit összeadni vagy átlagolni több forgatókönyvre! Maximum öt mondatban.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó megoldás számszerű kategóriahatárokat használ, a rangsorhibákat konkrét számokkal mutatja ki, és megkülönbözteti a mátrix szerepét (gyors szűrés, kommunikáció) a kvantitatív döntéstámogatástól.

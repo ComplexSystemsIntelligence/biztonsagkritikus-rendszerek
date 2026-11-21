@@ -1,0 +1,44 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ok/.style={draw=peKek, fill=peHalvany, rounded corners=2pt, font=\scriptsize, align=center, text width=22mm, minimum height=10mm, inner sep=2pt},
+  kov/.style={draw=pePiros, fill=pePirosH, rounded corners=2pt, font=\scriptsize, align=center, text width=22mm, minimum height=10mm, inner sep=2pt},
+  gat/.style={draw=peSotet, fill=white, font=\scriptsize, align=center, text width=16mm, minimum height=11mm, inner sep=1pt, line width=0.6pt},
+  gatm/.style={gat, fill=peZoldH, draw=peZold},
+  gatk/.style={gat, fill=peKiemelH, draw=peKiemel},
+  vonal/.style={draw=peSzurke, line width=0.8pt}]
+  \node[circle, draw=peKiemel, fill=peKiemel, text=white, font=\scriptsize\bfseries, align=center, minimum size=22mm, inner sep=1pt] (top) at (0,0) {megfutó\\reakció};
+  \node[draw=peSarga, fill=peSargaH, font=\scriptsize, align=center, text width=34mm, inner sep=3pt] (haz) at (0,2.8) {\textbf{veszély}\\exoterm reakció a reaktorban\\(reakcióhő, mérgező anyag)};
+  \draw[vonal, draw=peSarga] (haz) -- (top);
+  \foreach \y/\t/\ga/\gb [count=\i] in {
+      3.0/{hűtővíz-kiesés}/{TAH-103 riasztás és kezelő}/{biztonsági funkció (SIF)},
+      1.0/{túladagolás (FIC-hiba)}/{adagolási korlát, FAH riasztás}/{biztonsági funkció (SIF)},
+     -1.0/{keverő leállása}/{keverő-áram\-felvétel retesz}/{biztonsági funkció (SIF)},
+     -3.0/{reaktáns felhal\-mozódása túlhűtéskor}/{alacsony hőmér\-séklet retesz}/{adagolt mennyiség felügyelete}} {
+    \node[ok] (o\i) at (-8.0,\y) {\t};
+    \draw[vonal] (o\i.east) -- (-3.0,\y) -- (top);
+    \node[gatm] at (-5.85,\y) {\ga};
+    \node[gatm] at (-4.05,\y) {\gb};
+  }
+  \foreach \y/\t/\ga/\gb [count=\i] in {
+      2.2/{reaktor felhasadása, mérgező kibocsátás}/{hasadótárcsa és lefúvató tartály}/{gázérzékelés, riasztás, kiürítés},
+      0/{tűz a kiömlött anyagból}/{felfogó medence}/{tűzjelző és oltórendszer},
+     -2.2/{környezet\-szennyezés}/{zárt csatorna\-rendszer}/{üzemi vész\-helyzeti terv}} {
+    \node[kov] (k\i) at (8.0,\y) {\t};
+    \draw[vonal] (top) -- (3.0,\y) -- (k\i.west);
+    \node[gatk] at (4.05,\y) {\ga};
+    \node[gatk] at (5.85,\y) {\gb};
+  }
+  \node[draw=pePiros, dashed, fill=white, font=\scriptsize, align=center, text width=33mm, inner sep=2pt] (esz2) at (-6.6,4.85) {\textbf{eszkalációs tényező:} riasztásáradat zavar idején\\\textit{kezelése:} riasztáskezelés, prioritások};
+  \draw[pePiros, dashed, -{Stealth[length=2mm]}, line width=0.6pt] (esz2.south) -- (-5.85,3.6);
+  \node[draw=pePiros, dashed, fill=white, font=\scriptsize, align=center, text width=33mm, inner sep=2pt] (esz) at (-2.9,4.85) {\textbf{eszkalációs tényező:} a gyorszáró szelepek közös okú meghibásodása\\\textit{kezelése:} részleges löketpróba, proof teszt};
+  \draw[pePiros, dashed, -{Stealth[length=2mm]}, line width=0.6pt] (esz.south) -- (-4.05,3.6);
+  \node[font=\small\bfseries, text=peZold] at (-5.0,6.1) {megelőző gátak};
+  \node[font=\small\bfseries, text=peKiemel] at (5.0,6.1) {következménycsökkentő gátak};
+  \node[font=\scriptsize\bfseries, text=peKek] at (-8.0,-4.1) {okok (fenyegetések)};
+  \node[font=\scriptsize\bfseries, text=pePiros] at (8.0,-3.3) {következmények};
+  \node[font=\scriptsize, text=peSzurke] at (-5.0,-4.1) {a bal oldal logikája a hibafáé};
+  \node[font=\scriptsize, text=peSzurke] at (3.6,-3.3) {a jobb oldal logikája az eseményfáé};
+\end{tikzpicture}
+\end{document}

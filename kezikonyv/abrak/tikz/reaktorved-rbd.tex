@@ -1,0 +1,16 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\ki#1{\fill[peSotet] #1 circle (0.06);}
+  \node[blokk, minimum width=17mm] (t1) at (1.5,0.55) {TT-101}; \node[blokk, minimum width=17mm] (t2) at (1.5,-0.55) {TT-102};
+  \node[blokk, minimum width=22mm, fill=peZoldH, draw=peZold] (l) at (4.6,0) {biztonsági PLC};
+  \node[blokk, minimum width=17mm] (v1) at (7.7,0.55) {XV-101}; \node[blokk, minimum width=17mm] (v2) at (7.7,-0.55) {XV-102};
+  \draw[rbdel] (0,0) -- (0.3,0) (0.3,0.55) -- (0.3,-0.55) (0.3,0.55) -- (t1) (0.3,-0.55) -- (t2) (t1) -- (2.7,0.55) (t2) -- (2.7,-0.55) (2.7,0.55) -- (2.7,-0.55) (2.7,0) -- (l);
+  \draw[rbdel] (l) -- (6.5,0) (6.5,0.55) -- (6.5,-0.55) (6.5,0.55) -- (v1) (6.5,-0.55) -- (v2) (v1) -- (8.9,0.55) (v2) -- (8.9,-0.55) (8.9,0.55) -- (8.9,-0.55) (8.9,0) -- (9.3,0);
+  \ki{(0,0)} \ki{(9.3,0)}
+  \foreach \x/\t in {1.5/{érzékelés: 1oo2},4.6/{logika: 1oo1},7.7/{beavatkozás: 1oo2}}
+    \node[font=\scriptsize, text=peKek, anchor=south] at (\x,1.0) {\t};
+  \node[font=\scriptsize, anchor=north, align=center, text=peSzurke] at (4.65,-1.05) {siker = a funkció igénykor végrehajtódik (a betáplálás leáll)};
+\end{tikzpicture}
+\end{document}

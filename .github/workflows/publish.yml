@@ -1,0 +1,82 @@
+# A két könyv fordítása (HTML, PDF, EPUB) és közzététele a GitHub Pages-en a gh-pages ágon.
+# - minden feltöltés a main ágra: a webhely frissül;
+# - új GitHub Release: a webhely frissül, és a PDF/EPUB fájlok a kiadáshoz csatolódnak.
+#   (A Zenodo a GitHub-integráción keresztül a kiadás forráscsomagját archiválja és DOI-t ad.)
+name: Könyvek fordítása és közzététele
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "README.md"
+      - "gyakorlat/alkalmazasok/README.md"
+      - "gyakorlat/notebookok/README.md"
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: TeX Live és segédprogramok
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-base texlive-binaries texlive-latex-base texlive-latex-recommended \
+            texlive-latex-extra texlive-xetex texlive-pictures texlive-science \
+            texlive-fonts-recommended texlive-lang-greek lmodern \
+            poppler-utils fontconfig
+
+      - name: Betűkészletek telepítése (IBM Plex, Raleway)
+        run: |
+          mkdir -p ~/.fonts
+          cp _shared/fonts/ttf/*.ttf ~/.fonts/
+          fc-cache -f
+          fc-list | grep -E "IBM Plex Serif|Raleway" | head -3
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Python-csomagok
+        run: pip install -r requirements.txt
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.11.9
+
+      - name: Renderelés
+        run: ./build.sh
+
+      - name: Közzététel a gh-pages ágon
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd _site
+          git init -q -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Közzététel: ${GITHUB_SHA::7}"
+          git push -q --force "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" gh-pages
+
+      - name: PDF és EPUB csatolása a kiadáshoz
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release upload "${{ github.event.release.tag_name }}" \
+            _site/kezikonyv/biztonsagkritikus-rendszerek.pdf \
+            _site/kezikonyv/biztonsagkritikus-rendszerek.epub \
+            _site/gyakorlat/biztonsagkritikus-rendszerek-gyakorlat.pdf \
+            --clobber

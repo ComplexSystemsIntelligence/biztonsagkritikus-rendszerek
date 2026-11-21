@@ -1,0 +1,41 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  ev/.style={circle, fill=#1, draw=white, line width=0.8pt, minimum size=3.2mm, inner sep=0},
+  cimke/.style={font=\scriptsize, text width=31mm, align=left, anchor=north west, inner sep=1pt},
+  ev2/.style={font=\scriptsize\bfseries, text=peSotet, anchor=south west, inner sep=1pt}]
+  % sávok
+  \fill[peSzurkeH] (0,-0.45) rectangle (17.4,0.45);
+  \draw[nyilv, line width=1pt] (0,0) -- (17.6,0);
+  \node[font=\tiny, text=peSzurke, anchor=west] at (17.65,0) {idő};
+  % szakaszok
+  \node[font=\scriptsize\bfseries, text=peSzurke] at (2.0,1.95) {egyszerű okláncok};
+  \node[font=\scriptsize\bfseries, text=peKek] at (7.0,1.95) {összetett, epidemiológiai modellek};
+  \node[font=\scriptsize\bfseries, text=peLila] at (13.8,1.95) {rendszerszintű modellek};
+  \draw[peSzurke, line width=0.6pt] (0.2,1.7) -- (3.8,1.7);
+  \draw[peKek, line width=0.6pt] (4.2,1.7) -- (9.8,1.7);
+  \draw[peLila, line width=0.6pt] (10.2,1.7) -- (17.4,1.7);
+  % események: x / év / név / leírás / szín / fent-lent
+  \foreach \x/\ev/\nev/\leir/\szin/\fel in {
+      0.6/1931/Heinrich/{dominóelv: egyetlen\\láncszem kiemelése}/peSzurke/1,
+      2.6/1961/{Gibson, Haddon}/{energia--gát modell,\\tíz ellenstratégia}/peSzurke/0,
+      4.6/1984/Perrow/{normál balesetek:\\komplexitás, csatolás}/peKek/1,
+      6.4/1990/Reason/{sajtszelet: aktív hibák\\és latens feltételek}/peKek/0,
+      8.6/1997/Rasmussen/{sodródás a biztonságos\\működés határa felé}/peKek/1,
+      10.7/2004/Leveson/{STAMP: a biztonság\\irányítási feladat}/peLila/0,
+      12.7/2006/Hollnagel/{rezilienciamérnökség,\\FRAM}/peLila/1,
+      14.7/2014/Hollnagel/{Safety-I és Safety-II:\\a jól működő esetekből is tanulni}/peLila/0} {
+    \node[ev=\szin] at (\x,0) {};
+    \ifnum\fel=1
+      \draw[\szin, line width=0.5pt] (\x,0.16) -- (\x,0.62);
+      \node[ev2] at (\x-0.08,0.62) {\ev{} \textperiodcentered{} \nev};
+      \node[font=\scriptsize, text width=33mm, align=left, anchor=south west, inner sep=1pt] at (\x-0.08,0.98) {\leir};
+    \else
+      \draw[\szin, line width=0.5pt] (\x,-0.16) -- (\x,-0.62);
+      \node[font=\scriptsize\bfseries, text=peSotet, anchor=north west, inner sep=1pt] at (\x-0.08,-0.62) {\ev{} \textperiodcentered{} \nev};
+      \node[cimke] at (\x-0.08,-0.98) {\leir};
+    \fi
+  }
+\end{tikzpicture}
+\end{document}

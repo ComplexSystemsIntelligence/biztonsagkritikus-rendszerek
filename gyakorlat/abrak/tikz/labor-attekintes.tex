@@ -1,0 +1,32 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize},
+  lab/.style={draw=#1, fill=#1!10, rounded corners=2pt, line width=0.8pt, text width=27mm, minimum height=12mm, align=center, inner sep=2pt}]
+  \node[font=\small\bfseries, text=peSotet, anchor=west] at (-0.2,1.0) {veszélyazonosítás és kockázat};
+  \node[font=\small\bfseries, text=peSotet, anchor=west] at (-0.2,-2.2) {kvantitatív módszerek};
+  \node[font=\small\bfseries, text=peSotet, anchor=west] at (-0.2,-5.4) {összegzés};
+  \foreach \i/\t/\s/\c [count=\k] in {
+     1/{balesetelemzés}/{1., 7. fejezet}/peKek,
+     2/{kockázati mátrix, IRPA, F–N}/{3. fejezet}/peKek,
+     3/{HAZOP}/{5. fejezet}/peKek,
+     4/{FMEA, FMEDA}/{6. fejezet}/peKek,
+     5/{STPA}/{7. fejezet}/peKek} {
+    \node[lab=\c] (l\i) at ({(\k-1)*3.15+1.35},0) {\textbf{\i.} \t\\[1pt]{\tiny\color{peSzurke}\s}}; }
+  \foreach \i/\t/\s [count=\k] in {
+     6/{élettartam-eloszlások, Weibull}/{8. fejezet},
+     7/{blokkdiagramok}/{9. fejezet},
+     8/{hibafa}/{10. fejezet},
+     9/{LOPA, eseményfa}/{11. fejezet},
+     10/{Markov-modellek}/{12. fejezet},
+     11/{PFD és SIL}/{13. fejezet}} {
+    \node[lab=peZold, text width=21mm] (l\i) at ({(\k-1)*2.62+1.2},-3.2) {\textbf{\i.} \t\\[1pt]{\tiny\color{peSzurke}\s}}; }
+  \node[lab=peKiemel, text width=60mm] (l12) at (7.65,-6.4) {\textbf{12.} projektfeladat: egy rendszer teljes biztonsági elemzése és biztonsági érvelése\\[1pt]{\tiny\color{peSzurke}14–18. fejezet}};
+  \foreach \a/\b in {1/2,2/3,3/4,4/5} \draw[nyilv] (l\a) -- (l\b);
+  \foreach \a/\b in {6/7,7/8,8/9,9/10,10/11} \draw[nyilv] (l\a) -- (l\b);
+  \draw[nyil, draw=peSzurke] (l3.south) to[out=-90, in=90] node[pos=0.45, right, font=\tiny, text=peSzurke]{súlyos forgatókönyvek} (l9.north);
+  \draw[nyil, draw=peSzurke] (l9.south) |- (l12.east);
+  \draw[nyil, draw=peSzurke] (l11.south) |- ([yshift=2mm]l12.east);
+  \node[felirat, anchor=north west, font=\tiny, text width=150mm, align=left] at (-0.2,-7.4) {Alkalmazás: 2, 4, 5, 6, 7, 8, 9, 10, 11. gyakorlat · Colab-notebook: 2, 4, 6, 7, 8, 10, 11. gyakorlat · mintapromptok: minden gyakorlatban};
+\end{tikzpicture}
+\end{document}

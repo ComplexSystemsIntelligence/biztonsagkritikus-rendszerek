@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  gy/.style={sotetdoboz=30mm, font=\small\bfseries},
+  ag/.style={doboz=27mm, font=\footnotesize\bfseries, minimum height=7mm},
+  lv/.style={font=\scriptsize, align=left, anchor=north west, text width=44mm, inner sep=1pt}]
+  \node[gy] (g) at (0,0) {Üzembiztonság\\{\scriptsize\mdseries (dependability)}};
+  \node[ag] (a) at (-6.2,-1.6) {Tulajdonságok};
+  \node[ag] (f) at (0,-1.6) {Fenyegetések};
+  \node[ag] (e) at (6.2,-1.6) {Eszközök};
+  \foreach \x in {a,f,e} \draw[nyilv] (g.south) -- (\x.north);
+  \node[lv] at (-8.4,-2.15) {\textbf{rendelkezésre állás} -- kész a működésre\\
+    \textbf{megbízhatóság} -- folyamatos helyes működés\\
+    \textbf{biztonság} -- nincs katasztrofális következmény\\
+    \textbf{integritás} -- nincs nem megengedett változás\\
+    \textbf{karbantarthatóság} -- javítható, módosítható};
+  \node[lv] at (-2.2,-2.15) {\textbf{hibaok} (fault)\\ \hspace*{3mm}$\downarrow$ aktiválódik\\
+    \textbf{hiba} (error) -- hibás belső állapot\\ \hspace*{3mm}$\downarrow$ eléri a kimenetet\\
+    \textbf{meghibásodás} (failure) -- a szolgáltatás eltér a helyestől};
+  \node[lv] at (4.0,-2.15) {\textbf{hibamegelőzés} -- gondos fejlesztés\\
+    \textbf{hibatűrés} -- redundancia, diagnosztika\\
+    \textbf{hibaeltávolítás} -- verifikáció, tesztelés\\
+    \textbf{hibaelőrejelzés} -- megbízhatósági modellek, elemzés};
+\end{tikzpicture}
+\end{document}

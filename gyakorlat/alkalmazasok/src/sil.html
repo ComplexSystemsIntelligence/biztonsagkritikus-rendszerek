@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PFD- és SIL-kalkulátor</title>
+<style>/*KOZOS_CSS*/
+.alr td input,.alr td select{width:100%}
+</style></head><body>
+<header class="app"><h1>PFD- és SIL-kalkulátor</h1><p>Biztonságkritikus rendszerek – 11. gyakorlat. Alacsony igénybevételű biztonsági funkció PFD<sub>avg</sub>-értéke az IEC 61508-6 egyszerűsített képleteivel, részleges löketpróbával és nem tökéletes proof teszttel; architekturális korlátok és téves leállások.</p></header>
+<main>
+<div class="kartya"><h2>1. Közös paraméterek</h2>
+ <div class="racs">
+  <div><label>proof teszt időköze T<sub>1</sub> [h]</label><input type="text" id="T1" value="8760" oninput="szamol()"></div>
+  <div><label>javítási idő MTTR [h]</label><input type="text" id="MTTR" value="8" oninput="szamol()"></div>
+  <div><label>a szükséges PFD (LOPA)</label><input type="text" id="cel" value="2e-3" oninput="szamol()"></div>
+  <div><label>nagyjavítás időköze T<sub>M</sub> [h] (a nem tesztelt hibákhoz)</label><input type="text" id="TM" value="87600" oninput="szamol()"></div>
+ </div>
+ <p><button class="masodlagos" onclick="pelda()">példa: ReaktorVéd</button></p></div>
+<div class="kartya"><h2>2. Alrendszerek</h2>
+ <div class="diagram"><table class="alr"><thead><tr><th>alrendszer</th><th>architektúra</th><th>λ<sub>DU</sub> [1/h]</th><th>λ<sub>DD</sub> [1/h]</th><th>λ<sub>S</sub> [1/h]</th><th>β</th><th>β<sub>D</sub></th><th>típus</th><th>PTC</th><th>PST időköz [h]</th><th>DC<sub>PST</sub></th><th>rögzített PFD</th></tr></thead><tbody id="alr"></tbody></table></div>
+ <p class="megj">A PTC a proof teszt lefedettsége (1 = tökéletes). A részleges löketpróba (PST) a rejtett hibák DC<sub>PST</sub> hányadát a PST időközében fedi fel; üresen hagyva nincs PST. Rögzített PFD esetén (például tanúsított logika) a többi mező nem számít.</p>
+ <label>egyéb téves leállási ráta (például tápegységek) [1/h]</label><input type="text" id="strx" value="1e-5" oninput="szamol()" style="max-width:220px"></div>
+<div class="racs">
+ <div class="kartya eredmeny"><h2>Eredmény</h2><div id="eredm"></div></div>
+ <div class="kartya"><h2>A PFD összetevői</h2><div id="osszetevok"></div></div>
+</div>
+<div class="racs">
+ <div class="kartya"><h2>Architekturális korlátok</h2><div id="arch"></div></div>
+ <div class="kartya"><h2>Téves leállások</h2><div id="str"></div></div>
+</div>
+<div class="kartya"><h2>Érzékenység (tornádó)</h2><div id="torn"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc · A képletek közelítések (λT ≪ 1, egyidejű tesztelés); kritikus esetben többfázisú Markov-modellel vagy szimulációval kell ellenőrizni.</footer>
+<script>/*KOZOS_JS*/
+let AL = [];
+const PELDA = [
+ {nev: 'hőmérséklet-távadók', arch: '1oo2', lDU: 4e-7, lDD: 6e-7, lS: 5e-7, b: 0.05, bD: 0.025, tip: 'B', ptc: 1, Tp: '', dcp: '', fix: ''},
+ {nev: 'biztonsági PLC', arch: 'fix', lDU: 0, lDD: 0, lS: 1e-6, b: 0, bD: 0, tip: 'B', ptc: 1, Tp: '', dcp: '', fix: 5e-5},
+ {nev: 'gyorszáró szelepek', arch: '1oo2', lDU: 2.5e-6, lDD: 0, lS: 1e-6, b: 0.10, bD: 0.05, tip: 'A', ptc: 1, Tp: '', dcp: '', fix: ''}];
+const HFT = {'1oo1': 0, '1oo2': 1, '2oo2': 0, '2oo3': 1, '1oo3': 2, fix: null};
+function pelda() { AL = JSON.parse(JSON.stringify(PELDA)); $('T1').value = '8760'; $('MTTR').value = '8'; $('cel').value = '2e-3'; $('TM').value = '87600'; $('strx').value = '1e-5'; tabla(); }
+function tabla() { const tb = $('alr'); tb.innerHTML = '';
+  AL.forEach(a => { const inp = (k, w) => el('input', {type: 'text', value: String(a[k]).replace('.', ','), oninput: e => { a[k] = e.target.value === '' ? '' : szam(e.target.value); szamol(); }});
+    const ar = el('select', {onchange: e => { a.arch = e.target.value; szamol(); }}, ...['1oo1', '1oo2', '2oo2', '2oo3', '1oo3', 'fix'].map(x => el('option', {value: x}, x === 'fix' ? 'rögzített PFD' : x))); ar.value = a.arch;
+    const tp = el('select', {onchange: e => { a.tip = e.target.value; szamol(); }}, el('option', {value: 'A'}, 'A'), el('option', {value: 'B'}, 'B')); tp.value = a.tip;
+    tb.append(el('tr', {}, el('td', {}, el('input', {type: 'text', value: a.nev, oninput: e => { a.nev = e.target.value; szamol(); }})), el('td', {}, ar), el('td', {}, inp('lDU')), el('td', {}, inp('lDD')), el('td', {}, inp('lS')),
+      el('td', {}, inp('b')), el('td', {}, inp('bD')), el('td', {}, tp), el('td', {}, inp('ptc')), el('td', {}, inp('Tp')), el('td', {}, inp('dcp')), el('td', {}, inp('fix')))); });
+  szamol(); }
+function pfd(a, P) { if (a.arch === 'fix') return {tot: szam(a.fix) || 0, ind: 0, ccf: 0};
+  const {T1, MTTR, TM} = P, lDU = a.lDU, lDD = a.lDD, lD = lDU + lDD; if (!(lD > 0)) return {tot: 0, ind: 0, ccf: 0};
+  const ptc = a.ptc === '' ? 1 : a.ptc; let a1, a2;
+  if (a.Tp !== '' && a.dcp !== '' && a.Tp > 0) { const d = a.dcp; a1 = (1 - d) * (T1 / 2 + MTTR) + d * (a.Tp / 2 + MTTR); a2 = (1 - d) * (T1 / 3 + MTTR) + d * (a.Tp / 3 + MTTR); }
+  else { a1 = ptc * (T1 / 2 + MTTR) + (1 - ptc) * TM / 2; a2 = ptc * (T1 / 3 + MTTR) + (1 - ptc) * TM / 3; }
+  const tCE = lDU / lD * a1 + lDD / lD * MTTR, tGE = lDU / lD * a2 + lDD / lD * MTTR;
+  const lf = (1 - a.bD) * lDD + (1 - a.b) * lDU, ccf = a.bD * lDD * MTTR + a.b * lDU * a1;
+  switch (a.arch) { case '1oo1': return {tot: lD * tCE, ind: lD * tCE, ccf: 0};
+    case '2oo2': return {tot: 2 * lD * tCE, ind: 2 * lD * tCE, ccf: 0};
+    case '1oo2': { const i = 2 * lf * lf * tCE * tGE; return {tot: i + ccf, ind: i, ccf}; }
+    case '2oo3': { const i = 6 * lf * lf * tCE * tGE; return {tot: i + ccf, ind: i, ccf}; }
+    case '1oo3': { const tG2 = lDU / lD * (T1 / 4 + MTTR) + lDD / lD * MTTR; const i = 6 * lf * lf * lf * tCE * tGE * tG2; return {tot: i + ccf, ind: i, ccf}; } } }
+function silSzint(p) { return p < 1e-5 ? 'SIL 4 felett' : p < 1e-4 ? 'SIL 4' : p < 1e-3 ? 'SIL 3' : p < 1e-2 ? 'SIL 2' : p < 1e-1 ? 'SIL 1' : 'SIL alatti'; }
+function route1H(tip, sff, hft) { const A = [[1, 2, 3], [2, 3, 4], [3, 4, 4], [3, 4, 4]], B = [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 4]];
+  const r = sff < 0.6 ? 0 : sff < 0.9 ? 1 : sff < 0.99 ? 2 : 3; const h = Math.min(hft, 2); return (tip === 'A' ? A : B)[r][h]; }
+function osszes(P, mod = x => x) { return AL.map(a => pfd(mod(a), P)); }
+function szamol() { const P = {T1: szam($('T1').value), MTTR: szam($('MTTR').value), TM: szam($('TM').value)}; const cel = szam($('cel').value);
+  const r = osszes(P); const tot = r.reduce((s, x) => s + x.tot, 0);
+  const celSIL = cel < 1e-4 ? 4 : cel < 1e-3 ? 3 : cel < 1e-2 ? 2 : 1;
+  $('eredm').innerHTML = `<p>PFD<sub>avg</sub> = <span class="nagyszam">${fmt(tot)}</span></p><p>RRF = ${fmt(1 / tot)} · ${silSzint(tot)} tartomány</p>
+    <p>${tot <= cel ? `<span class="ok">A követelmény (PFD ≤ ${fmt(cel)}) teljesül, ${fmt(cel / tot)}-szeres tartalékkal.</span>` : `<span class="hiba">A követelmény (PFD ≤ ${fmt(cel)}) nem teljesül.</span>`}</p>
+    <table><tr><th>alrendszer</th><th class="szam">PFD</th><th class="szam">független</th><th class="szam">közös ok</th><th class="szam">részarány</th></tr>${AL.map((a, i) => `<tr><td>${a.nev}</td><td class="szam">${fmt(r[i].tot)}</td><td class="szam">${fmt(r[i].ind)}</td><td class="szam">${fmt(r[i].ccf)}</td><td class="szam">${fmt(100 * r[i].tot / tot, 3)}%</td></tr>`).join('')}</table>`;
+  const oss = []; AL.forEach((a, i) => { if (r[i].ind > 0) oss.push({nev: a.nev + ' (független)', ertek: r[i].ind, szin: '#285780'}); if (r[i].ccf > 0) oss.push({nev: a.nev + ' (közös ok)', ertek: r[i].ccf, szin: '#E07B39'}); if (a.arch === 'fix') oss.push({nev: a.nev, ertek: r[i].tot, szin: '#6B7280'}); });
+  oszlopdiagram($('osszetevok'), oss, {log: true, balmargo: 210});
+  // architekturális korlátok
+  let h = `<table><tr><th>alrendszer</th><th class="szam">SFF</th><th>típus</th><th>HFT</th><th>1H út: legfeljebb</th><th>IEC 61511: min. HFT SIL ${celSIL}-hez</th></tr>`;
+  const minHFT = celSIL >= 4 ? 2 : celSIL === 3 ? 1 : 0;
+  AL.forEach(a => { if (a.arch === 'fix') { h += `<tr><td>${a.nev}</td><td colspan="5">tanúsítvány szerint</td></tr>`; return; }
+    const sff = (a.lS + a.lDD) / (a.lS + a.lDD + a.lDU), hft = HFT[a.arch], m = route1H(a.tip, sff, hft);
+    h += `<tr><td>${a.nev}</td><td class="szam">${fmt(100 * sff, 3)}%</td><td>${a.tip}</td><td>${hft}</td><td>${m ? 'SIL ' + m : 'nem megengedett'} ${m >= celSIL ? '<span class="ok">megfelel</span>' : '<span class="hiba">nem felel meg</span>'}</td><td>${hft >= minHFT ? '<span class="ok">megfelel</span>' : '<span class="hiba">nem felel meg</span>'} (${minHFT})</td></tr>`; });
+  $('arch').innerHTML = h + '</table><p class="megj">1H út: IEC 61508-2, alacsony igénybevétel; IEC 61511-1:2016, 6. táblázat.</p>';
+  // téves leállás
+  const strR = AL.map(a => { const s = a.lS + a.lDD; switch (a.arch) { case '1oo1': case 'fix': return s; case '1oo2': return 2 * s; case '1oo3': return 3 * s; case '2oo2': return 2 * s * s * P.MTTR; case '2oo3': return 6 * s * s * P.MTTR; } });
+  const strx = szam($('strx').value) || 0, st = strR.reduce((a, b) => a + b, 0) + strx;
+  $('str').innerHTML = `<p>STR = <b>${fmt(st)}</b>/h = <b>${fmt(st * 8760)}</b>/év, MTTF<sub>S</sub> = <b>${fmt(1 / (st * 8760))}</b> év</p><table>${AL.map((a, i) => `<tr><td>${a.nev} (${a.arch})</td><td class="szam">${fmt(strR[i])}/h</td></tr>`).join('')}<tr><td>egyéb</td><td class="szam">${fmt(strx)}/h</td></tr></table><p class="megj">Feltevés: a felfedett veszélyes hibákra is leállás a reakció; az 1oo2 bármelyik csatorna téves jelzésére, a 2oo3 két csatorna egyidejű téves jelzésére állít le.</p>`;
+  // tornádó
+  const vegso = AL.length - 1; const mod = (f) => osszes(P, f).reduce((s, x) => s + x.tot, 0);
+  const T = [['T₁ fele / kétszerese', osszes({...P, T1: P.T1 / 2}).reduce((s, x) => s + x.tot, 0), osszes({...P, T1: P.T1 * 2}).reduce((s, x) => s + x.tot, 0)],
+    [`${AL[vegso].nev}: λ<sub>DU</sub> fele / kétszerese`, mod(a => a === AL[vegso] ? {...a, lDU: a.lDU / 2} : a), mod(a => a === AL[vegso] ? {...a, lDU: a.lDU * 2} : a)],
+    [`${AL[vegso].nev}: β fele / másfélszerese`, mod(a => a === AL[vegso] ? {...a, b: a.b / 2} : a), mod(a => a === AL[vegso] ? {...a, b: a.b * 1.5} : a)],
+    ['proof teszt lefedettsége 100% / 90% (mindenhol)', mod(a => ({...a, ptc: 1})), mod(a => ({...a, ptc: 0.9, Tp: '', dcp: ''}))],
+    ['MTTR = 8 h / 72 h', osszes({...P, MTTR: 8}).reduce((s, x) => s + x.tot, 0), osszes({...P, MTTR: 72}).reduce((s, x) => s + x.tot, 0)]];
+  oszlopdiagram($('torn'), T.flatMap(([n, lo, hi]) => [{nev: n.replace(/<[^>]+>/g, '') + ' – kedvező', ertek: lo, szin: '#4F7FAD'}, {nev: '… – kedvezőtlen', ertek: hi, szin: '#E07B39'}]), {log: true, vonal: cel, vonalcimke: 'követelmény', balmargo: 300});
+  ment('sil', {AL, T1: $('T1').value, MTTR: $('MTTR').value, cel: $('cel').value, TM: $('TM').value, strx: $('strx').value}); }
+const m = betolt('sil'); if (m && m.AL) { AL = m.AL; ['T1', 'MTTR', 'cel', 'TM', 'strx'].forEach(k => $(k).value = m[k]); tabla(); } else pelda();
+</script></body></html>

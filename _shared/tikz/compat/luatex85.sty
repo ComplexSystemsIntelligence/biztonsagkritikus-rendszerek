@@ -1,0 +1,31 @@
+% Minimális luatex85-pótlék olyan TeX-telepítésekhez, ahol a csomag hiányzik.
+% Az abrak.py a TEXINPUTS végére teszi ezt a mappát, így ha a rendszerben
+% megvan az eredeti luatex85.sty, az élvez elsőbbséget.
+\ProvidesPackage{luatex85}[2026/11/20 v0.1 minimal compatibility stub]
+\ifdefined\pdfextension
+  \ifdefined\pdfpagewidth\else\let\pdfpagewidth\pagewidth\fi
+  \ifdefined\pdfpageheight\else\let\pdfpageheight\pageheight\fi
+  \ifdefined\pdfoutput\else\let\pdfoutput\outputmode\fi
+  \ifdefined\pdfliteral\else\protected\def\pdfliteral{\pdfextension literal}\fi
+  \ifdefined\pdfcolorstack\else\protected\def\pdfcolorstack{\pdfextension colorstack}\fi
+  \ifdefined\pdfsetmatrix\else\protected\def\pdfsetmatrix{\pdfextension setmatrix}\fi
+  \ifdefined\pdfsave\else\protected\def\pdfsave{\pdfextension save\relax}\fi
+  \ifdefined\pdfrestore\else\protected\def\pdfrestore{\pdfextension restore\relax}\fi
+  \ifdefined\pdfobj\else\protected\def\pdfobj{\pdfextension obj }\fi
+  \ifdefined\pdfrefobj\else\protected\def\pdfrefobj{\pdfextension refobj }\fi
+  \ifdefined\pdfxform\else\protected\def\pdfxform{\pdfextension xform }\fi
+  \ifdefined\pdfrefxform\else\protected\def\pdfrefxform{\pdfextension refxform }\fi
+  \ifdefined\pdfximage\else\protected\def\pdfximage{\pdfextension ximage }\fi
+  \ifdefined\pdfrefximage\else\protected\def\pdfrefximage{\pdfextension refximage }\fi
+  \ifdefined\pdfannot\else\protected\def\pdfannot{\pdfextension annot }\fi
+  \ifdefined\pdfinfo\else\protected\def\pdfinfo{\pdfextension info }\fi
+  \ifdefined\pdfcatalog\else\protected\def\pdfcatalog{\pdfextension catalog }\fi
+  \ifdefined\pdfpageattr\else\protected\def\pdfpageattr{\pdfvariable pageattr}\fi
+  \ifdefined\pdfpagesattr\else\protected\def\pdfpagesattr{\pdfvariable pagesattr}\fi
+  \ifdefined\pdfpageresources\else\protected\def\pdfpageresources{\pdfvariable pageresources}\fi
+  \ifdefined\pdflastobj\else\def\pdflastobj{\numexpr\pdffeedback lastobj\relax}\fi
+  \ifdefined\pdflastxform\else\def\pdflastxform{\numexpr\pdffeedback lastxform\relax}\fi
+  \ifdefined\pdflastximage\else\def\pdflastximage{\numexpr\pdffeedback lastximage\relax}\fi
+  \ifdefined\pdfcreationdate\else\def\pdfcreationdate{\pdffeedback creationdate}\fi
+\fi
+\endinput

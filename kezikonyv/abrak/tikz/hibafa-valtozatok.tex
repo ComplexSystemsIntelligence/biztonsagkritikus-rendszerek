@@ -1,0 +1,25 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[xbar stacked, width=12.5cm, height=6.2cm, bar width=7mm, xmin=0, xmax=3.6,
+  ytick=data, yticklabels={{energiával működtetett,\\CCF nélkül},{energiamentesítéssel,\\CCF nélkül},{energiamentesítéssel,\\CCF-fel},{energiával működtetett,\\CCF-fel}},
+  yticklabel style={font=\scriptsize, align=right}, y dir=reverse, ytick={0,1,2,3},
+  xlabel={a csúcsesemény valószínűsége (PFD, $\times10^{-3}$)}, xlabel style={font=\scriptsize},
+  tick label style={font=\scriptsize}, axis line style={peSotet}, xmajorgrids, grid style={peSzurkeH},
+  legend style={font=\tiny, at={(0.5,-0.26)}, anchor=north, legend columns=3, draw=none, column sep=4pt},
+  enlarge y limits=0.18]
+  \addplot[fill=pePiros, draw=pePiros] coordinates {(2.000,0) (0,1) (0,2) (2.000,3)};
+  \addplot[fill=peSzurke, draw=peSzurke] coordinates {(0.050,0) (0.050,1) (0.050,2) (0.050,3)};
+  \addplot[fill=peKek, draw=peKek] coordinates {(0.1203,0) (0.1203,1) (0.0975,2) (0.0975,3)};
+  \addplot[fill=peKiemel, draw=peKiemel] coordinates {(0,0) (0,1) (1.097,2) (1.097,3)};
+  \addplot[fill=peZold, draw=peZold] coordinates {(0.0031,0) (0.0031,1) (0.0028,2) (0.0028,3)};
+  \addplot[fill=peLila, draw=peLila] coordinates {(0,0) (0,1) (0.0876,2) (0.0876,3)};
+  \legend{közös tápellátás, logika, szelepek (független), szelepek (közös ok), távadók (független), távadók (közös ok)}
+  \node[font=\scriptsize\bfseries, anchor=west] at (axis cs:2.20,0) {2,17};
+  \node[font=\scriptsize\bfseries, anchor=west] at (axis cs:0.20,1) {0,17};
+  \node[font=\scriptsize\bfseries, anchor=west] at (axis cs:1.36,2) {1,33};
+  \node[font=\scriptsize\bfseries, anchor=west] at (axis cs:3.36,3) {3,33};
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,23 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, lep/.style={doboz=46mm, minimum height=8mm, font=\footnotesize}]
+  \node[szurkedoboz=46mm, font=\footnotesize] (k) at (0,0) {\textbf{Hatókör és környezet}\\{\scriptsize rendszerhatár, üzemmódok, kritériumok}};
+  \node[lep] (a1) at (0,-1.45) {\textbf{Veszélyazonosítás}\\{\scriptsize HAZOP, FMEA, STPA, ellenőrzőlisták}};
+  \node[lep] (a2) at (0,-2.75) {\textbf{Kockázatbecslés}\\{\scriptsize gyakoriság- és következményelemzés}};
+  \node[kiemeltdoboz=46mm, minimum height=8mm, font=\footnotesize] (e) at (0,-4.25) {\textbf{Kockázatkiértékelés}\\{\scriptsize összevetés a tolerálható kockázattal}};
+  \node[zolddoboz=46mm, minimum height=8mm, font=\footnotesize] (t) at (0,-5.75) {\textbf{Kockázatcsökkentés}\\{\scriptsize intézkedések, maradó kockázat}};
+  \node[sotetdoboz=46mm, font=\footnotesize] (m) at (0,-7.15) {elfogadott maradó kockázat, dokumentáció};
+  \draw[nyil] (k) -- (a1); \draw[nyil] (a1) -- (a2); \draw[nyil] (a2) -- (e);
+  \draw[nyil] (e) -- node[right, font=\scriptsize]{nem tolerálható} (t);
+  \draw[nyil] (t.west) -- ++(-0.6,0) |- node[pos=0.25, left, font=\scriptsize, align=right]{új vagy módosult\\veszélyek?} (a1.west);
+  \draw[nyil] (e.east) -- ++(0.7,0) |- node[pos=0.25, right, font=\scriptsize]{tolerálható} (m.east);
+  \draw[decorate, decoration={brace, amplitude=6pt, mirror}, peKek, line width=0.8pt] (-2.75,-0.95) -- (-2.75,-3.25)
+    node[midway, left=7pt, font=\scriptsize, text=peKek, align=right]{kockázat-\\elemzés};
+  \draw[decorate, decoration={brace, amplitude=6pt, mirror}, peSotet, line width=0.8pt] (-5.05,-0.95) -- (-5.05,-4.75)
+    node[midway, left=7pt, font=\scriptsize, text=peSotet, align=right]{kockázat-\\értékelés};
+  \draw[decorate, decoration={brace, amplitude=6pt}, peZold, line width=0.8pt] (3.3,-0.95) -- (3.3,-6.25)
+    node[midway, right=7pt, font=\scriptsize, text=peZold, align=left]{kockázat-\\kezelés};
+  \node[draw=peSzurke, fill=peSzurkeH, rounded corners=2pt, minimum width=76mm, minimum height=8mm, font=\scriptsize, rotate=90, line width=0.6pt] at (6.9,-3.6) {kommunikáció és konzultáció \quad\textperiodcentered\quad nyomon követés és felülvizsgálat};
+\end{tikzpicture}
+\end{document}

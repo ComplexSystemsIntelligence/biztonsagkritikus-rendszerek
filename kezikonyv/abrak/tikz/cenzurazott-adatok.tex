@@ -1,0 +1,16 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=0.65cm,y=0.42cm]
+  \draw[nyilv] (0,0) -- (19,0) node[right, font=\scriptsize] {üzemóra [$10^3$ h]};
+  \foreach \x in {0,2,...,18} { \draw[peSzurke] (\x,0) -- (\x,-0.2); \node[font=\tiny, anchor=north] at (\x,-0.2) {\x}; }
+  \draw[peKiemel, line width=0.8pt, szaggatott] (12,0) -- (12,13.2) node[above, font=\scriptsize, text=peKiemel] {a megfigyelés vége};
+  \foreach \i/\t/\c in {1/4.1/0,2/5.2/0,3/5.9/0,4/6.6/0,5/7.3/0,6/7.9/0,7/8.5/0,8/9.8/0,9/10.5/0,10/12/1,11/12/1,12/12/1} {
+    \draw[peKek, line width=1.4pt] (0,\i) -- (\t,\i);
+    \ifnum\c=0 \node[pePiros, font=\small\bfseries] at (\t,\i) {$\times$};
+    \else \draw[peZold, fill=white, line width=0.9pt] (\t,\i) circle (0.17); \draw[-{Stealth[length=1.6mm]}, peZold, line width=0.6pt, szaggatott] (\t+0.25,\i) -- (\t+1.6,\i); \fi
+    \node[font=\tiny, anchor=east] at (-0.1,\i) {\#\i};
+  }
+  \node[font=\scriptsize, anchor=west, align=left] at (13.0,5.2) {\textcolor{pePiros}{$\times$} meghibásodás (pontos idő)\\[2pt]\textcolor{peZold}{$\circ$} jobbról cenzúrázott: az egység\\ \phantom{$\circ$} még működik, csak annyit tudunk,\\ \phantom{$\circ$} hogy élettartama $>12\,000$ h};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,23 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=12cm, height=6cm, domain=0.02:10, samples=200, xmin=0, xmax=10, ymin=0, ymax=1.6,
+  xlabel={üzemidő}, ylabel={meghibásodási ráta $h(t)$}, xtick=\empty, ytick=\empty,
+  label style={font=\footnotesize}, axis line style={peSotet}, axis lines=left]
+  \fill[peKiemelH] (axis cs:0,0) rectangle (axis cs:1.6,1.6);
+  \fill[peZoldH!60] (axis cs:1.6,0) rectangle (axis cs:7.4,1.6);
+  \fill[pePirosH] (axis cs:7.4,0) rectangle (axis cs:10,1.6);
+  \addplot[peKiemel, line width=0.9pt, szaggatott] {0.55*(0.5)*(x/1)^(-0.5)*0.9};
+  \addplot[peZold, line width=0.9pt, szaggatott] {0.25};
+  \addplot[pePiros, line width=0.9pt, szaggatott, domain=0.02:10] {0.000045*x^5*1.2};
+  \addplot[peSotet, line width=1.8pt] {0.55*0.5*x^(-0.5)*0.9 + 0.25 + 0.000045*x^5*1.2};
+  \node[font=\scriptsize\bfseries, text=peKiemel, align=center] at (axis cs:0.82,1.42) {I. korai\\meghibá-\\sodások};
+  \node[font=\footnotesize\bfseries, text=peZold, align=center] at (axis cs:4.5,1.45) {II. véletlen meghibásodások\\(közel állandó ráta)};
+  \node[font=\scriptsize\bfseries, text=pePiros, align=center] at (axis cs:8.7,1.42) {III. elhaszná-\\lódás};
+  \node[font=\scriptsize, text=peKiemel] at (axis cs:1.0,0.08) {$\beta<1$};
+  \node[font=\scriptsize, text=peZold] at (axis cs:4.5,0.18) {$\beta=1$};
+  \node[font=\scriptsize, text=pePiros] at (axis cs:9.4,0.4) {$\beta>1$};
+\end{axis}
+\end{tikzpicture}
+\end{document}

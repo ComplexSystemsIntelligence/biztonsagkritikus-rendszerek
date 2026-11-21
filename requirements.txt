@@ -1,0 +1,9 @@
+# A Colab-notebookok újragenerálásához és helyi futtatásához (gyakorlat/notebookok/_keszit.py).
+# A könyvek rendereléséhez nem szükséges: a build csak a Python standard könyvtárát használja.
+numpy>=1.26
+scipy>=1.11
+pandas>=2.1
+matplotlib>=3.8
+nbformat>=5.9
+nbclient>=0.9
+ipykernel>=6.25

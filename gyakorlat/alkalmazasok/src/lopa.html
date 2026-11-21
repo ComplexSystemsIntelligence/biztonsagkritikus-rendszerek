@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LOPA és eseményfa</title>
+<style>/*KOZOS_CSS*/
+td input[type=checkbox]{transform:scale(1.15)}
+tr.nemipl td{color:#9aa1ab}
+</style></head><body>
+<header class="app"><h1>LOPA és eseményfa</h1><p>Biztonságkritikus rendszerek – 9. gyakorlat. Rétegzett védelem elemzése: kezdő esemény, feltételek, független védelmi rétegek (IPL), a biztonsági funkció szükséges PFD-je és SIL-je, valamint a forgatókönyv eseményfája.</p></header>
+<main>
+<div class="kartya"><h2>Forgatókönyv</h2>
+ <div class="racs">
+  <div><label>megnevezés</label><input type="text" id="nev" oninput="szamol()">
+   <label>következmény</label><input type="text" id="kov" oninput="szamol()"></div>
+  <div><label>tolerálható gyakoriság F<sub>tol</sub> [1/év]</label><input type="text" id="ftol" oninput="szamol()">
+   <label>kezdő esemény</label><input type="text" id="ie" oninput="szamol()">
+   <label>a kezdő esemény gyakorisága f<sub>IE</sub> [1/év]</label><input type="text" id="fie" oninput="szamol()"></div>
+ </div>
+ <p><button class="masodlagos" onclick="pelda('rv')">példa: ReaktorVéd hűtésvesztés</button><button class="masodlagos" onclick="pelda('tartaly')">példa: tárolótartály túltöltése</button></p></div>
+<div class="racs">
+ <div class="kartya"><h2>Feltételt teremtő tényezők és feltételes módosítók</h2>
+  <table id="felt"><thead><tr><th>megnevezés</th><th class="szam">valószínűség</th><th>típus</th><th></th></tr></thead><tbody></tbody></table>
+  <button onclick="ujF()">új tényező</button>
+  <label><input type="checkbox" id="modok" onchange="szamol()"> a feltételes módosítók beszámítása engedélyezett</label></div>
+ <div class="kartya"><h2>Független védelmi rétegek</h2>
+  <p class="megj">Egy réteg csak akkor számít be, ha mind a négy kritériumot teljesíti: hatásos (H), független (F), megbízható (M), auditálható (A).</p>
+  <table id="ipl"><thead><tr><th>réteg</th><th class="szam">PFD</th><th>H</th><th>F</th><th>M</th><th>A</th><th></th></tr></thead><tbody></tbody></table>
+  <button onclick="ujIPL()">új réteg</button></div>
+</div>
+<div class="racs">
+ <div class="kartya eredmeny"><h2>Eredmény</h2><div id="eredm"></div></div>
+ <div class="kartya"><h2>A forgatókönyv eseményfája (egyszerűsített)</h2><div id="efa" class="diagram"></div></div>
+</div>
+<div class="kartya"><h2>Gyakoriságok a védelmek sorrendjében</h2><div id="lepcso"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc · A tipikus értékek a CCPS (2001, 2015) irodalmán alapulnak; valós elemzéshez a vállalati, igazolt értékek kellenek.</footer>
+<script>/*KOZOS_JS*/
+let A = {};
+const PELDAK = {
+ rv: {nev: 'ReaktorVéd – hűtővíz-kiesés exoterm fázisban', kov: 'megfutó reakció, reaktorfelhasadás, halálos sérülés lehetősége', ftol: 1e-5, ie: 'hűtővíz-kiesés (szivattyúleállás, áramszünet, beragadt szelep)', fie: 0.1,
+   felt: [['exoterm fázisban van', 0.5, 'feltétel'], ['kezelő a reaktorcsarnokban', 0.25, 'módosító'], ['a sérülés halálos', 0.9, 'módosító']],
+   ipl: [['TAH-103 riasztás és kezelői beavatkozás', 0.1, 1, 1, 1, 1], ['TIC-103 hőmérséklet-szabályozás', 0.1, 1, 0, 1, 1], ['RD-101 hasadótárcsa (kétfázisú méretezés nem igazolt)', 0.01, 0, 1, 0, 1]], modok: false},
+ tartaly: {nev: 'Benzintartály túltöltése töltés közben', kov: 'kiömlés, gőzfelhő, robbanás', ftol: 1e-5, ie: 'a szintszabályozás vagy a töltés felügyeletének hibája', fie: 0.1,
+   felt: [['töltés folyik (az év hányadában)', 0.3, 'feltétel'], ['gyújtás bekövetkezik', 0.3, 'módosító']],
+   ipl: [['magasszint-riasztás a szintmérőről és kezelői leállítás', 0.1, 1, 0, 1, 1], ['független magasszint-kapcsoló, automatikus leállítás', 0.1, 1, 1, 1, 0], ['felfogó gát', 0.01, 0, 1, 1, 1]], modok: false}
+};
+function pelda(k) { A = JSON.parse(JSON.stringify(PELDAK[k])); tolt(); }
+function tolt() { ['nev', 'kov', 'ie'].forEach(k => $(k).value = A[k]); $('ftol').value = fmtIn(A.ftol); $('fie').value = fmtIn(A.fie); $('modok').checked = A.modok; tablak(); }
+function fmtIn(v) { return String(v).replace('.', ','); }
+function ujF() { A.felt.push(['új tényező', 0.5, 'feltétel']); tablak(); }
+function ujIPL() { A.ipl.push(['új réteg', 0.1, 1, 1, 1, 1]); tablak(); }
+function tablak() { const tf = $('felt').querySelector('tbody'); tf.innerHTML = '';
+  A.felt.forEach((f, i) => { const sel = el('select', {onchange: e => { f[2] = e.target.value; szamol(); }}, el('option', {value: 'feltétel'}, 'feltételt teremtő'), el('option', {value: 'módosító'}, 'feltételes módosító')); sel.value = f[2];
+    tf.append(el('tr', {}, el('td', {}, el('input', {type: 'text', value: f[0], oninput: e => { f[0] = e.target.value; szamol(); }})),
+      el('td', {class: 'szam'}, el('input', {type: 'text', value: fmtIn(f[1]), oninput: e => { f[1] = szam(e.target.value); szamol(); }})), el('td', {}, sel),
+      el('td', {}, el('button', {class: 'masodlagos', onclick: () => { A.felt.splice(i, 1); tablak(); }}, 'törlés')))); });
+  const ti = $('ipl').querySelector('tbody'); ti.innerHTML = '';
+  A.ipl.forEach((r, i) => { const cb = j => { const c = el('input', {type: 'checkbox', onchange: e => { r[j] = e.target.checked ? 1 : 0; szamol(); }}); c.checked = !!r[j]; return el('td', {}, c); };
+    ti.append(el('tr', {id: 'ipl' + i}, el('td', {}, el('input', {type: 'text', value: r[0], oninput: e => { r[0] = e.target.value; szamol(); }})),
+      el('td', {class: 'szam'}, el('input', {type: 'text', value: fmtIn(r[1]), oninput: e => { r[1] = szam(e.target.value); szamol(); }})), cb(2), cb(3), cb(4), cb(5),
+      el('td', {}, el('button', {class: 'masodlagos', onclick: () => { A.ipl.splice(i, 1); tablak(); }}, 'törlés')))); });
+  szamol(); }
+function szamol() { ['nev', 'kov', 'ie'].forEach(k => A[k] = $(k).value); A.ftol = szam($('ftol').value); A.fie = szam($('fie').value); A.modok = $('modok').checked;
+  let f = A.fie; const lepes = [{nev: 'kezdő esemény', f}];
+  A.felt.forEach(x => { if (x[2] === 'módosító' && !A.modok) return; f *= x[1]; lepes.push({nev: x[0], f}); });
+  const figy = [];
+  A.ipl.forEach((r, i) => { const ok = r[2] && r[3] && r[4] && r[5]; $('ipl' + i).classList.toggle('nemipl', !ok);
+    if (ok) { f *= r[1]; lepes.push({nev: r[0], f}); } else figy.push(`„${r[0]}” nem számítható be (${['hatásos', 'független', 'megbízható', 'auditálható'].filter((_, j) => !r[j + 2]).join(', ')} feltétel nem teljesül).`); });
+  const rrf = f / A.ftol, pfd = 1 / rrf;
+  let sil = rrf <= 1 ? 'nincs szükség további védelemre' : rrf <= 10 ? 'RRF ≤ 10: SIL-besorolás nélküli védelem is elegendő lehet' : rrf <= 100 ? 'SIL 1' : rrf <= 1000 ? 'SIL 2' : rrf <= 10000 ? 'SIL 3' : rrf <= 100000 ? 'SIL 4' : 'SIL 4-nél is több: a folyamatot át kell tervezni';
+  $('eredm').innerHTML = `<p>Csökkentett gyakoriság biztonsági funkció nélkül: <b>${fmt(f)}</b>/év</p><p>Tolerálható gyakoriság: ${fmt(A.ftol)}/év</p>` +
+    (rrf > 1 ? `<p>A biztonsági funkció szükséges kockázatcsökkentése: RRF ≥ <b>${fmt(rrf)}</b>, azaz PFD ≤ <b>${fmt(pfd)}</b></p><p class="nagyszam">${sil}</p>` : `<p class="nagyszam">${sil}</p>`) +
+    (figy.length ? '<ul>' + figy.map(x => `<li class="hiba">${x}</li>`).join('') + '</ul>' : '') +
+    (!A.modok && A.felt.some(x => x[2] === 'módosító') ? '<p class="megj">A feltételes módosítók most nincsenek beszámítva (vállalati szabály). Bekapcsolásukkal láthatod, mennyire enyhítenék a követelményt.</p>' : '');
+  oszlopdiagram($('lepcso'), lepes.map((l, i) => ({nev: l.nev.length > 34 ? l.nev.slice(0, 33) + '…' : l.nev, ertek: l.f, szin: i ? '#4F7FAD' : '#1B3A57'})), {log: true, vonal: A.ftol, vonalcimke: 'F_tol', balmargo: 230});
+  // eseményfa
+  const fej = ['kezdő esemény', ...A.felt.filter(x => x[2] === 'feltétel' || A.modok).map(x => x[0]), ...A.ipl.filter(r => r[2] && r[3] && r[4] && r[5]).map(r => r[0])];
+  const ps = [...A.felt.filter(x => x[2] === 'feltétel' || A.modok).map(x => ({p: x[1], tip: 'f'})), ...A.ipl.filter(r => r[2] && r[3] && r[4] && r[5]).map(r => ({p: r[1], tip: 'i'}))];
+  const W = 160 + 120 * ps.length + 220, H = 60 + 46 * (ps.length + 1);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px">`; let y0 = 40, x = 20, ag = A.fie;
+  s += `<rect x="${x}" y="${y0 + 46 * ps.length - 14}" width="100" height="28" fill="#285780" rx="3"/><text x="${x + 50}" y="${y0 + 46 * ps.length + 4}" font-size="11" fill="#fff" text-anchor="middle">${fmt(A.fie)}/év</text>`;
+  let cy = y0 + 46 * ps.length, cx = x + 100;
+  ps.forEach((q, i) => { const nx = cx + 120; const yUp = y0 + 46 * (ps.length - i - 1);
+    const pk = q.tip === 'f' ? 1 - q.p : 1 - q.p; const fk = ag * pk; ag = ag * q.p;
+    s += `<path d="M${cx},${cy} H${cx + 20} V${yUp} H${W - 200}" fill="none" stroke="#3E8E63" stroke-width="1.4"/><text x="${cx + 26}" y="${yUp - 4}" font-size="10" fill="#3E8E63">${q.tip === 'f' ? 'nem teljesül' : 'siker'} ${fmt(pk, 3)}</text>`;
+    s += `<text x="${W - 195}" y="${yUp + 4}" font-size="11" fill="#1F2933">${fmt(fk)}/év</text>`;
+    s += `<path d="M${cx},${cy} H${nx}" fill="none" stroke="#B83A3A" stroke-width="1.4"/><text x="${cx + 26}" y="${cy + 14}" font-size="10" fill="#B83A3A">${q.tip === 'f' ? 'teljesül' : 'hiba'} ${fmt(q.p, 3)}</text>`;
+    s += `<text x="${cx + 60}" y="${18}" font-size="10" text-anchor="middle" fill="#1B3A57">${(fej[i + 1] || '').slice(0, 20)}</text>`; cx = nx; });
+  s += `<path d="M${cx},${cy} H${W - 200}" stroke="#B83A3A" stroke-width="2"/><text x="${W - 195}" y="${cy + 4}" font-size="11" font-weight="600" fill="#B83A3A">${fmt(ag)}/év – ${A.kov.slice(0, 28)}</text>`;
+  $('efa').innerHTML = s + '</svg>';
+  ment('lopa', A); }
+const m = betolt('lopa'); if (m && m.ipl) { A = m; tolt(); } else pelda('rv');
+</script></body></html>

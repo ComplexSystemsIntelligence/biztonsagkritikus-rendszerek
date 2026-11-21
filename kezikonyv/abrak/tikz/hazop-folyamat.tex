@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, l/.style={doboz=40mm, font=\scriptsize, minimum height=8mm}]
+  \node[sotetdoboz=40mm, font=\scriptsize] (a) at (0,0) {csomópont kiválasztása a P\&ID-n};
+  \node[l] (b) at (0,-1.15) {a tervezési szándék rögzítése\\{\tiny(paraméterek névleges értékei)}};
+  \node[l] (c) at (0,-2.3) {paraméter $\times$ vezérszó\\$\Rightarrow$ eltérés};
+  \node[kiemeltdoboz=40mm, font=\scriptsize, minimum height=8mm] (d) at (0,-3.45) {okok keresése};
+  \node[pirosdoboz=40mm, font=\scriptsize, minimum height=8mm] (e) at (0,-4.6) {következmények (védelmek nélkül)};
+  \node[zolddoboz=40mm, font=\scriptsize, minimum height=8mm] (f) at (0,-5.75) {meglévő védelmek, kockázat};
+  \node[l] (g) at (0,-6.9) {javaslatok, felelős, határidő};
+  \foreach \u/\v in {a/b,b/c,c/d,d/e,e/f,f/g} \draw[nyil] (\u) -- (\v);
+  \draw[nyil] (g.east) -- ++(1.0,0) |- node[pos=0.27, right, font=\tiny, align=left]{következő\\vezérszó} (c.east);
+  \draw[nyil] (g.east) ++(0,-0.1) -- ++(2.0,-0.0) |- node[pos=0.13, right, font=\tiny, align=left]{következő\\paraméter} (b.east);
+  \draw[nyil] (g.west) -- ++(-1.0,0) |- node[pos=0.25, left, font=\tiny, align=right]{következő\\csomópont} (a.west);
+  \node[szurkedoboz=44mm, font=\tiny, align=left, anchor=north west] at (4.3,0.4) {\textbf{Vezérszavak (IEC 61882)}\\[1pt]
+    NEM, NINCS -- a szándék teljes hiánya\\ TÖBB, KEVESEBB -- mennyiségi eltérés\\ IS (ÉS) -- többlet a szándék mellett\\ RÉSZBEN -- csak részben valósul meg\\ FORDÍTOTT -- ellentétes irány\\ MÁS MINT -- teljes helyettesítés\\ KORÁN, KÉSŐN -- időzítés\\ ELŐBB, KÉSŐBB -- sorrend};
+  \node[szurkedoboz=44mm, font=\tiny, align=left, anchor=north west] at (4.3,-3.2) {\textbf{Tipikus paraméterek}\\[1pt]
+    áramlás, nyomás, hőmérséklet, szint,\\ összetétel, keverés, reakció, idő,\\ sorrend, fázis, jel, energiaellátás,\\ karbantartás, mintavétel, indítás, leállítás};
+\end{tikzpicture}
+\end{document}

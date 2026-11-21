@@ -1,0 +1,42 @@
+# FMEA és FMEDA {#sec-gy-fmea}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- tervezési FMEA-t készíteni egy érzékelőre a harmonizált (AIAG–VDA) lépések szerint;
+- összevetni a kockázat-prioritási számot és a cselekvési prioritás logikáját, és megindokolni az eltéréseket;
+- FMEDA-táblázatból kiszámolni a $\lambda_S$, $\lambda_{DD}$, $\lambda_{DU}$, DC és SFF értékét, és értékelni a diagnosztikai fejlesztéseket.
+:::
+
+**Háttér:** [a kézikönyv 6. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/06-fmea.html).
+
+## Alkalmazás: FMEA-munkalap
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/fmea.html" title="FMEA-munkalap" loading="lazy" style="width:100%;height:1250px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/fmea.html)
+
+## Feladatok az alkalmazással
+
+1. Töltsd be a VészFék radarérzékelő példáját. Keresd meg azokat a sorpárokat, ahol az RPN és a cselekvési prioritás sorrendje ellentmond egymásnak, és magyarázd meg az okát.
+2. Készíts saját FMEA-t a VészFék **kamerájára** vagy a KoboCella **lézerszkennerére** legalább nyolc meghibásodási móddal. Minden módnál add meg a megelőző és az észlelő intézkedést.
+3. Válassz ki két magas prioritású sort, és javasolj intézkedéseket először a súlyosság, majd az előfordulás, végül az észlelés csökkentésére. Hogyan változik az RPN és a prioritás?
+4. Figyeld meg az RPN-értékek eloszlását az alkalmazás alján: miért félrevezető az „RPN > 100” típusú küszöb?
+
+## Notebook: FMEDA
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/04_fmeda.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/04_fmeda.ipynb)
+
+A notebook a TT-101 távadó FMEDA-ját számolja végig (DC = 60%, SFF = 73,3%), majd megmutatja a két távadó eltérésfigyelésének és egy jobb A/D-ellenőrzésnek a hatását.
+
+::: {.prompt title="Mintapromptok"}
+*„Egy autóipari radarérzékelő tervezési FMEA-ját készítem. Az alábbi meghibásodási módokat azonosítottam: […]. Milyen fontos meghibásodási módok hiányozhatnak a listámból (környezeti hatások, öregedés, szoftver, interfészek)? Mindegyiknél add meg, mi alapján gondolod, és jelöld, ha bizonytalan vagy.”*
+
+*„Magyarázd el, miért lehet egy alacsony RPN-ű, de 10-es súlyosságú meghibásodási mód fontosabb, mint egy 300-as RPN-ű, 4-es súlyosságú! Hivatkozz az AIAG–VDA módszertan elveire, de konkrét táblázatértéket ne idézz fejből.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó FMEA-ban a hatás és az ok egyértelműen elkülönül, a súlyosság a hatáshoz, az előfordulás az okhoz, az észlelés az intézkedéshez kötődik; a prioritásoknál a súlyosság az elsődleges; az FMEDA-nál pedig minden veszélyes módhoz konkrét diagnosztika és lefedettség tartozik.

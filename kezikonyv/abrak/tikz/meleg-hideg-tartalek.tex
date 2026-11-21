@@ -1,0 +1,14 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[width=10cm, height=6cm, domain=0:40000, samples=100, xmin=0, xmax=40000, ymin=0, ymax=1.02,
+  xlabel={$t$ [h]}, ylabel={$R(t)$}, scaled x ticks=false, xtick={0,10000,20000,30000,40000}, xticklabels={0,10\,000,20\,000,30\,000,40\,000},
+  tick label style={font=\footnotesize}, label style={font=\footnotesize}, grid=major, grid style={peSzurkeH}, axis line style={peSotet},
+  legend style={font=\scriptsize, draw=none, fill=white, fill opacity=0.9, at={(0.98,0.98)}, anchor=north east}, legend cell align=left]
+  \addplot[peSotet, line width=1.2pt, szaggatott] {exp(-1e-4*x)}; \addlegendentry{egy elem, MTTF $=1/\lambda$}
+  \addplot[peKek, line width=1.4pt] {1-(1-exp(-1e-4*x))^2}; \addlegendentry{meleg tartalék, MTTF $=1{,}5/\lambda$}
+  \addplot[peZold, line width=1.4pt] {exp(-1e-4*x)*(1+1e-4*x)}; \addlegendentry{hideg tartalék (ideális kapcsoló), MTTF $=2/\lambda$}
+\end{axis}
+\end{tikzpicture}
+\end{document}

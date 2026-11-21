@@ -1,0 +1,32 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\ki#1{\fill[peSotet] #1 circle (0.06);}
+  \begin{scope}
+    \node[panelcim] at (-0.3,1.6) {(a) hídkapcsolás};
+    \node[blokk] (A) at (1.4,0.8) {A}; \node[blokk] (B) at (3.8,0.8) {B};
+    \node[blokk] (C) at (1.4,-0.8) {C}; \node[blokk] (D) at (3.8,-0.8) {D};
+    \node[blokk, minimum width=9mm] (E) at (2.6,0) {E};
+    \draw[rbdel] (0,0) -- (0.5,0) (0.5,0.8) -- (0.5,-0.8) (0.5,0.8) -- (A) (0.5,-0.8) -- (C);
+    \draw[rbdel] (A) -- (2.6,0.8) -- (B) (C) -- (2.6,-0.8) -- (D);
+    \draw[rbdel] (2.6,0.8) -- (E) -- (2.6,-0.8);
+    \draw[rbdel] (B) -- (4.7,0.8) -- (4.7,-0.8) -- (D) (4.7,0) -- (5.2,0);
+    \ki{(0,0)} \ki{(5.2,0)}
+    \node[font=\scriptsize, anchor=north, align=center] at (2.6,-1.35) {minimális utak: \{A,B\}, \{C,D\}, \{A,E,D\}, \{C,E,B\}};
+  \end{scope}
+  \begin{scope}[shift={(7.2,0.9)}]
+    \node[panelcim] at (-0.3,0.7) {(b) E működik};
+    \node[blokk] (A2) at (0.9,0.0) {A}; \node[blokk] (C2) at (0.9,-0.8) {C};
+    \node[blokk] (B2) at (2.8,0.0) {B}; \node[blokk] (D2) at (2.8,-0.8) {D};
+    \draw[rbdel] (-0.3,-0.4) -- (0.1,-0.4) (0.1,0) -- (0.1,-0.8) (0.1,0) -- (A2) (0.1,-0.8) -- (C2) (A2) -- (1.85,0) (C2) -- (1.85,-0.8) (1.85,0) -- (1.85,-0.8) (1.85,0) -- (B2) (1.85,-0.8) -- (D2) (B2) -- (3.6,0) (D2) -- (3.6,-0.8) (3.6,0) -- (3.6,-0.8) (3.6,-0.4) -- (4.0,-0.4);
+  \end{scope}
+  \begin{scope}[shift={(7.2,-1.55)}]
+    \node[panelcim] at (-0.3,0.7) {(c) E hibás};
+    \node[blokk] (A3) at (0.9,0.0) {A}; \node[blokk] (B3) at (2.3,0.0) {B};
+    \node[blokk] (C3) at (0.9,-0.8) {C}; \node[blokk] (D3) at (2.3,-0.8) {D};
+    \draw[rbdel] (-0.3,-0.4) -- (0.1,-0.4) (0.1,0) -- (0.1,-0.8) (0.1,0) -- (A3) -- (B3) -- (3.1,0) (0.1,-0.8) -- (C3) -- (D3) -- (3.1,-0.8) (3.1,0) -- (3.1,-0.8) (3.1,-0.4) -- (3.5,-0.4);
+  \end{scope}
+  \node[font=\footnotesize, anchor=north] at (6.0,-2.9) {$R = p_E \cdot R(\text{b}) + (1-p_E)\cdot R(\text{c})$};
+\end{tikzpicture}
+\end{document}

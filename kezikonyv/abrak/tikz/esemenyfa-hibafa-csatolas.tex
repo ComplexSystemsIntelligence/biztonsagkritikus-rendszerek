@@ -1,0 +1,43 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, ag/.style={draw=peKek, line width=0.7pt}, agp/.style={font=\tiny, text=peSzurke}]
+  % eseményfa
+  \node[font=\scriptsize\bfseries, text=peSotet, align=center, anchor=south] at (0.4,0.3) {kezdő\\esemény};
+  \node[font=\scriptsize\bfseries, text=peSotet, align=center, anchor=south] at (2.5,0.3) {A: riasztás és\\kezelő};
+  \node[font=\scriptsize\bfseries, text=peSotet, align=center, anchor=south] at (5.0,0.3) {B: biztonsági\\funkció};
+  \node[font=\scriptsize\bfseries, text=peSotet, anchor=south west] at (6.4,0.3) {sorozat};
+  \draw[peSzurke, line width=0.4pt] (-0.4,0.25) -- (9.6,0.25);
+  \node[draw=peSotet, fill=peKek, text=white, font=\scriptsize\bfseries, inner sep=3pt] (ie) at (0.4,-1.2) {IE};
+  \draw[ag] (ie) -- (1.5,-1.2);
+  \draw[ag] (1.5,-1.2) |- (6.4,-0.4); \draw[ag] (1.5,-1.2) |- (3.8,-2.0);
+  \draw[ag] (3.8,-2.0) |- (6.4,-1.6); \draw[ag, draw=pePiros, line width=0.9pt] (3.8,-2.0) |- (6.4,-2.6);
+  \node[font=\scriptsize, anchor=west] at (6.4,-0.4) {S1: kezelői leállítás};
+  \node[font=\scriptsize, anchor=west] at (6.4,-1.6) {S2: automatikus leállítás};
+  \node[font=\scriptsize, anchor=west, text=pePiros] at (6.4,-2.6) {\textbf{S3} $=\mathrm{IE}\cdot\bar{A}\cdot\bar{B}$};
+  % hibafák
+  \begin{scope}[shift={(2.5,-4.0)}]
+    \node[fa esemeny=22mm, minimum height=7mm, font=\scriptsize] (fa) at (0,0) {A nem sikerül};
+    \node[vagy kapu] (ga) at (0,-0.85) {}; \draw[fael] (fa) -- (ga.output);
+    \node[fa alap, minimum size=8mm, font=\tiny\bfseries] (a1) at (-0.6,-1.95) {A$'$};
+    \node[fa ismetlodo, minimum size=8mm, font=\tiny\bfseries] (e1) at (0.6,-1.95) {E};
+    \draw[fael] (ga.input 1) |- ++(0,-0.2) -| (a1); \draw[fael] (ga.input 2) |- ++(0,-0.2) -| (e1);
+  \end{scope}
+  \begin{scope}[shift={(5.0,-4.0)}]
+    \node[fa esemeny=22mm, minimum height=7mm, font=\scriptsize] (fb) at (0,0) {B nem sikerül};
+    \node[vagy kapu] (gb) at (0,-0.85) {}; \draw[fael] (fb) -- (gb.output);
+    \node[fa ismetlodo, minimum size=8mm, font=\tiny\bfseries] (e2) at (-0.6,-1.95) {E};
+    \node[fa alap, minimum size=8mm, font=\tiny\bfseries] (b1) at (0.6,-1.95) {B$'$};
+    \draw[fael] (gb.input 1) |- ++(0,-0.2) -| (e2); \draw[fael] (gb.input 2) |- ++(0,-0.2) -| (b1);
+  \end{scope}
+  \draw[peSzurke, dashed, line width=0.5pt] (2.5,-2.0) -- (fa.north); \draw[peSzurke, dashed, line width=0.5pt] (5.0,-2.6) -- (fb.north);
+  \draw[peKiemel, line width=0.9pt, {Stealth[length=2mm]}-{Stealth[length=2mm]}] (e1.south) .. controls +(0,-0.8) and +(0,-0.8) .. (e2.south);
+  \node[font=\tiny, text=peKiemel, align=center] at (3.75,-6.95) {közös támogató rendszer (tápellátás, műszerlevegő)};
+  % számpélda
+  \node[draw=peSzurke, fill=peSzurkeH, font=\scriptsize, align=left, anchor=north west, text width=50mm, inner sep=4pt] at (7.6,-3.4) {
+    $q_E = 10^{-3}$, $q_{A'} = 0{,}1$, $q_{B'} = 10^{-3}$\\[3pt]
+    \textbf{hibás:} $P(\bar A)\,P(\bar B) = 0{,}1009 \cdot 0{,}0020$\\ \hspace*{4.2em}$= 2{,}0\cdot 10^{-4}$\\[3pt]
+    \textbf{helyes:} $P(E + A'B') \approx 10^{-3} + 10^{-4}$\\ \hspace*{4.2em}$= 1{,}1\cdot 10^{-3}$\\[3pt]
+    a függetlenségi feltevés ötszörösen alábecsüli a sorozat valószínűségét};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,42 @@
+# PFD és SIL-igazolás {#sec-gy-sil}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- egy biztonsági funkció PFD<sub>avg</sub>-értékét az IEC 61508-6 képleteivel kiszámolni;
+- ellenőrizni az architekturális korlátokat, és becsülni a téves leállások gyakoriságát;
+- érzékenységvizsgálattal és Monte Carlo-szimulációval megítélni az igazolás robusztusságát;
+- javaslatot tenni a tesztelési stratégiára (próbaidőköz, részleges löketpróba, a próba lefedettsége).
+:::
+
+**Háttér:** [a kézikönyv 13. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/13-sil.html).
+
+## Alkalmazás: PFD- és SIL-kalkulátor
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/sil.html" title="PFD- és SIL-kalkulátor" loading="lazy" style="width:100%;height:1500px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/sil.html)
+
+## Feladatok az alkalmazással
+
+1. Töltsd be a ReaktorVéd példát, és ellenőrizd a kézikönyv értékeit (PFD = $1{,}37\cdot10^{-3}$, RRF = 731, STR = 0,133/év).
+2. Állítsd a szelepek próbalefedettségét 0,9-re. Teljesül-e a követelmény? Ezután adj meg havi részleges löketpróbát 0,6-os lefedettséggel (PST időköz 730 h, DC<sub>PST</sub> 0,6, PTC 1). Mekkora a tartalék?
+3. Cseréld a távadók architektúráját 2oo3-ra. Hogyan változik a PFD és a téves leállások gyakorisága?
+4. Redundáns tápellátásnál két tápegység egyidejű kiesése kell a téves leálláshoz: az egyéb téves leállási ráta $2\cdot(2\lambda_{PSU}^2\,\text{MTTR}) = 8\cdot10^{-10}$/h ($\lambda_{PSU} = 5\cdot10^{-6}$/h, MTTR = 8 h). Írd be ezt az értéket: ellenőrizd, hogy az MTTF<sub>S</sub> a kézikönyv szerinti mintegy 22 év lesz, és nézd meg, melyik alrendszer vált dominánssá.
+5. A tornádódiagram alapján fogalmazd meg, mely üzemeltetési feltevéseket kell a biztonsági érvelésben mutatóval követni!
+
+## Notebook: SIL-igazolás és bizonytalanság
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/11_sil.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/11_sil.ipynb)
+
+A notebook a képleteket reprodukálja, tornádódiagramot rajzol, és Monte Carlo-szimulációval megmutatja, hogy a bizonytalanság figyelembevételével mekkora a valószínűsége a követelmény túllépésének.
+
+::: {.prompt title="Mintaprompt"}
+*„Egy biztonsági funkció PFD-számítását végeztem: [adatok, architektúrák, eredmény]. Készíts listát azokról a feltevésekről, amelyekre a számítás épül (például a próba lefedettsége, a javítási idő, a közös okú tényezők, az adatok forrása), és mindegyikhez javasolj egy üzem közben mérhető mutatót! Szabványpontra csak akkor hivatkozz, ha biztos vagy benne.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó igazolás mindhárom pillért (PFD, architekturális korlátok, szisztematikus képesség) kezeli, minden adat forrását rögzíti, az érzékenységvizsgálatból üzemeltetési követelményeket vezet le, és a téves leállásokat is értékeli.

@@ -1,0 +1,51 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  fej/.style={font=\scriptsize\bfseries, text=peSotet, align=center, text width=17mm, anchor=south},
+  ag/.style={draw=peKek, line width=0.7pt},
+  agp/.style={font=\tiny, text=peSzurke},
+  vege/.style={font=\scriptsize, anchor=west, text width=46mm},
+  frek/.style={font=\scriptsize\bfseries, anchor=west}]
+  % fejlécek
+  \node[fej] at (0.6,0.4) {kezdő esemény};
+  \node[fej] at (2.55,0.4) {exoterm fázisban van};
+  \node[fej] at (4.45,0.4) {riasztás és kezelő beavatkozik};
+  \node[fej] at (6.35,0.4) {a biztonsági funkció leállít};
+  \node[fej] at (8.25,0.4) {kezelő a csarnokban};
+  \node[fej, text width=13mm] at (9.9,0.4) {halálos sérülés};
+  \node[font=\scriptsize\bfseries, text=peSotet, anchor=south west] at (10.6,0.4) {kimenet};
+  \node[font=\scriptsize\bfseries, text=peSotet, anchor=south east] at (16.4,0.4) {gyakoriság [1/év]};
+  \draw[peSzurke, line width=0.4pt] (-0.4,0.35) -- (16.4,0.35);
+  \foreach \x in {1.6,3.5,5.4,7.3,9.2} \draw[peSzurkeH, line width=0.4pt] (\x,0.35) -- (\x,-7.4);
+  % kezdő esemény
+  \node[draw=peSotet, fill=peKek, text=white, font=\scriptsize\bfseries, align=center, inner sep=3pt] (ie) at (0.6,-1.6) {hűtővíz-\\kiesés\\$0{,}1$/év};
+  % ágak: felfelé = kedvező
+  \draw[ag] (ie.east) -- (1.6,-1.6);
+  % exoterm: fel = nem (0.0,5), le = igen (0.0,5)
+  \draw[ag] (1.6,-1.6) |- (10.6,-0.3); \node[agp, above] at (2.1,-0.3) {nem $0{,}5$};
+  \draw[ag] (1.6,-1.6) |- (3.5,-2.6); \node[agp, below] at (2.1,-2.6) {igen $0{,}5$};
+  % riasztás: fel = siker 0,9
+  \draw[ag] (3.5,-2.6) |- (10.6,-1.3); \node[agp, above] at (4.0,-1.3) {siker $0{,}9$};
+  \draw[ag] (3.5,-2.6) |- (5.4,-3.6); \node[agp, below] at (4.0,-3.6) {hiba $0{,}1$};
+  % SIF
+  \draw[ag] (5.4,-3.6) |- (10.6,-2.6); \node[agp, above] at (6.0,-2.6) {siker};
+  \draw[ag] (5.4,-3.6) |- (7.3,-4.8); \node[agp, below] at (6.3,-4.8) {hiba $1{,}37\cdot10^{-3}$};
+  % kezelő jelenléte: fel = nincs jelen 0,75
+  \draw[ag] (7.3,-4.8) |- (10.6,-4.0); \node[agp, above] at (7.95,-4.0) {nincs jelen $0{,}75$};
+  \draw[ag] (7.3,-4.8) |- (9.2,-5.9); \node[agp, below] at (7.95,-5.9) {jelen van $0{,}25$};
+  % halálos
+  \draw[ag] (9.2,-5.9) |- (10.6,-5.3); \node[agp, above] at (9.75,-5.3) {nem $0{,}1$};
+  \draw[ag, draw=pePiros, line width=0.9pt] (9.2,-5.9) |- (10.6,-6.6); \node[agp, below] at (9.75,-6.6) {igen $0{,}9$};
+  % kimenetek
+  \node[vege] at (10.6,-0.3) {nincs veszélyes következmény};      \node[frek, anchor=east] at (16.4,-0.3) {$5{,}0\cdot10^{-2}$};
+  \node[vege] at (10.6,-1.3) {kezelői leállítás};                 \node[frek, anchor=east] at (16.4,-1.3) {$4{,}5\cdot10^{-2}$};
+  \node[vege] at (10.6,-2.6) {automatikus leállítás (termeléskiesés)}; \node[frek, anchor=east] at (16.4,-2.6) {$5{,}0\cdot10^{-3}$};
+  \node[vege, text=peKiemel] at (10.6,-4.0) {felhasadás, személyi sérülés nélkül}; \node[frek, anchor=east, text=peKiemel] at (16.4,-4.0) {$5{,}1\cdot10^{-6}$};
+  \node[vege, text=peKiemel] at (10.6,-5.3) {felhasadás, súlyos sérülés};   \node[frek, anchor=east, text=peKiemel] at (16.4,-5.3) {$1{,}7\cdot10^{-7}$};
+  \node[vege, text=pePiros] at (10.6,-6.6) {\textbf{felhasadás, halálos sérülés}}; \node[frek, anchor=east, text=pePiros] at (16.4,-6.6) {$1{,}5\cdot10^{-6}$};
+  % összegzés
+  \draw[decorate, decoration={brace, amplitude=4pt, mirror}, peSzurke, line width=0.6pt] (16.55,-3.85) -- (16.55,-6.75);
+  \node[font=\tiny, align=left, anchor=west, text=peSotet] at (16.7,-5.3) {reaktor-\\felhasadás\\$6{,}8\cdot10^{-6}$/év};
+\end{tikzpicture}
+\end{document}

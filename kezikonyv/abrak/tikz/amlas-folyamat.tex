@@ -1,0 +1,17 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[node distance=4mm and 6mm, every node/.append style={font=\footnotesize}]
+  \node[sotetdoboz=34mm, font=\footnotesize\bfseries] (a) {1. a gépi tanulás biztonsági hatóköre};
+  \node[doboz=34mm, right=of a] (b) {2. biztonsági követelmények a gépi tanulási komponensre};
+  \node[doboz=34mm, right=of b] (c) {3. adatkezelés: relevancia, teljesség, pontosság, egyensúly};
+  \node[doboz=34mm, below=of c] (d) {4. a modell tanítása};
+  \node[doboz=34mm, left=of d] (e) {5. a modell verifikációja: teszt, robusztusság, formális módszerek};
+  \node[doboz=34mm, left=of e] (f) {6. telepítés: integráció, üzem közbeni megfigyelés};
+  \node[zolddoboz=72mm, below=of e] (g) {minden lépés kimenete: a lépés biztonsági érvelése és bizonyítékai (GSN-minta)};
+  \draw[nyil] (a) -- (b); \draw[nyil] (b) -- (c); \draw[nyil] (c) -- (d); \draw[nyil] (d) -- (e); \draw[nyil] (e) -- (f);
+  \draw[nyilv, szaggatott] (f.north) -- node[left, font=\scriptsize, text=peSzurke]{visszacsatolás} (a.south);
+  \draw[nyilv, szaggatott] (e.north) -- (b.south);
+  \foreach \x in {d,e,f} \draw[nyilv] (\x.south) -- (\x.south |- g.north);
+\end{tikzpicture}
+\end{document}

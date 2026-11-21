@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \fill[pePirosH] (-3.2,6) -- (3.2,6) -- (2.33,4.37) -- (-2.33,4.37) -- cycle;
+  \fill[peSargaH] (-2.33,4.37) -- (2.33,4.37) -- (0.85,1.6) -- (-0.85,1.6) -- cycle;
+  \fill[peZoldH] (-0.85,1.6) -- (0.85,1.6) -- (0,0) -- cycle;
+  \draw[peSotet, line width=0.8pt] (-3.2,6) -- (3.2,6) -- (0,0) -- cycle;
+  \draw[white, line width=1.5pt] (-2.33,4.37) -- (2.33,4.37) (-0.85,1.6) -- (0.85,1.6);
+  \node[font=\footnotesize\bfseries, text=pePiros, align=center] at (0,5.2) {nem tolerálható\\tartomány};
+  \node[font=\footnotesize\bfseries, text=peSarga!60!black, align=center] at (0,3.0) {tolerálható,\\ha ALARP};
+  \node[font=\scriptsize\bfseries, text=peZold, align=center] at (0,0.75) {általánosan\\elfogadható};
+  % jobb oldali magyarázatok
+  \node[font=\scriptsize, align=left, anchor=west, text width=60mm] at (3.5,5.2) {a kockázat csak rendkívüli körülmények között vállalható; csökkenteni kell, bármibe kerül};
+  \node[font=\scriptsize, align=left, anchor=west, text width=60mm] at (3.0,3.0) {a kockázat akkor vállalható, ha a további csökkentés költsége \emph{durva aránytalanságban} állna a nyert biztonsággal};
+  \node[font=\scriptsize, align=left, anchor=west, text width=60mm] at (1.5,0.75) {nincs szükség részletes ALARP-igazolásra, de a kockázatot figyelemmel kell kísérni};
+  % határértékek
+  \draw[peSotet, line width=0.5pt] (-2.33,4.37) -- (-4.4,4.37);
+  \draw[peSotet, line width=0.5pt] (-0.85,1.6) -- (-4.4,1.6);
+  \node[font=\scriptsize, align=right, anchor=east] at (-4.45,4.37) {munkavállaló: $10^{-3}$/év\\lakosság: $10^{-4}$/év};
+  \node[font=\scriptsize, align=right, anchor=east] at (-4.45,1.6) {$10^{-6}$/év};
+  \node[font=\tiny, text=peSzurke, align=right, anchor=east] at (-4.45,5.7) {egyéni halálozási\\kockázat (HSE, R2P2)};
+  \draw[nyil] (-3.6,0.2) -- (-3.6,5.8);
+  \node[font=\tiny, rotate=90, anchor=south] at (-3.75,3.0) {növekvő egyéni kockázat};
+\end{tikzpicture}
+\end{document}

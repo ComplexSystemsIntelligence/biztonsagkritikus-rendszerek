@@ -1,0 +1,41 @@
+# Balesetelemzés három szemüvegen át {#sec-gy-baleset}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- egy nyilvános balesetvizsgálati jelentésből az eseménysort, az aktív hibákat és a látens feltételeket kiemelni;
+- ugyanazt a balesetet a sajtszelet-modell és a STAMP szemléletével is értelmezni, és megmagyarázni a két magyarázat különbségét;
+- a tanulságokat ellenőrizhető tervezési és szervezeti követelményekké alakítani;
+- egy nagy nyelvi modellt kritikus olvasótársként használni, a forrásra visszakereshető állításokkal.
+:::
+
+**Háttér:** [a kézikönyv 1. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/01-balesetek.html) (balesetmodellek) és [7. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/07-stpa.html) (STAMP és STPA).
+
+## Választható jelentések
+
+Válassz egyet az alábbi, nyilvánosan elérhető vizsgálati jelentések közül (vagy egy hasonló terjedelmű másikat, a gyakorlatvezetővel egyeztetve):
+
+- a texasi finomító 2005-ös robbanásáról szóló CSB-jelentés [@csb2007];
+- a Buncefield-olajtároló 2005-ös robbanásáról szóló vizsgálóbizottsági zárójelentés [@buncefield2008];
+- az Air France 447 2009-es katasztrófájáról szóló BEA-zárójelentés [@bea2012];
+- az Uber automatizált tesztjárművének 2018-as tempei balesetéről szóló NTSB-jelentés [@ntsb2019];
+- az Ariane 5 501-es repüléséről szóló vizsgálóbizottsági jelentés [@lions1996].
+
+## Feladatok
+
+1. **Eseménysor.** Készíts időrendi táblázatot a baleset közvetlen előzményeiről (legalább tíz esemény): időpont, esemény, szereplő, forrás (a jelentés oldalszáma).
+2. **Sajtszelet-modell.** Gyűjtsd össze a frontvonalbeli aktív hibákat és a látens feltételeket (tervezési, karbantartási, szervezeti, szabályozói). Rendezd őket rétegekbe, és jelöld, melyik „lyuk” mióta állt fenn.
+3. **Irányítási struktúra.** Rajzold fel a releváns irányítási struktúrát legalább négy szinten (például üzemeltetői kezelő, műszakvezető, üzemvezetés, vállalati vezetés, hatóság). Minden szinten add meg az irányítási műveleteket és a visszacsatolásokat.
+4. **Nem biztonságos irányítás.** Legalább három szinten azonosíts egy-egy nem biztonságos irányítási műveletet, és magyarázd meg, miért volt a döntéshozó folyamatmodellje hibás (milyen információ hiányzott, torzult vagy késett).
+5. **Összevetés.** Egy rövid bekezdésben hasonlítsd össze a két magyarázatot: mit tesz láthatóvá a STAMP, amit a sajtszelet-modell nem, és fordítva?
+6. **Követelmények.** Fogalmazz meg legalább öt tanulságot ellenőrizhető követelményként („A …-nak … kell …, amit … igazol”). Legalább egy szervezeti, egy emberi tényezői és egy műszaki követelmény legyen köztük.
+
+::: {.prompt title="A modell mint kritikus olvasótárs"}
+*„Egy balesetvizsgálati jelentést elemzek: [a jelentés címe]. Az eseménysor általam készített összefoglalóját alább másolom. Kérlek, (1) jelöld, mely állításaim nem következnek egyértelműen a jelentésből, (2) kérdezz rá, hol hiányzik forrás, (3) javasolj további látens feltételeket, de mindegyiknél add meg, a jelentés melyik részéből következtetsz rá; ha nem tudod, írd, hogy ez feltételezés. Ne találj ki idézetet vagy oldalszámot.”*
+
+*„Az alábbi irányítási struktúrát rajzoltam fel a balesethez: […]. Milyen visszacsatolások hiányoznak belőle? Melyik szinten látsz olyan irányítási műveletet, amelynek nincs megfelelő visszacsatolása?”*
+:::
+
+## Ellenőrző szempontok
+
+Egy jó megoldásban az eseménysor minden eleme forrásra visszakereshető; a látens feltételek nem csak a frontvonalat érintik; az irányítási struktúra visszacsatolásokat is tartalmaz; a nem biztonságos irányítási műveletek kontextussal együtt vannak megfogalmazva; és a követelmények ellenőrizhetők, nem általános jókívánságok („legyen jobb a biztonsági kultúra”).

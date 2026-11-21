@@ -1,0 +1,38 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+  % (a) iso-kockázati görbék log-log térben
+  \begin{scope}
+  \node[panelcim] at (0,5.6) {(a) Kockázati térkép};
+  \fill[pePirosH] (0,0) rectangle (5,5);
+  \fill[peSargaH] (0,0) -- (0,4.2) .. controls (1.5,2.3) and (2.6,1.5) .. (5,1.0) -- (5,0) -- cycle;
+  \fill[peZoldH] (0,0) -- (0,2.6) .. controls (1,1.4) and (2,0.9) .. (5,0.35) -- (5,0) -- cycle;
+  \draw[pePiros, line width=1pt] (0,4.2) .. controls (1.5,2.3) and (2.6,1.5) .. (5,1.0);
+  \draw[peZold!70!black, line width=1pt] (0,2.6) .. controls (1,1.4) and (2,0.9) .. (5,0.35);
+  \draw[nyil] (0,0) -- (5.3,0) node[anchor=north east, font=\scriptsize] at (5.3,-0.1) {következmény súlyossága (log)};
+  \draw[nyil] (0,0) -- (0,5.3) node[anchor=south east, rotate=90, font=\scriptsize] at (-0.1,5.3) {gyakoriság (log)};
+  \node[font=\scriptsize\bfseries, text=pePiros] at (3.6,3.8) {nem tolerálható};
+  \node[font=\scriptsize\bfseries, text=peSarga!70!black, rotate=-22] at (2.5,1.55) {ALARP-tartomány};
+  \node[font=\scriptsize\bfseries, text=peZold, rotate=-16] at (1.2,0.7) {elfogadható};
+  \node[font=\tiny, text=peSzurke, align=left, anchor=west] at (0.1,4.75) {iso-kockázati görbe: $F\cdot C^{\alpha}=\text{áll.}$};
+  \end{scope}
+  % (b) mátrix közelítés
+  \begin{scope}[shift={(7.2,0)}]
+  \node[panelcim] at (0,5.6) {(b) A görbék közelítése cellákkal};
+  \def\c#1#2#3{\fill[#3] (#1,#2) rectangle ++(1,1);}
+  % sor (gyakoriság 1..5 alulról), oszlop (súlyosság 1..5 balról)
+  \foreach \i in {0,...,4} \foreach \j in {0,...,4} {
+    \pgfmathtruncatemacro{\s}{\i+\j}
+    \ifnum\s<3 \c{\i}{\j}{peZoldH} \else \ifnum\s<6 \c{\i}{\j}{peSargaH} \else \c{\i}{\j}{pePirosH} \fi\fi }
+  \draw[white, line width=1pt] (0,0) grid (5,5);
+  \draw[peSotet, line width=0.6pt] (0,0) rectangle (5,5);
+  \foreach \i/\t in {0/elhanya-\\golható,1/csekély,2/jelentős,3/súlyos,4/katasztro-\\fális}
+    \node[font=\tiny, align=center, anchor=north] at (\i+0.5,-0.05) {\t};
+  \foreach \j/\t in {0/{valószínűtlen},1/{távoli},2/{alkalmi},3/{valószínű},4/{gyakori}}
+    \node[font=\tiny, anchor=east] at (-0.05,\j+0.5) {\t};
+  \draw[pePiros, line width=1pt, opacity=0.8] (0,4.2) .. controls (1.5,2.3) and (2.6,1.5) .. (5,1.0);
+  \draw[peZold!70!black, line width=1pt, opacity=0.8] (0,2.6) .. controls (1,1.4) and (2,0.9) .. (5,0.35);
+  \end{scope}
+\end{tikzpicture}
+\end{document}

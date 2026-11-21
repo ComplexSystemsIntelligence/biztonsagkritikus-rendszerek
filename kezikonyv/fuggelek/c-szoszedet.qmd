@@ -1,0 +1,110 @@
+# Magyar–angol szószedet {#sec-szoszedet}
+
+A könyv a magyar szakszavakat használja, és első előfordulásukkor megadja az angol megfelelőjüket. Ez a szószedet a fontosabb fogalmakat gyűjti össze ábécérendben. Ahol a szakirodalomban az angol rövidítés terjedt el, azt is feltüntetjük.
+
+| Magyar | Angol | Rövidítés |
+|:--|:--|:--|
+| alacsony igénybevételű üzemmód | low demand mode | |
+| alapesemény | basic event | |
+| alapfolyamat-irányító rendszer | basic process control system | BPCS |
+| átlagos javítási (helyreállítási) idő | mean time to restoration | MTTR |
+| átlagos meghibásodásig eltelt idő | mean time to failure | MTTF |
+| automatizálási torzítás | automation bias | |
+| bináris döntési diagram | binary decision diagram | BDD |
+| biztonsági érvelés | safety case | |
+| biztonsági funkció | safety function | |
+| biztonsági integritási szint | safety integrity level | SIL |
+| biztonsági követelményspecifikáció | safety requirements specification | SRS |
+| biztonsági műszeres funkció | safety instrumented function | SIF |
+| biztonsági műszeres rendszer | safety instrumented system | SIS |
+| biztonsági teljesítménymutató | safety performance indicator | SPI |
+| biztonságos meghibásodási hányad | safe failure fraction | SFF |
+| célstruktúra-jelölés | goal structuring notation | GSN |
+| csokornyakkendő-diagram | bow-tie diagram | |
+| csúcsesemény | top event | |
+| diagnosztikai lefedettség | diagnostic coverage | DC |
+| eloszláseltolódás | distributional shift | |
+| emberi hibavalószínűség | human error probability | HEP |
+| emberi megbízhatóság elemzése | human reliability analysis | HRA |
+| energia–gát modell | energy–barrier model | |
+| eseményfa-elemzés | event tree analysis | ETA |
+| eszkalációs tényező | escalation factor | |
+| fejlesztési biztosítottsági szint | development assurance level | DAL |
+| felfedett veszélyes meghibásodás | dangerous detected failure | DD |
+| feltételes módosító | conditional modifier | |
+| feltételt teremtő tényező | enabling condition | |
+| folyamatbiztonsági idő | process safety time | |
+| funkcionális biztonság | functional safety | |
+| funkcionális biztonsági értékelés | functional safety assessment | FSA |
+| funkcionális veszélyelemzés | functional hazard assessment | FHA |
+| független védelmi réteg | independent protection layer | IPL |
+| gépi tanulás | machine learning | ML |
+| hardveres hibatűrés | hardware fault tolerance | HFT |
+| helyzetismeret | situation awareness | |
+| hibabiztos | fail-safe | |
+| hibafa-elemzés | fault tree analysis | FTA |
+| hibamód-, hatás- és diagnosztikai elemzés | failure modes, effects and diagnostic analysis | FMEDA |
+| hibamód- és hatáselemzés | failure mode and effects analysis | FMEA |
+| hibára elnémuló | fail-silent | |
+| hibatényező | error factor | EF |
+| hibatűrési időkeret | fault tolerant time interval | FTTI |
+| hibatűrő (működőképes) | fail-operational | |
+| igénykori meghibásodás átlagos valószínűsége | average probability of dangerous failure on demand | PFD~avg~ |
+| inherens biztonság | inherent safety | |
+| intézkedési prioritás | action priority | AP |
+| irányítási struktúra | control structure | |
+| k-ból-n rendszer | k-out-of-n system | koon |
+| kezdő esemény | initiating event | IE |
+| kiváltó feltétel | triggering condition | |
+| kockázat | risk | |
+| kockázatcsökkentési érték | risk reduction worth | RRW |
+| kockázatcsökkentési tényező | risk reduction factor | RRF |
+| kockázati gráf | risk graph | |
+| kockázati mátrix | risk matrix | |
+| kockázatnövelési érték | risk achievement worth | RAW |
+| korábbi használat | prior use | |
+| közös okú meghibásodás | common cause failure | CCF |
+| látens feltétel | latent condition | |
+| megbízhatóság | reliability | |
+| megbízhatósági blokkdiagram | reliability block diagram | RBD |
+| megerősítő intézkedések | confirmation measures | |
+| meghibásodási ráta | failure rate, hazard rate | $\lambda$, $h(t)$ |
+| minimális vágat | minimal cut set | MCS |
+| módosított feltétel/döntés lefedettség | modified condition/decision coverage | MC/DC |
+| működési tervezési tartomány | operational design domain | ODD |
+| nagy igénybevételű üzemmód | high demand mode | |
+| nem biztonságos irányítási művelet | unsafe control action | UCA |
+| particionálás | partitioning | |
+| proof teszt | proof test | |
+| proof teszt lefedettsége | proof test coverage | PTC |
+| rejtett veszélyes meghibásodás | dangerous undetected failure | DU |
+| rendelkezésre állás | availability | |
+| rendeltetésszerű funkció biztonsága | safety of the intended functionality | SOTIF |
+| rendszerelméleti baleseti modell | systems-theoretic accident model and processes | STAMP |
+| rendszerelméleti folyamatelemzés | system-theoretic process analysis | STPA |
+| részleges löketpróba | partial stroke testing | PST |
+| rétegzett védelem elemzése | layer of protection analysis | LOPA |
+| riasztásáradat | alarm flood | |
+| ritkaesemény-közelítés | rare event approximation | |
+| sajtszelet-modell | Swiss cheese model | |
+| sikerfa | success tree | |
+| struktúrafüggvény | structure function | |
+| szabályszegés | violation | |
+| szisztematikus képesség | systematic capability | SC |
+| szisztematikus meghibásodás | systematic failure | |
+| teljesítményszint | performance level | PL |
+| téves leállás | spurious trip | |
+| téves leállási gyakoriság | spurious trip rate | STR |
+| tolerálható kockázat | tolerable risk | |
+| üzemi tapasztalattal igazolt | proven in use | |
+| vágat | cut set | |
+| véletlenszerű hardvermeghibásodás | random hardware failure | |
+| veszély | hazard | |
+| veszély- és működőképesség-vizsgálat | hazard and operability study | HAZOP |
+| veszélyelemzés és kockázatbecslés | hazard analysis and risk assessment | HARA |
+| veszélyes esemény | hazardous event | |
+| veszélyes helyzet | hazardous situation | |
+| veszélyes meghibásodás átlagos gyakorisága | average frequency of dangerous failure per hour | PFH |
+| zóna és csatorna | zone and conduit | |
+
+: Magyar–angol szószedet {#tbl-szoszedet}

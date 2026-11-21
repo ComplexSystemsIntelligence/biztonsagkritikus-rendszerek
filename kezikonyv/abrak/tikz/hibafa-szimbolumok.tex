@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, nev/.style={font=\scriptsize\bfseries, anchor=west, text=peSotet}, leir/.style={font=\tiny, anchor=north west, text width=48mm, text=peSzoveg}]
+  \def\sor#1#2#3#4{% y, szimbólum (kód), név, leírás
+    \begin{scope}[shift={(0,#1)}] #2 \node[nev] at (1.2,0.15) {#3}; \node[leir] at (1.2,-0.05) {#4}; \end{scope}}
+  % bal oszlop: események
+  \node[font=\small\bfseries, text=peKek, anchor=west] at (-0.4,0.9) {Események};
+  \sor{0}{\node[fa esemeny=10mm, minimum height=6mm] at (0.3,0) {};}{csúcs- vagy közbenső esemény}{egy hibás állapot, amelyet a fa lejjebb kifejt}
+  \sor{-1.2}{\node[fa alap, minimum size=7mm] at (0.3,0) {};}{alapesemény}{tovább nem bontott meghibásodás, amelynek valószínűsége ismert}
+  \sor{-2.4}{\node[fa nemfejtett, minimum size=8mm] at (0.3,0) {};}{ki nem fejtett esemény}{információhiány vagy csekély jelentőség miatt nem bontjuk tovább}
+  \sor{-3.6}{\node[fa haz, minimum width=8mm, minimum height=6mm, shape=signal, signal to=north, signal pointer angle=110] at (0.3,0) {};}{külső (ház-) esemény}{normál működés során várhatóan bekövetkező, 0 vagy 1 valószínűségű feltétel}
+  \sor{-4.8}{\node[draw=peKek, ellipse, minimum width=10mm, minimum height=6mm, line width=0.6pt] at (0.3,0) {};}{feltételes esemény}{a TILTÓ kapu engedélyező feltétele}
+  \sor{-6.0}{\node[fa atvitel, minimum size=8mm] at (0.3,0) {};}{átvitel}{a fa egy másik helyen kifejtett részére utal}
+  % jobb oszlop: kapuk
+  \begin{scope}[shift={(7.0,0)}]
+  \node[font=\small\bfseries, text=peKek, anchor=west] at (-0.4,0.9) {Kapuk};
+  \sor{0}{\node[es kapu] at (0.3,0) {};}{ÉS}{a kimenet akkor következik be, ha minden bemenet bekövetkezik}
+  \sor{-1.2}{\node[vagy kapu] at (0.3,0) {};}{VAGY}{a kimenet akkor következik be, ha legalább egy bemenet bekövetkezik}
+  \sor{-2.4}{\node[vagy kapu] at (0.3,0) {}; \node[font=\tiny\bfseries, text=peKek] at (0.3,-0.05) {$k/n$};}{$k$ az $n$-ből}{legalább $k$ bemenet bekövetkezése szükséges}
+  \sor{-3.6}{\node[es kapu] at (0.3,0) {}; \draw[peKek, line width=0.6pt] (0.02,-0.12) -- (0.58,-0.12);}{PRIORITÁSOS ÉS}{a bemenetek adott sorrendben következnek be (dinamikus hibafa)}
+  \sor{-4.8}{\node[regular polygon, regular polygon sides=6, draw=peKek, minimum size=8mm, line width=0.6pt, inner sep=0] at (0.3,0) {};}{TILTÓ}{a kimenet a bemenet és egy feltétel együttes teljesülésekor következik be}
+  \sor{-6.0}{\node[vagy kapu] at (0.3,0) {}; \draw[peKek, line width=0.6pt] (0.0,-0.28) .. controls (0.15,-0.1) and (0.45,-0.1) .. (0.6,-0.28);}{KIZÁRÓ VAGY}{pontosan egy bemenet következik be}
+  \end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,22 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}
+  \node[allapotjo, minimum size=19mm] (s0) at (0,0) {0\\A üzemel\\B tartalék};
+  \node[allapot, minimum size=19mm] (s1) at (0,-3.6) {1\\A üzemel\\B rejtett hiba};
+  \node[allapot, minimum size=19mm] (s2) at (4.6,0) {2\\B üzemel};
+  \node[allapotveszely, minimum size=19mm] (s3) at (4.6,-3.6) {3\\rendszer-\\hiba};
+  \draw[atmenet] (s0) -- node[atmenetcimke, above]{$(1-p_s)\lambda$} (s2);
+  \draw[atmenet] (s0) -- node[atmenetcimke, left]{$\lambda_d$} (s1);
+  \draw[atmenet] (s1) -- node[atmenetcimke, below]{$\lambda$} (s3);
+  \draw[atmenet] (s2) -- node[atmenetcimke, right]{$\lambda$} (s3);
+  \draw[atmenet, draw=peKiemel, line width=1pt] (s0) -- node[atmenetcimke, text=peKiemel, pos=0.42]{$p_s\lambda$} (s3);
+  \node[font=\scriptsize, align=left, anchor=west, text width=56mm] at (6.4,-1.8) {$p_s$: indulási hiba valószínűsége igénykor\\$\lambda_d$: a tartalék rejtett (alvó) meghibásodási rátája\\[4pt]
+    \begin{tabular}{@{}lc@{}} változat & MTTF \\ \hline
+    ideális hideg tartalék & $2{,}00/\lambda$\\
+    $p_s = 0{,}02$ & $1{,}98/\lambda$\\
+    $p_s = 0{,}02$, $\lambda_d = 0{,}1\lambda$ & $1{,}89/\lambda$\\
+    $p_s = 0{,}05$, $\lambda_d = 0{,}2\lambda$ & $1{,}79/\lambda$\\
+    meleg tartalék (aktív 1oo2) & $1{,}50/\lambda$ \end{tabular}};
+\end{tikzpicture}
+\end{document}

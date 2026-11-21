@@ -1,0 +1,42 @@
+# Hibafa-elemzés {#sec-gy-hibafa}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- hibafát szöveges leírásból felépíteni és ellenőrizni;
+- minimális vágatokat meghatározni, és felismerni az egypontos hibákat és az ismétlődő eseményeket;
+- a csúcsesemény valószínűségét többféle módszerrel számolni, és a fontossági mértékekből tervezési javaslatot levezetni;
+- házeseményekkel tervváltozatokat összevetni, és a közös okú meghibásodást beépíteni.
+:::
+
+**Háttér:** [a kézikönyv 10. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/10-hibafa.html).
+
+## Alkalmazás: hibafa-elemző
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/hibafa.html" title="Hibafa-elemző" loading="lazy" style="width:100%;height:1650px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/hibafa.html)
+
+## Feladatok az alkalmazással
+
+1. Töltsd be a ReaktorVéd energiával működtetett változatát. Ellenőrizd a minimális vágatokat és a csúcsesemény valószínűségét ($2{,}17\cdot10^{-3}$). Melyek az egypontos hibák?
+2. Kapcsold ki a HEN házeseményt (energiamentesítéssel működtetett, hibabiztos kialakítás). Hogyan változnak a vágatok és a valószínűség ($1{,}73\cdot10^{-4}$)?
+3. Töltsd be a közös okú meghibásodást is tartalmazó változatot. Ellenőrizd az $1{,}335\cdot10^{-3}$ értéket, és értelmezd a Fussell–Vesely-fontosságokat. Mi a következő legfontosabb tervezési lépés?
+4. Írd be a kézikönyv MOCUS-példáját, és ellenőrizd kézzel a vágatokat és a pontos értéket (0,00217).
+5. Építs saját hibafát a VészFék „indokolatlan erős fékezés” csúcseseményére legalább hat alapeseménnyel!
+
+## Notebook: MOCUS, BDD, fontosság, Monte Carlo
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/08_hibafa.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/08_hibafa.ipynb)
+
+::: {.prompt title="Mintapromptok"}
+*„Az alábbi hibafát írtam fel a »[csúcsesemény]« eseményre: […]. Ellenőrizd a NUREG-0492 szerkesztési szabályai alapján (hibaként megfogalmazott események, teljes kapuk, nincs kapu–kapu kapcsolat)! Sorold fel a szabálysértéseket, de ne írd át helyettem a fát.”*
+
+*„Az energiával működtetett változat fontossági mértékei: […]. Magyarázd el közérthetően egy üzemvezetőnek, mit jelent a 460-as kockázatnövelési érték a tápegységekre, és milyen üzemeltetési szabály következik belőle!”*
+:::
+
+## Ellenőrző szempontok
+
+A jó megoldásban a csúcsesemény pontosan megfogalmazott, az ismétlődő események következetesen azonos névvel szerepelnek, a vágatok minimálisak, a valószínűség mellett a fontossági mértékek értelmezése is megjelenik, és a tervezési javaslat a domináns vágatokra irányul.

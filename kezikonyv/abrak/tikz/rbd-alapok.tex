@@ -1,0 +1,47 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\ki#1{\fill[peSotet] #1 circle (0.06);}
+  % (a) soros
+  \begin{scope}[shift={(0,0)}]
+    \node[panelcim] at (-0.2,1.1) {(a) soros};
+    \node[blokk] (a1) at (1.2,0) {1}; \node[blokk] (a2) at (2.7,0) {2}; \node[font=\small] (a3) at (3.9,0) {$\cdots$}; \node[blokk] (an) at (5.1,0) {$n$};
+    \draw[rbdel] (0,0) -- (a1) -- (a2) -- (a3) -- (an) -- (6.3,0); \ki{(0,0)} \ki{(6.3,0)}
+    \node[font=\footnotesize, anchor=north] at (3.15,-0.6) {$R_s=\prod_{i=1}^{n} R_i$};
+  \end{scope}
+  % (b) párhuzamos
+  \begin{scope}[shift={(8,0)}]
+    \node[panelcim] at (-0.2,1.1) {(b) párhuzamos};
+    \node[blokk] (b1) at (1.8,0.65) {1}; \node[blokk] (b2) at (1.8,-0.15) {2}; \node[blokk] (bn) at (1.8,-1.05) {$n$};
+    \node[font=\small] at (1.8,-0.55) {$\vdots$};
+    \draw[rbdel] (0,-0.2) -- (0.7,-0.2); \draw[rbdel] (0.7,0.65) -- (0.7,-1.05); \draw[rbdel] (2.9,0.65) -- (2.9,-1.05); \draw[rbdel] (2.9,-0.2) -- (3.6,-0.2);
+    \foreach \b in {b1,b2,bn} { \draw[rbdel] (0.7,0 |- \b) -- (\b); \draw[rbdel] (\b) -- (2.9,0 |- \b); }
+    \ki{(0,-0.2)} \ki{(3.6,-0.2)}
+    \node[font=\footnotesize, anchor=north] at (1.8,-1.55) {$R_p=1-\prod_{i=1}^{n}(1-R_i)$};
+  \end{scope}
+  % (c) soros-párhuzamos (párhuzamos ágak sorban)
+  \begin{scope}[shift={(0,-3.6)}]
+    \node[panelcim] at (-0.2,1.1) {(c) párhuzamos ágak sorba kötve};
+    \foreach \x/\l in {0/A,2.9/C} {
+      \node[blokk] (u\l) at (\x+1.4,0.45) {\l};
+      \pgfmathsetmacro{\yy}{0}
+    }
+    \node[blokk] (uB) at (1.4,-0.45) {B}; \node[blokk] (uD) at (4.3,-0.45) {D};
+    \draw[rbdel] (0,0) -- (0.5,0) (0.5,0.45) -- (0.5,-0.45) (0.5,0.45) -- (uA) (0.5,-0.45) -- (uB);
+    \draw[rbdel] (uA) -- (2.3,0.45) (uB) -- (2.3,-0.45) (2.3,0.45) -- (2.3,-0.45) (2.3,0) -- (3.4,0);
+    \draw[rbdel] (3.4,0.45) -- (3.4,-0.45) (3.4,0.45) -- (uC) (3.4,-0.45) -- (uD) (uC) -- (5.2,0.45) (uD) -- (5.2,-0.45) (5.2,0.45) -- (5.2,-0.45) (5.2,0) -- (5.8,0);
+    \ki{(0,0)} \ki{(5.8,0)}
+    \node[font=\footnotesize, anchor=north] at (2.9,-1.0) {$R=[1-(1-R_A)(1-R_B)]\,[1-(1-R_C)(1-R_D)]$};
+  \end{scope}
+  % (d) párhuzamos-soros (soros ágak párhuzamosan)
+  \begin{scope}[shift={(8,-3.6)}]
+    \node[panelcim] at (-0.2,1.1) {(d) soros ágak párhuzamosan};
+    \node[blokk] (vA) at (1.2,0.45) {A}; \node[blokk] (vB) at (2.5,0.45) {B};
+    \node[blokk] (vC) at (1.2,-0.45) {C}; \node[blokk] (vD) at (2.5,-0.45) {D};
+    \draw[rbdel] (0,0) -- (0.5,0) (0.5,0.45) -- (0.5,-0.45) (0.5,0.45) -- (vA) -- (vB) -- (3.2,0.45) (0.5,-0.45) -- (vC) -- (vD) -- (3.2,-0.45) (3.2,0.45) -- (3.2,-0.45) (3.2,0) -- (3.7,0);
+    \ki{(0,0)} \ki{(3.7,0)}
+    \node[font=\footnotesize, anchor=north] at (1.85,-1.0) {$R=1-(1-R_AR_B)(1-R_CR_D)$};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,37 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize},
+   cs/.style={doboz=14mm, minimum height=7mm, inner sep=2pt},
+   sz/.style={sotetdoboz=13mm, minimum height=14mm, font=\scriptsize\bfseries}]
+  % TMR
+  \node[font=\small\bfseries, text=peSotet] at (1.8,1.5) {TMR (2oo3)};
+  \node[felirat, font=\scriptsize] (in) at (-0.6,0) {bemenet};
+  \foreach \y/\n in {0.9/A,0/B,-0.9/C} { \node[cs] (t\n) at (1.2,\y) {csatorna \n}; \draw[nyilv] (in.east) -- (t\n.west); }
+  \node[sz] (v) at (3.2,0) {szavazó};
+  \foreach \n in {A,B,C} \draw[nyilv] (t\n.east) -- (v.west);
+  \draw[nyil] (v.east) -- ++(0.6,0) node[right, font=\scriptsize]{kimenet};
+  \node[align=center, text width=48mm, anchor=north, font=\tiny] at (1.8,-1.6) {egy hibás csatornát kiszavaz; a szavazó maga is egypontos hiba lehet, ezért egyszerű vagy redundáns};
+  % 1oo2D
+  \begin{scope}[shift={(6.6,0)}]
+  \node[font=\small\bfseries, text=peSotet] at (1.6,1.5) {1oo2D};
+  \node[cs] (a) at (0.6,0.7) {csatorna A}; \node[cs] (b) at (0.6,-0.7) {csatorna B};
+  \draw[ketnyil, draw=peKiemel] (a.south) -- node[right, font=\tiny, text=peKiemel, align=left]{kölcsönös\\diagnosztika} (b.north);
+  \node[draw=peSotet, fill=white, minimum width=6mm, minimum height=5mm] (ka) at (2.3,0.7) {}; \draw (2.12,0.62) -- (2.42,0.82);
+  \node[draw=peSotet, fill=white, minimum width=6mm, minimum height=5mm] (kb) at (2.3,-0.7) {}; \draw (2.12,-0.78) -- (2.42,-0.58);
+  \draw[nyilv] (a) -- (ka); \draw[nyilv] (b) -- (kb);
+  \draw[peSotet, line width=0.7pt] (ka.east) -- (2.9,0.7) -- (2.9,-0.7) -- (kb.east);
+  \draw[nyil] (2.9,0) -- ++(0.6,0) node[right]{beavatkozó};
+  \node[align=center, text width=46mm, anchor=north, font=\tiny] at (1.6,-1.6) {mindkét csatorna leállíthat; felfedett hibánál a hibás csatorna kimenetét lekapcsolják, és a rendszer 1oo1-ként fut tovább};
+  \end{scope}
+  % lockstep
+  \begin{scope}[shift={(12.6,0)}]
+  \node[font=\small\bfseries, text=peSotet] at (1.4,1.5) {kettős lockstep mag};
+  \node[cs] (m1) at (0.6,0.7) {mag 1}; \node[cs] (m2) at (0.6,-0.7) {mag 2 (késleltetve)};
+  \node[kiemeltdoboz=13mm, minimum height=10mm, inner sep=2pt] (cmp) at (2.6,0) {összeha\-sonlító};
+  \draw[nyilv] (m1.east) -- (cmp); \draw[nyilv] (m2.east) -- (cmp);
+  \draw[nyil] (cmp.east) -- ++(0.5,0) node[right, align=left]{hibajelzés,\\biztonságos\\állapot};
+  \node[align=center, text width=44mm, anchor=north, font=\tiny] at (1.4,-1.6) {ugyanaz a program két magon, órajel-eltolással; eltérésnél hibajelzés (hibára elnémuló számítóegység)};
+  \end{scope}
+\end{tikzpicture}
+\end{document}

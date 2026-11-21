@@ -1,0 +1,23 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  l/.style={doboz=20mm, font=\scriptsize, minimum height=16mm, inner sep=2pt},
+  g/.style={font=\scriptsize\bfseries, text=white, inner sep=2pt}]
+  \foreach \i/\t/\d in {1/{Tervezés,\\előkészítés}/{cél, határ,\\csapat, ütemezés},
+      2/{Struktúra-\\elemzés}/{rendszer,\\elemek, interfészek},
+      3/{Funkció-\\elemzés}/{funkciók,\\követelmények},
+      4/{Meghibásodás-\\elemzés}/{hatás -- mód --\\ok lánc},
+      5/{Kockázat-\\elemzés}/{S, O, D,\\cselekvési prioritás},
+      6/{Optimali-\\zálás}/{intézkedések,\\felelős, határidő},
+      7/{Dokumentálás}/{eredmények\\közlése}} {
+    \pgfmathsetmacro{\x}{(\i-1)*2.3}
+    \node[l] (l\i) at (\x,0) {\textbf{\t}\\[2pt]{\tiny \d}};
+    \node[circle, fill=peKiemel, text=white, font=\scriptsize\bfseries, minimum size=5mm, inner sep=0] at ($(l\i.north)+(0,0.05)$) {\i};
+  }
+  \foreach \a/\b in {1/2,2/3,3/4,4/5,5/6,6/7} \draw[nyil] (l\a) -- (l\b);
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, peKek, line width=0.7pt] ($(l1.south west)+(0,-0.15)$) -- ($(l1.south east)+(0,-0.15)$) node[midway, below=6pt, font=\scriptsize, text=peKek] {rendszer-meghatározás};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, peZold, line width=0.7pt] ($(l2.south west)+(0,-0.15)$) -- ($(l5.south east)+(0,-0.15)$) node[midway, below=6pt, font=\scriptsize, text=peZold] {kockázatelemzés};
+  \draw[decorate, decoration={brace, amplitude=5pt, mirror}, peLila, line width=0.7pt] ($(l6.south west)+(0,-0.15)$) -- ($(l7.south east)+(0,-0.15)$) node[midway, below=6pt, font=\scriptsize, text=peLila] {kockázatcsökkentés, közlés};
+\end{tikzpicture}
+\end{document}

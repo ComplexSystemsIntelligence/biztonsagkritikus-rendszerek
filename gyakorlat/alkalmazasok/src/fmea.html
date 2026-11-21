@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FMEA-munkalap: RPN és cselekvési prioritás</title>
+<style>/*KOZOS_CSS*/
+td input[type=number]{width:3.6rem}
+tr.ellentmond td{background:#fff6ee}
+</style></head><body>
+<header class="app"><h1>FMEA-munkalap: RPN és cselekvési prioritás</h1><p>Biztonságkritikus rendszerek – 4. gyakorlat. Ugyanarra a táblázatra kockázat-prioritási számot (RPN) és egyszerűsített cselekvési prioritást (AP) számol, és megjelöli az ellentmondásokat.</p></header>
+<main>
+<div class="kartya figyelem"><h2>Figyelem</h2><p>Az AP itt a könyv 6. fejezetének <b>egyszerűsített, szemléltető szabálya</b> szerint készül (magas: S ≥ 9 és (O ≥ 4 vagy D ≥ 7), vagy 7 ≤ S ≤ 8 és O ≥ 6; közepes: S ≥ 7, ha nem magas, vagy 4 ≤ S ≤ 6 és O ≥ 6; egyébként alacsony). Ez <b>nem</b> az AIAG–VDA kézikönyv hivatalos táblázata; valós elemzéshez azt kell használni.</p></div>
+<div class="kartya"><h2>Munkalap</h2>
+<div class="diagram"><table id="tab"><thead><tr><th>#</th><th>funkció</th><th>meghibásodási mód</th><th>hatás</th><th>S</th><th>ok</th><th>megelőzés / észlelés</th><th>O</th><th>D</th><th class="szam">RPN</th><th>AP</th><th></th></tr></thead><tbody></tbody></table></div>
+<button onclick="uj()">új sor</button>
+<button class="masodlagos" onclick="pelda()">példa: VészFék radarérzékelő</button>
+<button class="masodlagos" onclick="export_()">letöltés (CSV)</button>
+</div>
+<div class="racs">
+ <div class="kartya eredmeny"><h2>Rangsorok</h2><div id="rang"></div></div>
+ <div class="kartya figyelem"><h2>Ellentmondások</h2><div id="ellent"></div></div>
+</div>
+<div class="kartya"><h2>Az RPN értékkészlete</h2><p class="megj">Az 1–10 skálák szorzataként az 1–1000 tartományban csak 120 különböző RPN-érték fordul elő, és ezek eloszlása erősen egyenetlen; a sötét oszlopok a munkalap sorait jelölik.</p><div id="eloszlas"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc</footer>
+<script>/*KOZOS_JS*/
+let sorok = [];
+const PELDA = [
+ ['akadály észlelése 0,5–150 m-en', 'nem észleli az akadályt', 'elmaradó vészfékezés', 8, 'jég vagy sár a burkolaton', 'fűtött burkolat / vakulásdiagnosztika', 4, 4],
+ ['akadály észlelése', 'téves (szellem-) célpont', 'indokolatlan erős fékezés', 10, 'többutas visszaverődés', 'célpontkövetés / kevés szimulációs teszt', 4, 6],
+ ['távolságmérés', 'a mért távolság eltolódik', 'késve induló fékezés', 7, 'hőmérsékleti drift', 'hőkompenzáció / hőkamrás teszt', 3, 3],
+ ['adatküldés', 'késve érkező adat', 'késve induló fékezés', 7, 'CAN-busz túlterhelés', 'ütemezésanalízis / időzítésfigyelés', 2, 2],
+ ['tápellátás', 'a burkolatfűtés kiesik', 'kényelmi funkció hiánya', 3, 'csatlakozó oxidációja', 'nincs / vizuális ellenőrzés', 7, 8],
+ ['rögzítés', 'a konzol eltörik', 'a radar elfordul, téves célpontok', 9, 'fáradásos törés', 'méretezés / rezgésteszt', 2, 3]];
+function ap(S, O, D) { if ((S >= 9 && (O >= 4 || D >= 7)) || (S >= 7 && S <= 8 && O >= 6)) return 'H';
+  if (S >= 7 || (S >= 4 && S <= 6 && O >= 6)) return 'M'; return 'L'; }
+const APV = {H: 3, M: 2, L: 1};
+function uj(v = ['', '', '', 5, '', '', 5, 5]) { sorok.push({f: v[0], m: v[1], h: v[2], S: v[3], ok: v[4], k: v[5], O: v[6], D: v[7]}); rajzol(); }
+function pelda() { sorok = []; PELDA.forEach(p => uj(p)); }
+function mezo(s, k, tipus = 'text') { return el('input', {type: tipus, value: s[k], min: 1, max: 10, oninput: e => { s[k] = tipus === 'number' ? Math.min(10, Math.max(1, Math.round(szam(e.target.value) || 1))) : e.target.value; szamol(); }}); }
+function rajzol() { const tb = $('tab').querySelector('tbody'); tb.innerHTML = '';
+  sorok.forEach((s, i) => tb.append(el('tr', {id: 'sor' + i}, el('td', {}, String(i + 1)), el('td', {}, mezo(s, 'f')), el('td', {}, mezo(s, 'm')), el('td', {}, mezo(s, 'h')),
+    el('td', {}, mezo(s, 'S', 'number')), el('td', {}, mezo(s, 'ok')), el('td', {}, mezo(s, 'k')), el('td', {}, mezo(s, 'O', 'number')), el('td', {}, mezo(s, 'D', 'number')),
+    el('td', {class: 'szam', id: 'rpn' + i}), el('td', {id: 'ap' + i}), el('td', {}, el('button', {class: 'masodlagos', onclick: () => { sorok.splice(i, 1); rajzol(); }}, 'törlés')))));
+  szamol(); }
+function szamol() {
+  sorok.forEach((s, i) => { s.rpn = s.S * s.O * s.D; s.ap = ap(s.S, s.O, s.D); $('rpn' + i).textContent = s.rpn; $('ap' + i).innerHTML = `<span class="cimke c-${s.ap}">${s.ap}</span>`; });
+  const idx = sorok.map((s, i) => i);
+  const r1 = [...idx].sort((a, b) => sorok[b].rpn - sorok[a].rpn);
+  const r2 = [...idx].sort((a, b) => APV[sorok[b].ap] - APV[sorok[a].ap] || sorok[b].S - sorok[a].S || sorok[b].O - sorok[a].O || sorok[b].D - sorok[a].D);
+  let t = '<table><tr><th>helyezés</th><th>RPN szerint</th><th>AP (majd S, O, D) szerint</th></tr>';
+  idx.forEach(k => t += `<tr><td>${k + 1}.</td><td>#${r1[k] + 1} (RPN ${sorok[r1[k]].rpn})</td><td>#${r2[k] + 1} (${sorok[r2[k]].ap}, S=${sorok[r2[k]].S})</td></tr>`);
+  $('rang').innerHTML = t + '</table>';
+  const e = []; idx.forEach(i => $('sor' + i).classList.remove('ellentmond'));
+  for (const a of idx) for (const b of idx) if (sorok[a].rpn > sorok[b].rpn && APV[sorok[a].ap] < APV[sorok[b].ap]) {
+    e.push(`<li>#${a + 1} RPN-je nagyobb (${sorok[a].rpn} &gt; ${sorok[b].rpn}), de a prioritása alacsonyabb (${sorok[a].ap} &lt; ${sorok[b].ap}) – a #${b + 1} súlyossága ${sorok[b].S}.</li>`);
+    $('sor' + a).classList.add('ellentmond'); $('sor' + b).classList.add('ellentmond'); }
+  const s9 = idx.filter(i => sorok[i].S >= 9);
+  $('ellent').innerHTML = (e.length ? '<ul>' + e.join('') + '</ul>' : '<p class="ok">Az RPN és az AP sorrendje nem mond ellent egymásnak.</p>') +
+    (s9.length ? `<p>A ${s9.map(i => '#' + (i + 1)).join(', ')} sor súlyossága 9 vagy 10: az RPN-től és az AP-től függetlenül célzott intézkedés kell.</p>` : '');
+  // eloszlás
+  const db = new Map(); for (let S = 1; S <= 10; S++) for (let O = 1; O <= 10; O++) for (let D = 1; D <= 10; D++) db.set(S * O * D, (db.get(S * O * D) || 0) + 1);
+  const W = 640, H = 170, X = v => 40 + v / 1000 * (W - 60), mx = Math.max(...db.values()), Y = n => H - 26 - n / mx * (H - 40);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px">`;
+  for (const [v, n] of db) svg += `<line x1="${X(v)}" x2="${X(v)}" y1="${H - 26}" y2="${Y(n)}" stroke="#A9C4DE" stroke-width="2"/>`;
+  sorok.forEach(s => svg += `<line x1="${X(s.rpn)}" x2="${X(s.rpn)}" y1="${H - 26}" y2="${18}" stroke="#E07B39" stroke-width="2"/>`);
+  [0, 200, 400, 600, 800, 1000].forEach(v => svg += `<text x="${X(v)}" y="${H - 10}" font-size="11" text-anchor="middle">${v}</text>`);
+  svg += `<text x="${W - 20}" y="14" font-size="11" text-anchor="end" fill="#6B7280">${db.size} különböző RPN-érték</text>`;
+  $('eloszlas').innerHTML = svg + '</svg>';
+  ment('fmea', sorok);
+}
+function export_() { let t = 'sorszam;funkcio;meghibasodasi_mod;hatas;S;ok;intezkedesek;O;D;RPN;AP\n';
+  sorok.forEach((s, i) => t += [i + 1, s.f, s.m, s.h, s.S, s.ok, s.k, s.O, s.D, s.rpn, s.ap].map(x => String(x).replace(/;/g, ',')).join(';') + '\n');
+  letolt('fmea_munkalap.csv', t, 'text/csv;charset=utf-8'); }
+const m = betolt('fmea'); if (m && m.length) { sorok = m; rajzol(); } else pelda();
+</script></body></html>

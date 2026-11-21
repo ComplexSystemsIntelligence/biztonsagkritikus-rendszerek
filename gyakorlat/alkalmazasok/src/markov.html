@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Markov-modell szerkesztő</title>
+<style>/*KOZOS_CSS*/
+</style></head><body>
+<header class="app"><h1>Markov-modell szerkesztő</h1><p>Biztonságkritikus rendszerek – 10. gyakorlat. Állapotok és átmeneti ráták megadása; pillanatnyi és tartós rendelkezésre állás, állapotvalószínűségek és MTTF.</p></header>
+<main>
+<div class="racs">
+ <div class="kartya"><h2>1. Állapotok</h2>
+  <table id="all"><thead><tr><th>#</th><th>név</th><th>működőképes</th><th>rendszerhiba</th><th></th></tr></thead><tbody></tbody></table>
+  <button onclick="ujAll()">új állapot</button>
+  <label>kezdőállapot</label><select id="kezdo" onchange="szamol()"></select></div>
+ <div class="kartya"><h2>2. Átmenetek</h2>
+  <table id="atm"><thead><tr><th>honnan</th><th>hová</th><th class="szam">ráta [1/h]</th><th></th></tr></thead><tbody></tbody></table>
+  <button onclick="ujAtm()">új átmenet</button>
+  <label>időhorizont a grafikonhoz [h]</label><input type="text" id="T" value="100" oninput="szamol()">
+  <p>Példák: <button class="masodlagos" onclick="pelda('ket')">javítható elem</button><button class="masodlagos" onclick="pelda('ill')">javítható elem (szemléltető)</button><button class="masodlagos" onclick="pelda('1oo2')">1oo2 javítással, β</button><button class="masodlagos" onclick="pelda('hideg')">hideg tartalék</button></p></div>
+</div>
+<div class="racs">
+ <div class="kartya"><h2>Állapotgráf</h2><div id="graf" class="diagram"></div></div>
+ <div class="kartya eredmeny"><h2>Eredmények</h2><div id="eredm"></div><p id="uzenet" class="hiba"></p></div>
+</div>
+<div class="kartya"><h2>Állapotvalószínűségek és rendelkezésre állás az idő függvényében</h2><div id="ido"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc · Homogén, folytonos idejű Markov-lánc; a tranziens megoldás egyenletes randomizálással (uniformization) készül.</footer>
+<script>/*KOZOS_JS*/
+let M = {};
+const PELDAK = {
+ ket: {all: [['működik', 1, 0], ['javítás alatt', 0, 1]], atm: [[0, 1, 1e-4], [1, 0, 0.125]], kezdo: 0, T: 60},
+ ill: {all: [['működik', 1, 0], ['javítás alatt', 0, 1]], atm: [[0, 1, 0.1], [1, 0, 0.5]], kezdo: 0, T: 30},
+ '1oo2': {all: [['mindkettő jó', 1, 0], ['egy jó', 1, 0], ['rendszerhiba', 0, 1]], atm: [[0, 1, 1.9e-4], [0, 2, 5e-6], [1, 2, 1e-4], [1, 0, 0.125], [2, 1, 0.125]], kezdo: 0, T: 200},
+ hideg: {all: [['A üzemel, B tartalék', 1, 0], ['A üzemel, B rejtett hiba', 1, 0], ['B üzemel', 1, 0], ['rendszerhiba', 0, 1]], atm: [[0, 2, 0.98e-4], [0, 3, 0.02e-4], [0, 1, 1e-5], [1, 3, 1e-4], [2, 3, 1e-4]], kezdo: 0, T: 50000}
+};
+function pelda(k) { M = JSON.parse(JSON.stringify(PELDAK[k])); $('T').value = M.T; tablak(); }
+function ujAll() { M.all.push(['új állapot', 1, 0]); tablak(); }
+function ujAtm() { M.atm.push([0, Math.min(1, M.all.length - 1), 1e-4]); tablak(); }
+function sel(v, cb) { const s = el('select', {onchange: e => cb(Number(e.target.value))}, ...M.all.map((a, i) => el('option', {value: i}, `${i}: ${a[0]}`))); s.value = v; return s; }
+function tablak() { const ta = $('all').querySelector('tbody'); ta.innerHTML = '';
+  M.all.forEach((a, i) => { const c1 = el('input', {type: 'checkbox', onchange: e => { a[1] = e.target.checked ? 1 : 0; szamol(); }}); c1.checked = !!a[1];
+    const c2 = el('input', {type: 'checkbox', onchange: e => { a[2] = e.target.checked ? 1 : 0; szamol(); }}); c2.checked = !!a[2];
+    ta.append(el('tr', {}, el('td', {}, String(i)), el('td', {}, el('input', {type: 'text', value: a[0], oninput: e => { a[0] = e.target.value; szamol(); }})), el('td', {}, c1), el('td', {}, c2),
+      el('td', {}, el('button', {class: 'masodlagos', onclick: () => { M.all.splice(i, 1); M.atm = M.atm.filter(t => t[0] !== i && t[1] !== i).map(t => [t[0] > i ? t[0] - 1 : t[0], t[1] > i ? t[1] - 1 : t[1], t[2]]); if (M.kezdo >= M.all.length) M.kezdo = 0; tablak(); }}, 'törlés')))); });
+  const tt = $('atm').querySelector('tbody'); tt.innerHTML = '';
+  M.atm.forEach((t, i) => tt.append(el('tr', {}, el('td', {}, sel(t[0], v => { t[0] = v; szamol(); })), el('td', {}, sel(t[1], v => { t[1] = v; szamol(); })),
+    el('td', {class: 'szam'}, el('input', {type: 'text', value: String(t[2]).replace('.', ','), oninput: e => { t[2] = szam(e.target.value); szamol(); }})),
+    el('td', {}, el('button', {class: 'masodlagos', onclick: () => { M.atm.splice(i, 1); tablak(); }}, 'törlés')))));
+  const k = $('kezdo'); k.innerHTML = ''; M.all.forEach((a, i) => k.append(el('option', {value: i}, `${i}: ${a[0]}`))); k.value = M.kezdo; szamol(); }
+function Qm() { const n = M.all.length, Q = Array.from({length: n}, () => Array(n).fill(0));
+  M.atm.forEach(([i, j, r]) => { if (i !== j && r > 0) Q[i][j] += r; }); for (let i = 0; i < n; i++) Q[i][i] = -Q[i].reduce((a, b, j) => a + (j === i ? 0 : b), 0); return Q; }
+function megold(A, b) { const n = b.length, M2 = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) { let p = c; for (let r = c + 1; r < n; r++) if (Math.abs(M2[r][c]) > Math.abs(M2[p][c])) p = r; [M2[c], M2[p]] = [M2[p], M2[c]];
+    if (Math.abs(M2[c][c]) < 1e-300) throw 'szinguláris egyenletrendszer (nem elérhető vagy elnyelő állapot?)';
+    for (let r = 0; r < n; r++) if (r !== c) { const f = M2[r][c] / M2[c][c]; for (let k = c; k <= n; k++) M2[r][k] -= f * M2[c][k]; } }
+  return M2.map((r, i) => r[n] / r[i]); }
+function lepesMatrix(Q, dt) { const n = Q.length; const L = Math.max(...Q.map((r, i) => -r[i]), 1e-300) * 1.0001;
+  const P = Q.map((r, i) => r.map((v, j) => (i === j ? 1 : 0) + v / L)); const lt = L * dt;
+  let E = Array.from({length: n}, () => Array(n).fill(0)), Pk = P.map((r, i) => r.map((_, j) => i === j ? 1 : 0)); let w = Math.exp(-lt), k = 0, ossz = 0;
+  // nagy lambda*dt esetén lépésfelezés
+  if (lt > 50) { const fel = lepesMatrix(Q, dt / 2); return mul(fel, fel); }
+  while (k < 1000) { for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) E[i][j] += w * Pk[i][j]; ossz += w; if (1 - ossz < 1e-13 && k > lt) break; k++; w *= lt / k; Pk = mul(Pk, P); }
+  return E; }
+function mul(A, B) { const n = A.length; return A.map((r, i) => B[0].map((_, j) => r.reduce((s, v, k) => s + v * B[k][j], 0))); }
+function szamol() { $('uzenet').textContent = ''; M.kezdo = Number($('kezdo').value) || 0; M.T = szam($('T').value);
+  try { const n = M.all.length; if (n < 2) throw 'legalább két állapot kell'; const Q = Qm();
+    // tranziens
+    const N = 150, dt = M.T / N, E = lepesMatrix(Q, dt); let p = Array(n).fill(0); p[M.kezdo] = 1; const ts = [0], ps = [p.slice()];
+    for (let s = 1; s <= N; s++) { p = p.map((_, j) => p.reduce((a, v, i) => a + v * E[i][j], 0)); ts.push(s * dt); ps.push(p.slice()); }
+    const mukodo = M.all.map(a => !!a[1]);
+    const sorok = M.all.map((a, i) => ({nev: a[0], szin: SZINEK[i % 8], szaggatott: true, vastag: 1.4, pontok: ts.map((t, k) => [t, ps[k][i]])}));
+    sorok.push({nev: 'rendelkezésre állás A(t)', szin: '#1B3A57', vastag: 2.6, pontok: ts.map((t, k) => [t, ps[k].reduce((a, v, i) => a + (mukodo[i] ? v : 0), 0)])});
+    vonaldiagram($('ido'), {sorok, xcimke: 'idő t [h]', ycimke: 'valószínűség', ymin: 0, ymax: 1, mag: 330});
+    // tartós eloszlás
+    let html = '';
+    const absz = Q.map(r => r.every(v => Math.abs(v) < 1e-300));
+    try { const AT = Q[0].map((_, j) => Q.map(r => r[j])); AT[n - 1] = Array(n).fill(1); const b = Array(n).fill(0); b[n - 1] = 1; const pi = megold(AT, b);
+      const Ainf = pi.reduce((a, v, i) => a + (mukodo[i] ? v : 0), 0);
+      html += `<p>Tartós rendelkezésre állás: <span class="nagyszam">${fmt(Ainf, 6)}</span></p><p>tartós rendelkezésre nem állás: ${fmt(1 - Ainf)} (évi ${fmt((1 - Ainf) * 8760)} óra)</p>`;
+      html += '<table><tr><th>állapot</th><th class="szam">π</th></tr>' + pi.map((v, i) => `<tr><td>${M.all[i][0]}</td><td class="szam">${fmt(v)}</td></tr>`).join('') + '</table>';
+    } catch (e) { html += '<p class="megj">Tartós eloszlás nem számolható (elnyelő állapot van): a rendszer hosszú távon az elnyelő állapotba kerül.</p>'; }
+    // MTTF
+    const hib = M.all.map((a, i) => a[2] ? i : -1).filter(i => i >= 0);
+    if (hib.length && !hib.includes(M.kezdo)) { const tr = M.all.map((_, i) => i).filter(i => !hib.includes(i)); const QT = tr.map(i => tr.map(j => -Q[i][j]));
+      try { const m = megold(QT, tr.map(() => 1)); const mt = m[tr.indexOf(M.kezdo)];
+        html += `<p>MTTF (a kezdőállapotból az első rendszerhibáig): <b>${fmt(mt)}</b> h = ${fmt(mt / 8760)} év</p>`; } catch (e) { html += `<p class="megj">MTTF: ${e}</p>`; } }
+    $('eredm').innerHTML = html; rajzGraf(Q); ment('markov', M);
+  } catch (e) { $('uzenet').textContent = 'Hiba: ' + e; } }
+function rajzGraf(Q) { const n = M.all.length, W = 520, H = 330, cx = W / 2, cy = H / 2, R = Math.min(W, H) / 2 - 60;
+  const P = M.all.map((_, i) => n === 2 ? [cx + (i ? 1 : -1) * 140, cy] : [cx + R * Math.cos(-Math.PI / 2 + 2 * Math.PI * i / n), cy + R * Math.sin(-Math.PI / 2 + 2 * Math.PI * i / n)]);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px"><defs><marker id="ny" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1B3A57"/></marker></defs>`;
+  M.atm.forEach(([i, j, r]) => { if (i === j || !(r > 0)) return; const [x1, y1] = P[i], [x2, y2] = P[j]; const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+    const off = 14, nx = -uy * off, ny = ux * off; const sx = x1 + ux * 34 + nx, sy = y1 + uy * 34 + ny, ex = x2 - ux * 36 + nx, ey = y2 - uy * 36 + ny;
+    const mx = (sx + ex) / 2 + nx * 1.6, my = (sy + ey) / 2 + ny * 1.6;
+    s += `<path d="M${sx},${sy} Q${mx},${my} ${ex},${ey}" fill="none" stroke="#1B3A57" stroke-width="1.3" marker-end="url(#ny)"/><text x="${mx}" y="${my}" font-size="11" text-anchor="middle" fill="#285780" style="paint-order:stroke;stroke:#fff;stroke-width:3px">${fmt(r)}</text>`; });
+  M.all.forEach((a, i) => { const [x, y] = P[i]; const sz = a[2] ? '#F6DEDE' : a[1] ? '#DDEFE4' : '#E6EEF6', vz = a[2] ? '#B83A3A' : a[1] ? '#3E8E63' : '#285780';
+    s += `<circle cx="${x}" cy="${y}" r="32" fill="${sz}" stroke="${vz}" stroke-width="1.6"/><text x="${x}" y="${y - 2}" font-size="11" text-anchor="middle" font-weight="600">${i}</text><text x="${x}" y="${y + 12}" font-size="9" text-anchor="middle">${a[0].slice(0, 16)}</text>`; });
+  $('graf').innerHTML = s + '</svg>'; }
+const m = betolt('markov'); if (m && m.all) { M = m; $('T').value = M.T; tablak(); } else pelda('1oo2');
+</script></body></html>

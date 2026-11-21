@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Megbízhatósági blokkdiagram</title>
+<style>/*KOZOS_CSS*/
+</style></head><body>
+<header class="app"><h1>Megbízhatósági blokkdiagram</h1><p>Biztonságkritikus rendszerek – 7. gyakorlat. Soros, párhuzamos és k-ból-n struktúrák, illetve tetszőleges rendszer minimális utakkal; megbízhatóság az idő függvényében, MTTF és Birnbaum-fontosság.</p></header>
+<main>
+<div class="racs">
+ <div class="kartya"><h2>1. Elemek (állandó meghibásodási ráta)</h2>
+  <table id="elemek"><thead><tr><th>név</th><th class="szam">λ [1/h]</th><th></th></tr></thead><tbody></tbody></table>
+  <button onclick="ujElem()">új elem</button></div>
+ <div class="kartya"><h2>2. Struktúra</h2>
+  <label><input type="radio" name="mod" value="kif" checked onchange="szamol()"> kifejezés: S(…) soros, P(…) párhuzamos, K(k, …) k-ból-n</label>
+  <input type="text" id="kif" value="S(P(TT1,TT2),PLC,P(V1,V2))" oninput="szamol()">
+  <label><input type="radio" name="mod" value="ut" onchange="szamol()"> minimális utak (pontosvesszővel elválasztva, az elemek szóközzel)</label>
+  <input type="text" id="utak" value="A D; C B; A E B; C E D" oninput="szamol()">
+  <label>küldetési idő t₀ [h]</label><input type="text" id="t0" value="8760" oninput="szamol()">
+  <p>Példák:
+  <button class="masodlagos" onclick="pelda('soros')">soros</button><button class="masodlagos" onclick="pelda('parh')">párhuzamos</button><button class="masodlagos" onclick="pelda('2oo3')">2oo3</button><button class="masodlagos" onclick="pelda('rv')">ReaktorVéd</button><button class="masodlagos" onclick="pelda('hid')">hídkapcsolás</button></p>
+  <p id="uzenet" class="megj"></p></div>
+</div>
+<div class="racs">
+ <div class="kartya eredmeny"><h2>Eredmények</h2><div id="eredm"></div></div>
+ <div class="kartya"><h2>Birnbaum-fontosság t₀-ban</h2><p class="megj">∂R<sub>rendszer</sub>/∂R<sub>i</sub>: mennyivel nő a rendszer megbízhatósága, ha az elem megbízhatósága nő.</p><div id="fontos"></div></div>
+</div>
+<div class="kartya"><h2>Megbízhatóság az idő függvényében</h2><div id="graf"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc · Feltevések: két állapotú, független elemek, állandó meghibásodási ráta, javítás nélkül.</footer>
+<script>/*KOZOS_JS*/
+let elemek = [];
+const PELDAK = {
+ soros: {e: [['A', 1e-4], ['B', 1e-4], ['C', 1e-4]], kif: 'S(A,B,C)', t0: 1000},
+ parh: {e: [['A', 1e-4], ['B', 1e-4]], kif: 'P(A,B)', t0: 1000},
+ '2oo3': {e: [['A', 1e-4], ['B', 1e-4], ['C', 1e-4]], kif: 'K(2,A,B,C)', t0: 1000},
+ rv: {e: [['TT1', 1e-6], ['TT2', 1e-6], ['PLC', 1e-7], ['V1', 2.5e-6], ['V2', 2.5e-6]], kif: 'S(P(TT1,TT2),PLC,P(V1,V2))', t0: 8760},
+ hid: {e: [['A', 1e-4], ['B', 1e-4], ['C', 1e-4], ['D', 1e-4], ['E', 1e-4]], utak: 'A D; C B; A E B; C E D', t0: 1053.6}
+};
+function pelda(k) { const P = PELDAK[k]; elemek = P.e.map(([n, l]) => ({n, l})); if (P.kif) { $('kif').value = P.kif; document.querySelector('input[value=kif]').checked = true; }
+  if (P.utak) { $('utak').value = P.utak; document.querySelector('input[value=ut]').checked = true; } $('t0').value = String(P.t0).replace('.', ','); tabla(); }
+function ujElem() { elemek.push({n: 'X' + (elemek.length + 1), l: 1e-4}); tabla(); }
+function tabla() { const tb = $('elemek').querySelector('tbody'); tb.innerHTML = '';
+  elemek.forEach((e, i) => tb.append(el('tr', {}, el('td', {}, el('input', {type: 'text', value: e.n, oninput: ev => { e.n = ev.target.value.trim(); szamol(); }})),
+    el('td', {class: 'szam'}, el('input', {type: 'text', value: String(e.l).replace('.', ','), oninput: ev => { e.l = szam(ev.target.value); szamol(); }})),
+    el('td', {}, el('button', {class: 'masodlagos', onclick: () => { elemek.splice(i, 1); tabla(); }}, 'törlés'))))); szamol(); }
+// --- kifejezés-elemző ---
+function elemez(s) { let i = 0; const ws = () => { while (s[i] === ' ') i++; };
+  function nev() { ws(); let j = i; while (i < s.length && /[A-Za-z0-9_áéíóöőúüűÁÉÍÓÖŐÚÜŰ.-]/.test(s[i])) i++; if (j === i) throw 'név vagy kapu várható a(z) ' + (i + 1) + '. karakternél'; return s.slice(j, i); }
+  function kif() { const n = nev(); ws(); if (s[i] === '(' && ['S', 'P', 'K'].includes(n.toUpperCase())) { i++; const args = []; let k = null;
+      if (n.toUpperCase() === 'K') { ws(); let j = i; while (/[0-9]/.test(s[i])) i++; k = Number(s.slice(j, i)); ws(); if (s[i] !== ',') throw 'K(k, …): hiányzik a vessző'; i++; }
+      while (true) { args.push(kif()); ws(); if (s[i] === ',') { i++; continue; } if (s[i] === ')') { i++; break; } throw 'hiányzó zárójel vagy vessző'; }
+      return {t: n.toUpperCase(), k, args}; }
+    return {t: 'L', n}; }
+  const f = kif(); ws(); if (i < s.length) throw 'felesleges karakterek a kifejezés végén'; return f; }
+function levelek(f, acc = []) { if (f.t === 'L') acc.push(f.n); else f.args.forEach(a => levelek(a, acc)); return acc; }
+function kOfN(ps, k) { let dp = [1]; ps.forEach(p => { const u = Array(dp.length + 1).fill(0); dp.forEach((v, j) => { u[j] += v * (1 - p); u[j + 1] += v * p; }); dp = u; });
+  return dp.slice(k).reduce((a, b) => a + b, 0); }
+function erteke(f, R) { if (f.t === 'L') { if (!(f.n in R)) throw 'ismeretlen elem: ' + f.n; return R[f.n]; }
+  const ps = f.args.map(a => erteke(a, R)); if (f.t === 'S') return ps.reduce((a, b) => a * b, 1); if (f.t === 'P') return 1 - ps.reduce((a, b) => a * (1 - b), 1); return kOfN(ps, f.k); }
+function utakbol(utak, R) { const nevek = [...new Set(utak.flat())]; if (nevek.length > 20) throw 'legfeljebb 20 elem kezelhető állapotfelsorolással';
+  nevek.forEach(n => { if (!(n in R)) throw 'ismeretlen elem: ' + n; });
+  let ossz = 0; const N = nevek.length;
+  for (let m = 0; m < (1 << N); m++) { const mukodik = new Set(nevek.filter((_, j) => m & (1 << j)));
+    if (utak.some(u => u.every(x => mukodik.has(x)))) { let pr = 1; nevek.forEach((n, j) => pr *= (m & (1 << j)) ? R[n] : 1 - R[n]); ossz += pr; } }
+  return ossz; }
+function rendszerR(t, felulir = {}) { const R = {}; elemek.forEach(e => R[e.n] = Math.exp(-e.l * t)); Object.assign(R, felulir);
+  const mod = document.querySelector('input[name=mod]:checked').value;
+  if (mod === 'kif') return erteke(elemez($('kif').value), R);
+  const utak = $('utak').value.split(';').map(u => u.trim().split(/\s+/).filter(x => x)).filter(u => u.length); return utakbol(utak, R); }
+function szamol() { const msg = $('uzenet'); msg.textContent = ''; msg.className = 'megj';
+  try { const mod = document.querySelector('input[name=mod]:checked').value;
+    if (mod === 'kif') { const lv = levelek(elemez($('kif').value)); const dup = lv.filter((x, i) => lv.indexOf(x) !== i);
+      if (dup.length) { msg.textContent = `Figyelem: a(z) ${[...new Set(dup)].join(', ')} elem többször szerepel; a kifejezés így függetlennek tekinti az előfordulásait, ami hibás. Ilyenkor a minimális utakat add meg.`; msg.className = 'hiba'; } }
+    const t0 = szam($('t0').value); const R0 = rendszerR(t0);
+    // MTTF numerikusan
+    let T = 1; while (rendszerR(T) > 1e-6 && T < 1e12) T *= 2;
+    const n = 2000, h = T / n; let s = rendszerR(0) + rendszerR(T); for (let i = 1; i < n; i++) s += (i % 2 ? 4 : 2) * rendszerR(i * h); const mttf = s * h / 3;
+    $('eredm').innerHTML = `<p>R(t₀ = ${fmt(t0)} h) = <span class="nagyszam">${fmt(R0, 5)}</span></p><p>F(t₀) = ${fmt(1 - R0)}</p><p>MTTF ≈ <b>${fmt(mttf)}</b> h</p>`;
+    const fon = elemek.map(e => ({nev: e.n, ertek: rendszerR(t0, {[e.n]: 1}) - rendszerR(t0, {[e.n]: 0})})).sort((a, b) => b.ertek - a.ertek);
+    oszlopdiagram($('fontos'), fon, {balmargo: 90});
+    const pts = Array.from({length: 120}, (_, i) => i * T / 119 * 0.6);
+    const sorok = [{nev: 'rendszer', pontok: pts.map(t => [t, rendszerR(t)])}];
+    const lmin = Math.min(...elemek.map(e => e.l)); sorok.push({nev: 'legjobb elem egyedül', szin: '#6B7280', szaggatott: true, pontok: pts.map(t => [t, Math.exp(-lmin * t)])});
+    vonaldiagram($('graf'), {sorok, xcimke: 'idő t [h]', ycimke: 'R(t)', ymin: 0, ymax: 1});
+    ment('rbd', {elemek, kif: $('kif').value, utak: $('utak').value, t0: $('t0').value, mod});
+  } catch (e) { msg.textContent = 'Hiba: ' + e; msg.className = 'hiba'; } }
+const m = betolt('rbd'); if (m && m.elemek) { elemek = m.elemek; $('kif').value = m.kif; $('utak').value = m.utak; $('t0').value = m.t0; document.querySelector(`input[value=${m.mod}]`).checked = true; tabla(); } else pelda('rv');
+</script></body></html>

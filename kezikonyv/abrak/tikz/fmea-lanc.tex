@@ -1,0 +1,20 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  sz/.style={doboz=34mm, font=\scriptsize, minimum height=9mm},
+  m/.style={font=\scriptsize, align=left, anchor=west, text width=56mm}]
+  \node[sz] (r) at (0,0) {\textbf{rendszer}\\VészFék (jármű szint)};
+  \node[sz] (a) at (0,-1.7) {\textbf{alrendszer}\\radarérzékelő};
+  \node[sz] (k) at (0,-3.4) {\textbf{alkatrész}\\antennamodul burkolata};
+  \draw[nyilv] (r) -- (a); \draw[nyilv] (a) -- (k);
+  \node[pirosdoboz=48mm, font=\scriptsize, anchor=west] (fe) at (2.6,0) {\textbf{meghibásodás hatása (FE)}\\elmaradó vagy késve induló vészfékezés};
+  \node[kiemeltdoboz=48mm, font=\scriptsize, anchor=west] (fm) at (2.6,-1.7) {\textbf{meghibásodási mód (FM)}\\az érzékelő nem észleli az akadályt\\a megkövetelt távolságban};
+  \node[doboz=48mm, font=\scriptsize, anchor=west] (fc) at (2.6,-3.4) {\textbf{meghibásodás oka (FC)}\\jég vagy sár a burkolaton csillapítja a jelet};
+  \draw[nyil, pePiros] (fc.north) -- (fm.south); \draw[nyil, pePiros] (fm.north) -- (fe.south);
+  \node[m] at (8.0,0) {súlyosság (S): a hatás alapján};
+  \node[m] at (8.0,-1.7) {a mód a vizsgált elem szintjén\\fogalmazódik meg};
+  \node[m] at (8.0,-3.4) {előfordulás (O): az ok alapján\\észlelés (D): a meglévő ellenőrzések alapján};
+  \node[font=\tiny, text=peSzurke, align=left, anchor=north west] at (-1.7,-4.15) {Az alsóbb szint meghibásodási módja a felsőbb szint szemszögéből meghibásodási ok, a felsőbb szint hatása az alsóbb szint meghibásodási módja.};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STPA-munkalap</title>
+<style>/*KOZOS_CSS*/
+td textarea{min-height:3.2rem;font-family:'IBM Plex Sans',sans-serif;font-size:.82rem}
+.uca-tab td{width:22%}
+</style></head><body>
+<header class="app"><h1>STPA-munkalap</h1><p>Biztonságkritikus rendszerek – 5. gyakorlat. Veszteségek és veszélyek, irányítási struktúra, nem biztonságos irányítási műveletek (UCA), okozati forgatókönyvek és követelmények.</p></header>
+<main>
+<div class="kartya"><h2>Kiindulás</h2>
+ <button class="masodlagos" onclick="pelda('veszfek')">példa: VészFék</button>
+ <button class="masodlagos" onclick="pelda('kobo')">példa: KoboCella</button>
+ <button class="masodlagos" onclick="ures()">üres munkalap</button>
+ <button onclick="exportMd()">munkalap letöltése (Markdown)</button>
+ <p class="megj">A munkalap tartalma a böngészőben megmarad, ha a böngésző engedi a helyi tárolást.</p></div>
+<div class="racs">
+ <div class="kartya"><h2>1. Veszteségek (L)</h2><textarea id="L" oninput="valt()"></textarea><p class="megj">Soronként egy veszteség, például „L1: a szerelő sérülése”.</p></div>
+ <div class="kartya"><h2>2. Rendszerszintű veszélyek (H)</h2><textarea id="H" oninput="valt()"></textarea><p class="megj">Soronként egy veszély, zárójelben a kapcsolódó veszteségekkel: „H1: … [L1]”.</p></div>
+</div>
+<div class="kartya"><h2>3. Irányítási struktúra</h2>
+ <div class="racs">
+  <div><label>irányító</label><input type="text" id="iranyito" oninput="valt()"><label>irányított folyamat</label><input type="text" id="folyamat" oninput="valt()"></div>
+  <div><label>irányítási műveletek (soronként)</label><textarea id="muveletek" oninput="valt();ucaTabla()" style="min-height:5rem"></textarea></div>
+  <div><label>visszacsatolások (soronként)</label><textarea id="vissza" oninput="valt()" style="min-height:5rem"></textarea></div>
+ </div>
+ <div id="struktura" class="diagram"></div></div>
+<div class="kartya"><h2>4. Nem biztonságos irányítási műveletek</h2>
+ <p class="megj">Minden műveletre a négy típus: nem adja ki; kiadja, amikor nem kellene (vagy hibásan); rossz időben vagy sorrendben adja ki; túl korán fejezi be vagy túl sokáig alkalmazza. Minden UCA-hoz írd oda a kontextust és a veszélyt: „… amikor …, [H1]”.</p>
+ <div id="uca" class="diagram"></div></div>
+<div class="kartya"><h2>5. Okozati forgatókönyvek és követelmények</h2>
+ <p class="megj">UCA-nként legalább két forgatókönyv (az irányító hibás folyamatmodellje, hiányos visszacsatolás, a művelet nem hajtódik végre, külső zavar) és legalább egy követelmény.</p>
+ <div id="forg"></div></div>
+<div class="kartya eredmeny"><h2>Ellenőrzés</h2><div id="ell"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc · A módszer: Leveson és Thomas, STPA Handbook (2018).</footer>
+<script>/*KOZOS_JS*/
+const TIPUSOK = ['nem adja ki', 'kiadja, amikor nem kellene', 'rossz időben vagy sorrendben', 'túl korán fejezi be / túl sokáig'];
+let A = {};
+const PELDAK = {
+ veszfek: {L: 'L1: személyi sérülés vagy haláleset\nL2: járműkár', H: 'H1: a jármű nem tartja a biztonságos távolságot az előtte lévő akadálytól [L1, L2]\nH2: a jármű indokolatlanul erősen lassít követő forgalomban [L1, L2]',
+  iranyito: 'VészFék döntési logika', folyamat: 'fékrendszer és jármű', muveletek: 'vészfékezés indítása\nfigyelmeztetés a vezetőnek',
+  vissza: 'radar: akadály távolsága és sebessége\nkamera: objektum osztálya\nkerékfordulat: járműsebesség\nfékpedál-állás: vezetői beavatkozás',
+  uca: {'vészfékezés indítása|0': 'nem indít fékezést, amikor akadály van a pályán, és az ütközés elkerülhetetlen [H1]',
+        'vészfékezés indítása|1': 'fékezést indít, amikor nincs valós akadály (szellemcélpont) és követő jármű van [H2]',
+        'vészfékezés indítása|2': 'a fékezés akkor indul, amikor az ütközés már nem csökkenthető számottevően [H1]',
+        'vészfékezés indítása|3': 'a fékezés megszakad, amikor az objektumot átsorolja (gyalogos → ismeretlen) [H1]'},
+  forg: {'vészfékezés indítása|1': 'F1: a radar fém felüljárót akadálynak lát, a kamera megerősítése nélkül dönt\nF2: a kamera árnyékot tárgynak osztályoz alacsony napállásnál\nK1: erős fékezés csak két független érzékelő egyező jelzésére indulhat 60 km/h felett'}},
+ kobo: {L: 'L1: a szerelő sérülése\nL2: a termék vagy a berendezés károsodása', H: 'H1: a robot nagy sebességgel mozog, miközben a szerelő a közös munkatérben van [L1]\nH2: a megfogó a szerelő kezére zár [L1]',
+  iranyito: 'robotvezérlő biztonsági része', folyamat: 'robotkar és megfogó', muveletek: 'sebességcsökkentés\nbiztonságos megállás\nújraindítás',
+  vissza: 'lézerszkenner: személy az 1,2 m-es és a 0,5 m-es zónában\nsebességmérés a hajtásokon\nmegfogó erőmérése',
+  uca: {'sebességcsökkentés|0': 'nem csökkenti a sebességet, amikor a szerelő az 1,2 m-es zónába lép [H1]',
+        'újraindítás|1': 'újraindítja a mozgást, amikor a szerelő még a 0,5 m-es zónában van, de a szkenner takarásban látja [H1]'},
+  forg: {'sebességcsökkentés|0': 'F1: a szkenner látómezejét egy raklap takarja\nF2: a biztonsági rész folyamatmodellje szerint a cella „karbantartási üzemmódban” van\nK1: a szkenner takarását a rendszernek fel kell ismernie, és ilyenkor csökkentett sebességre kell váltania'}}
+};
+function ures() { A = {L: '', H: '', iranyito: '', folyamat: '', muveletek: '', vissza: '', uca: {}, forg: {}}; tolt(); }
+function pelda(k) { A = JSON.parse(JSON.stringify(PELDAK[k])); tolt(); }
+function tolt() { ['L', 'H', 'iranyito', 'folyamat', 'muveletek', 'vissza'].forEach(k => $(k).value = A[k] || ''); ucaTabla(); }
+function valt() { ['L', 'H', 'iranyito', 'folyamat', 'muveletek', 'vissza'].forEach(k => A[k] = $(k).value); rajz(); ell(); ment('stpa', A); }
+function sorai(s) { return (s || '').split('\n').map(x => x.trim()).filter(x => x); }
+function ucaTabla() { A.muveletek = $('muveletek').value; const mv = sorai(A.muveletek);
+  let t = el('table', {class: 'uca-tab'}, el('tr', {}, el('th', {}, 'irányítási művelet'), ...TIPUSOK.map(x => el('th', {}, x))));
+  mv.forEach(m => t.append(el('tr', {}, el('td', {}, m), ...TIPUSOK.map((_, j) => { const k = m + '|' + j;
+    return el('td', {}, el('textarea', {oninput: e => { A.uca[k] = e.target.value; forgTabla(); ell(); ment('stpa', A); }}, A.uca[k] || '')); }))));
+  $('uca').innerHTML = ''; $('uca').append(t); forgTabla(); rajz(); ell(); }
+function forgTabla() { const d = $('forg'); d.innerHTML = '';
+  Object.entries(A.uca).filter(([k, v]) => v && v.trim()).forEach(([k, v]) => { const [m, j] = k.split('|');
+    d.append(el('div', {}, el('label', {}, `${m} – ${TIPUSOK[+j]}: ${v}`),
+      el('textarea', {style: 'min-height:4rem', oninput: e => { A.forg[k] = e.target.value; ell(); ment('stpa', A); }}, A.forg[k] || ''))); });
+  if (!d.children.length) d.innerHTML = '<p class="megj">Előbb tölts ki legalább egy UCA-t.</p>'; }
+function rajz() { const mv = sorai(A.muveletek), vs = sorai(A.vissza); const W = 700, H = 250;
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px">`;
+  s += `<rect x="230" y="12" width="240" height="46" rx="4" fill="#E6EEF6" stroke="#285780"/><text x="350" y="40" font-size="13" text-anchor="middle" font-weight="600" fill="#1B3A57">${A.iranyito || 'irányító'}</text>`;
+  s += `<rect x="230" y="190" width="240" height="46" rx="4" fill="#DDEFE4" stroke="#3E8E63"/><text x="350" y="218" font-size="13" text-anchor="middle" font-weight="600" fill="#1B3A57">${A.folyamat || 'irányított folyamat'}</text>`;
+  s += `<defs><marker id="ny" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1B3A57"/></marker></defs>`;
+  s += `<line x1="270" y1="58" x2="270" y2="188" stroke="#1B3A57" stroke-width="1.6" marker-end="url(#ny)"/><line x1="430" y1="188" x2="430" y2="60" stroke="#1B3A57" stroke-width="1.6" marker-end="url(#ny)"/>`;
+  mv.forEach((m, i) => s += `<text x="262" y="${86 + i * 16}" font-size="11.5" text-anchor="end" fill="#285780">${m}</text>`);
+  vs.forEach((v, i) => s += `<text x="438" y="${86 + i * 16}" font-size="11.5" fill="#3E8E63">${v}</text>`);
+  s += `<text x="262" y="74" font-size="10" text-anchor="end" fill="#6B7280">irányítási műveletek</text><text x="438" y="74" font-size="10" fill="#6B7280">visszacsatolások</text>`;
+  $('struktura').innerHTML = s + '</svg>'; }
+function ell() { const h = sorai(A.H), l = sorai(A.L), mv = sorai(A.muveletek); const u = Object.entries(A.uca).filter(([k, v]) => v && v.trim());
+  const msg = [];
+  msg.push(l.length ? `<span class="ok">${l.length} veszteség</span>` : '<span class="hiba">nincs veszteség megadva</span>');
+  msg.push(h.length ? `<span class="ok">${h.length} veszély</span>` : '<span class="hiba">nincs veszély megadva</span>');
+  const hvk = h.filter(x => !/\[L\d/.test(x)); if (hvk.length) msg.push(`<span class="hiba">${hvk.length} veszélynél hiányzik a veszteség-hivatkozás [L…]</span>`);
+  msg.push(`${u.length} UCA ${mv.length} irányítási műveletre`);
+  const ucah = u.filter(([k, v]) => !/\[H\d/.test(v)); if (ucah.length) msg.push(`<span class="hiba">${ucah.length} UCA-nál hiányzik a veszély-hivatkozás [H…]</span>`);
+  const fh = u.filter(([k]) => sorai(A.forg[k]).filter(x => /^F\d/.test(x)).length < 2); if (fh.length) msg.push(`<span class="hiba">${fh.length} UCA-hoz kevesebb mint két forgatókönyv (F1, F2…) tartozik</span>`);
+  const kh = u.filter(([k]) => !sorai(A.forg[k]).some(x => /^K\d/.test(x))); if (kh.length) msg.push(`<span class="hiba">${kh.length} UCA-hoz nincs követelmény (K1…)</span>`);
+  $('ell').innerHTML = '<ul>' + msg.map(m => `<li>${m}</li>`).join('') + '</ul>'; }
+function exportMd() { let t = `# STPA-munkalap\n\n## Veszteségek\n\n${sorai(A.L).map(x => '- ' + x).join('\n')}\n\n## Veszélyek\n\n${sorai(A.H).map(x => '- ' + x).join('\n')}\n\n`;
+  t += `## Irányítási struktúra\n\n- Irányító: ${A.iranyito}\n- Irányított folyamat: ${A.folyamat}\n- Irányítási műveletek: ${sorai(A.muveletek).join('; ')}\n- Visszacsatolások: ${sorai(A.vissza).join('; ')}\n\n## UCA-k, forgatókönyvek, követelmények\n\n`;
+  Object.entries(A.uca).filter(([k, v]) => v && v.trim()).forEach(([k, v]) => { const [m, j] = k.split('|'); t += `### ${m} – ${TIPUSOK[+j]}\n\n${v}\n\n${sorai(A.forg[k]).map(x => '- ' + x).join('\n')}\n\n`; });
+  letolt('stpa_munkalap.md', t, 'text/markdown;charset=utf-8'); }
+const m = betolt('stpa'); if (m && m.uca) { A = m; tolt(); } else pelda('veszfek');
+</script></body></html>

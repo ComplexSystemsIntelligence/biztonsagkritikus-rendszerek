@@ -1,0 +1,38 @@
+# Markov-modellek és rendelkezésre állás {#sec-gy-markov}
+
+::: {.cel}
+A gyakorlat végére képes leszel
+
+- egy rendszer viselkedését állapotokkal és átmeneti rátákkal leírni;
+- pillanatnyi és tartós rendelkezésre állást, valamint MTTF-et számolni;
+- értékelni a javítás, a közös okú meghibásodás, az indulási hiba és a periodikus tesztelés hatását.
+:::
+
+**Háttér:** [a kézikönyv 12. fejezete](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/fejezetek/12-markov.html).
+
+## Alkalmazás: Markov-szerkesztő
+
+```{=html}
+<iframe class="alkalmazas" src="../alkalmazasok/markov.html" title="Markov-modell szerkesztő" loading="lazy" style="width:100%;height:1200px;border:1px solid #d8dee6;border-radius:4px"></iframe>
+```
+
+[Az alkalmazás megnyitása külön lapon](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/alkalmazasok/markov.html)
+
+## Feladatok az alkalmazással
+
+1. Töltsd be a javítható elem szemléltető változatát, és figyeld meg, hogyan közelít a rendelkezésre állás a tartós értékhez. Mitől függ az időállandó?
+2. Az 1oo2 példában ellenőrizd a kézikönyv értékeit ($U = 4{,}1\cdot10^{-5}$, MTTF $= 1{,}94\cdot10^5$ h). Állítsd a közös okú átmenetet nullára: mennyivel nő az MTTF?
+3. Modellezz két javítócsapatot: a „rendszerhiba → egy jó” átmenet rátáját állítsd $2\mu = 0{,}25$/h-ra. Mi változik és mi nem? Miért hat ez a módosítás jóval kevésbé, mint a közös okú átmenet csökkentése?
+4. A hideg tartalék példájában az A elem $\lambda = 10^{-4}$/h rátája két átmenetre oszlik: sikeres átkapcsolás $(1-p)\lambda$ és sikertelen indulás $p\lambda$ (a példában $p = 0{,}02$). Változtasd $p$-t, és keresd meg, mekkora indulási hiba mellett lesz a hideg tartalék MTTF-je kisebb, mint a meleg tartaléké ($1{,}5/\lambda$)! Hogyan módosítja az eredményt a tartalék rejtett meghibásodása (a „B rejtett hiba” állapot)?
+
+## Notebook: Markov-modellek és többfázisú PFD
+
+[Megnyitás a Google Colabban](https://colab.research.google.com/github/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/gyakorlat/notebookok/10_markov.ipynb) · [a notebook letöltése](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/notebookok/10_markov.ipynb)
+
+::: {.prompt title="Mintaprompt"}
+*„Egy 2oo3 szavazású, javítható rendszer Markov-modelljét írtam fel: [állapotok és átmenetek]. Ellenőrizd, hogy az intenzitásmátrix sorösszegei nullák-e, hogy minden fizikailag lehetséges átmenetet felvettem-e, és hogy a közös okú meghibásodást helyesen modelleztem-e! A megoldást ne számold ki.”*
+:::
+
+## Ellenőrző szempontok
+
+A jó modellben minden állapot fizikai jelentése egyértelmű, az átmenetek rátái forráshoz kötöttek, a kérdéstípus (tranziens, tartós, elnyelő állapotos) helyesen választott, és az eredmény értelmezése a modell feltevéseinek (exponenciális tartózkodási idő) korlátait is figyelembe veszi.

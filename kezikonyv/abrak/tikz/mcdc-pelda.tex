@@ -1,0 +1,21 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\usepackage{colortbl}
+\begin{document}
+\begin{tikzpicture}[every node/.append style={font=\scriptsize}]
+  \node[anchor=north west] (tab) at (0,0) {
+    \renewcommand{\arraystretch}{1.25}
+    \begin{tabular}{c|ccc|c|l}
+      teszt & $A$ & $B$ & $C$ & $D = A \wedge (B \vee C)$ & szerep\\ \hline
+      1 & \textcolor{peKiemel}{\textbf{1}} & 1 & 0 & 1 & $A$ párja: 4\\
+      2 & 1 & \textcolor{peKek}{\textbf{0}} & 0 & 0 & $B$ párja: 1, $C$ párja: 3\\
+      3 & 1 & 0 & \textcolor{peZold}{\textbf{1}} & 1 & \\
+      4 & \textcolor{peKiemel}{\textbf{0}} & 1 & 0 & 0 & \\
+    \end{tabular}};
+  \node[anchor=north west, align=left, text width=62mm] at (9.2,0) {
+    \textbf{MC/DC-feltétel:} minden feltételnek egyszer igaz és egyszer hamis értéket kell felvennie, és minden feltételre kell egy olyan tesztpár, amelyben \emph{csak az a feltétel} változik, és ez megváltoztatja a döntés kimenetét.\\[4pt]
+    $A$: 1 és 4 \quad $B$: 1 és 2 \quad $C$: 2 és 3\\[4pt]
+    négy teszt ($n + 1$) elég a nyolc lehetséges kombináció helyett};
+  \node[anchor=north west, align=left, text width=150mm, text=peSzurke] at (0,-3.1) {Összehasonlítás: az utasításlefedettséghez egyetlen igaz kimenetű teszt, a döntési lefedettséghez egy igaz és egy hamis kimenetű teszt elég; egyik sem bizonyítja, hogy minden feltétel valóban hat a döntésre.};
+\end{tikzpicture}
+\end{document}

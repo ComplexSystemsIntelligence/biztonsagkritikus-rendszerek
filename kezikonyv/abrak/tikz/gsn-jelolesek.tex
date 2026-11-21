@@ -1,0 +1,22 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize}]
+  \def\elem#1#2#3#4{\begin{scope}[shift={(#1,0)}] #2 \node[font=\scriptsize\bfseries, text=peSotet, anchor=north] at (0,-0.75) {#3}; \node[anchor=north, text width=26mm, align=center, font=\tiny] at (0,-1.1) {#4}; \end{scope}}
+  \elem{0}{\node[draw=peKek, fill=peHalvany, minimum width=22mm, minimum height=10mm, line width=0.8pt] {G: állítás};}{cél (állítás)}{egy állítás a rendszerről, amelyet igazolni kell}
+  \elem{3.2}{\node[draw=peKek, fill=peHalvany, trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=22mm, minimum height=10mm, line width=0.8pt] {S: stratégia};}{stratégia}{hogyan bontjuk az állítást részállításokra}
+  \elem{6.4}{\node[draw=peZold, fill=peZoldH, circle, minimum size=13mm, line width=0.8pt] {Sn: bizonyíték};}{megoldás (bizonyíték)}{elemzés, teszt, tanúsítvány, üzemi adat}
+  \elem{9.4}{\node[draw=peSzurke, fill=peSzurkeH, rounded corners=5mm, minimum width=22mm, minimum height=10mm, line width=0.8pt] {C: kontextus};}{kontextus}{a hatókör, a definíciók, a környezet}
+  \elem{12.4}{\node[draw=peSarga, fill=peSargaH, ellipse, minimum width=22mm, minimum height=10mm, line width=0.8pt] {A: feltevés}; \node[font=\scriptsize\bfseries, text=peSarga] at (1.25,-0.45) {A};}{feltevés / indoklás}{elfogadott, de nem igazolt állítás; egy döntés indoka}
+  \begin{scope}[shift={(15.2,0)}]
+    \node[draw=peKek, fill=peHalvany, minimum width=18mm, minimum height=10mm, line width=0.8pt] (u) {G: állítás};
+    \node[draw=peKek, fill=white, diamond, minimum size=5mm, inner sep=0pt] at (0,-0.78) {};
+    \node[font=\scriptsize\bfseries, text=peSotet, anchor=north] at (0,-1.15) {kifejtetlen állítás};
+  \end{scope}
+  % kapcsolatok
+  \draw[peSotet, line width=0.8pt, -{Triangle[length=2.5mm, width=2.2mm]}] (0,-2.9) -- (2.4,-2.9);
+  \node[anchor=west, font=\scriptsize] at (2.6,-2.9) {alátámasztja (állítás, stratégia, bizonyíték felé)};
+  \draw[peSotet, line width=0.8pt, -{Triangle[open, length=2.5mm, width=2.2mm]}] (8.4,-2.9) -- (10.8,-2.9);
+  \node[anchor=west, font=\scriptsize] at (11.0,-2.9) {összefüggésben van (kontextus, feltevés felé)};
+\end{tikzpicture}
+\end{document}

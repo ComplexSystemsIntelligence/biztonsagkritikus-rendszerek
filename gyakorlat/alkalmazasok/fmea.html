@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FMEA-munkalap: RPN és cselekvési prioritás</title>
+<style>@font-face{font-family:'IBM Plex Sans';font-weight:400;src:url(../assets/fonts/ibm-plex-sans-400.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Sans';font-weight:600;src:url(../assets/fonts/ibm-plex-sans-600.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Raleway';font-weight:800;src:url(../assets/fonts/raleway-800.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'IBM Plex Mono';font-weight:400;src:url(../assets/fonts/ibm-plex-mono-400.woff2) format('woff2');font-display:swap}
+:root{--kek:#285780;--sotet:#1B3A57;--kozep:#4F7FAD;--vilagos:#A9C4DE;--halvany:#E6EEF6;--kiemel:#E07B39;--kiemelh:#FBE7D9;--zold:#3E8E63;--zoldh:#DDEFE4;--piros:#B83A3A;--pirosh:#F6DEDE;--lila:#7A5C99;--sarga:#D9A520;--sargah:#FAF0D2;--szurke:#6B7280;--szurkeh:#F1F2F4;--szoveg:#1F2933}
+*{box-sizing:border-box}
+body{margin:0;font-family:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--szoveg);background:#fff;font-size:15px;line-height:1.45}
+header.app{background:var(--kek);color:#fff;padding:12px 18px;position:relative;overflow:hidden}
+header.app::after{content:"";position:absolute;right:-40px;top:0;bottom:0;width:180px;background:var(--kiemel);transform:skewX(-20deg);opacity:.9}
+header.app h1{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.25rem;margin:0;position:relative;z-index:1}
+header.app p{margin:.2rem 0 0;font-size:.85rem;opacity:.9;position:relative;z-index:1;max-width:75%}
+main{padding:14px 18px 30px;max-width:1180px;margin:0 auto}
+.kartya{border:1px solid #d8dee6;border-left:4px solid var(--kek);border-radius:4px;padding:10px 14px;margin:12px 0;background:#fff}
+.kartya h2{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.02rem;color:var(--sotet);margin:.1rem 0 .5rem}
+.kartya.eredmeny{border-left-color:var(--zold);background:#fbfdfc}
+.kartya.figyelem{border-left-color:var(--kiemel);background:#fffaf6}
+.racs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+label{font-size:.85rem;color:var(--sotet);display:block;margin:.35rem 0 .1rem}
+input[type=text],input[type=number],select,textarea{font:inherit;font-size:.9rem;padding:4px 6px;border:1px solid #c5ced9;border-radius:3px;width:100%;background:#fff}
+textarea{font-family:'IBM Plex Mono',monospace;font-size:.82rem;min-height:9rem}
+input[type=range]{width:100%;accent-color:var(--kek)}
+button{font:inherit;font-size:.85rem;background:var(--kek);color:#fff;border:0;border-radius:3px;padding:5px 11px;margin:3px 4px 3px 0;cursor:pointer}
+button.masodlagos{background:#fff;color:var(--kek);border:1px solid var(--kek)}
+button:hover{filter:brightness(1.1)}
+table{border-collapse:collapse;width:100%;font-size:.86rem;margin:.4rem 0}
+th{background:var(--halvany);color:var(--sotet);text-align:left;font-weight:600;padding:5px 6px;border-bottom:2px solid var(--kek)}
+td{padding:4px 6px;border-bottom:1px solid #e3e8ee;vertical-align:top}
+td input,td select{padding:2px 4px;font-size:.85rem}
+td.szam,th.szam{text-align:right;font-variant-numeric:tabular-nums}
+.cimke{display:inline-block;padding:1px 7px;border-radius:9px;font-size:.78rem;font-weight:600}
+.c-H,.c-magas{background:var(--pirosh);color:var(--piros)}.c-M,.c-kozepes{background:var(--sargah);color:#8a6a10}.c-L,.c-alacsony{background:var(--zoldh);color:var(--zold)}
+.nagyszam{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.6rem;color:var(--sotet)}
+.megj{font-size:.8rem;color:var(--szurke)}
+.hiba{color:var(--piros);font-weight:600}
+.ok{color:var(--zold);font-weight:600}
+svg text{font-family:'IBM Plex Sans',sans-serif}
+.diagram{width:100%;overflow-x:auto}
+footer.app{font-size:.75rem;color:var(--szurke);padding:8px 18px;border-top:1px solid #e3e8ee}
+@media (max-width:640px){header.app p{max-width:100%}}
+
+td input[type=number]{width:3.6rem}
+tr.ellentmond td{background:#fff6ee}
+</style></head><body>
+<header class="app"><h1>FMEA-munkalap: RPN és cselekvési prioritás</h1><p>Biztonságkritikus rendszerek – 4. gyakorlat. Ugyanarra a táblázatra kockázat-prioritási számot (RPN) és egyszerűsített cselekvési prioritást (AP) számol, és megjelöli az ellentmondásokat.</p></header>
+<main>
+<div class="kartya figyelem"><h2>Figyelem</h2><p>Az AP itt a könyv 6. fejezetének <b>egyszerűsített, szemléltető szabálya</b> szerint készül (magas: S ≥ 9 és (O ≥ 4 vagy D ≥ 7), vagy 7 ≤ S ≤ 8 és O ≥ 6; közepes: S ≥ 7, ha nem magas, vagy 4 ≤ S ≤ 6 és O ≥ 6; egyébként alacsony). Ez <b>nem</b> az AIAG–VDA kézikönyv hivatalos táblázata; valós elemzéshez azt kell használni.</p></div>
+<div class="kartya"><h2>Munkalap</h2>
+<div class="diagram"><table id="tab"><thead><tr><th>#</th><th>funkció</th><th>meghibásodási mód</th><th>hatás</th><th>S</th><th>ok</th><th>megelőzés / észlelés</th><th>O</th><th>D</th><th class="szam">RPN</th><th>AP</th><th></th></tr></thead><tbody></tbody></table></div>
+<button onclick="uj()">új sor</button>
+<button class="masodlagos" onclick="pelda()">példa: VészFék radarérzékelő</button>
+<button class="masodlagos" onclick="export_()">letöltés (CSV)</button>
+</div>
+<div class="racs">
+ <div class="kartya eredmeny"><h2>Rangsorok</h2><div id="rang"></div></div>
+ <div class="kartya figyelem"><h2>Ellentmondások</h2><div id="ellent"></div></div>
+</div>
+<div class="kartya"><h2>Az RPN értékkészlete</h2><p class="megj">Az 1–10 skálák szorzataként az 1–1000 tartományban csak 120 különböző RPN-érték fordul elő, és ezek eloszlása erősen egyenetlen; a sötét oszlopok a munkalap sorait jelölik.</p><div id="eloszlas"></div></div>
+</main>
+<footer class="app">© 2026 Abonyi János · Pannon Egyetem · MIT licenc</footer>
+<script>// Közös segédfüggvények a PE tankönyvsorozat böngészős alkalmazásaihoz (MIT licenc)
+const $ = id => document.getElementById(id);
+function el(tag, attrs = {}, ...ch) { const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) { if (k === 'class') e.className = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v); }
+  for (const c of ch.flat()) e.append(c instanceof Node ? c : document.createTextNode(c)); return e; }
+const SUP = {'-':'⁻','0':'⁰','1':'¹','2':'²','3':'³','4':'⁴','5':'⁵','6':'⁶','7':'⁷','8':'⁸','9':'⁹'};
+function fmt(x, sig = 3) {
+  if (x === null || x === undefined || isNaN(x)) return '–';
+  if (!isFinite(x)) return '∞';
+  if (x === 0) return '0';
+  const a = Math.abs(x);
+  if (a >= 0.01 && a < 1e5) { let d = Math.max(0, sig - 1 - Math.floor(Math.log10(a))); d = Math.min(d, 6);
+    return x.toFixed(d).replace('.', ','); }
+  const e = Math.floor(Math.log10(a)); const m = x / Math.pow(10, e);
+  return m.toFixed(sig - 1).replace('.', ',') + '·10' + String(e).split('').map(c => SUP[c]).join('');
+}
+function szam(s) { if (typeof s === 'number') return s; if (s === undefined || s === null) return NaN;
+  const t = String(s).trim().replace(/\s/g, '').replace(',', '.'); return t === '' ? NaN : Number(t); }
+function ment(kulcs, obj) { try { localStorage.setItem('pe-bkr-' + kulcs, JSON.stringify(obj)); } catch (e) {} }
+function betolt(kulcs) { try { const s = localStorage.getItem('pe-bkr-' + kulcs); return s ? JSON.parse(s) : null; } catch (e) { return null; } }
+function letolt(nev, szoveg, mime = 'text/plain;charset=utf-8') { const b = new Blob([szoveg], {type: mime});
+  const a = el('a', {href: URL.createObjectURL(b), download: nev}); document.body.append(a); a.click(); a.remove(); }
+const SZINEK = ['#285780', '#E07B39', '#3E8E63', '#B83A3A', '#7A5C99', '#D9A520', '#4F7FAD', '#6B7280'];
+function tengelyLepes(min, max, n = 5) { const r = max - min; if (r <= 0) return [min];
+  const nyers = r / n, p = Math.pow(10, Math.floor(Math.log10(nyers))), f = nyers / p;
+  const l = (f < 1.5 ? 1 : f < 3 ? 2 : f < 7 ? 5 : 10) * p; const t = []; for (let v = Math.ceil(min / l) * l; v <= max + 1e-12 * r; v += l) t.push(+v.toPrecision(12)); return t; }
+// Vonaldiagram SVG-ben. series: [{nev, szin, pontok:[[x,y],...], szaggatott}]
+function vonaldiagram(tarolo, o) {
+  const W = o.szel || 640, H = o.mag || 300, m = {b: 64, j: 14, f: 14, a: 44};
+  const pts = o.sorok.flatMap(s => s.pontok).filter(p => isFinite(p[0]) && isFinite(p[1]) && (!o.logy || p[1] > 0));
+  if (!pts.length) { tarolo.innerHTML = '<p class="megj">Nincs megjeleníthető adat.</p>'; return; }
+  let xmin = o.xmin ?? Math.min(...pts.map(p => p[0])), xmax = o.xmax ?? Math.max(...pts.map(p => p[0]));
+  let ymin = o.ymin ?? Math.min(...pts.map(p => p[1])), ymax = o.ymax ?? Math.max(...pts.map(p => p[1]));
+  if (o.logy) { ymin = Math.log10(ymin); ymax = Math.log10(ymax); ymin = Math.floor(ymin); ymax = Math.ceil(ymax); if (ymax === ymin) ymax++; }
+  else { if (ymax === ymin) { ymax += 1; } if (o.ymin === undefined && ymin > 0 && ymin < 0.3 * ymax) ymin = 0; }
+  const X = x => m.b + (x - xmin) / (xmax - xmin) * (W - m.b - m.j);
+  const Y = y => { const v = o.logy ? Math.log10(y) : y; return H - m.a - (v - ymin) / (ymax - ymin) * (H - m.a - m.f); };
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px" role="img">`;
+  const xt = tengelyLepes(xmin, xmax, 6);
+  const yt = o.logy ? Array.from({length: ymax - ymin + 1}, (_, i) => ymin + i) : tengelyLepes(ymin, ymax, 5);
+  for (const t of yt) { const yy = o.logy ? H - m.a - (t - ymin) / (ymax - ymin) * (H - m.a - m.f) : Y(t);
+    s += `<line x1="${m.b}" x2="${W - m.j}" y1="${yy}" y2="${yy}" stroke="#e6e9ee"/><text x="${m.b - 6}" y="${yy + 4}" font-size="11" text-anchor="end" fill="#4b5563">${o.logy ? '10' + String(t).split('').map(c => SUP[c]).join('') : fmt(t, 3)}</text>`; }
+  for (const t of xt) { const xx = X(t); s += `<line x1="${xx}" x2="${xx}" y1="${m.f}" y2="${H - m.a}" stroke="#f0f2f5"/><text x="${xx}" y="${H - m.a + 15}" font-size="11" text-anchor="middle" fill="#4b5563">${fmt(t, 3)}</text>`; }
+  s += `<line x1="${m.b}" x2="${W - m.j}" y1="${H - m.a}" y2="${H - m.a}" stroke="#1B3A57"/><line x1="${m.b}" x2="${m.b}" y1="${m.f}" y2="${H - m.a}" stroke="#1B3A57"/>`;
+  s += `<text x="${(W + m.b) / 2}" y="${H - 8}" font-size="12" text-anchor="middle" fill="#1B3A57">${o.xcimke || ''}</text>`;
+  s += `<text transform="translate(14,${(H - m.a) / 2}) rotate(-90)" font-size="12" text-anchor="middle" fill="#1B3A57">${o.ycimke || ''}</text>`;
+  o.sorok.forEach((sr, i) => { const szin = sr.szin || SZINEK[i % SZINEK.length];
+    const d = sr.pontok.filter(p => isFinite(p[1]) && (!o.logy || p[1] > 0)).map((p, k) => (k ? 'L' : 'M') + X(p[0]).toFixed(1) + ',' + Y(p[1]).toFixed(1)).join('');
+    s += `<path d="${d}" fill="none" stroke="${szin}" stroke-width="${sr.vastag || 2}" ${sr.szaggatott ? 'stroke-dasharray="6 4"' : ''}/>`; });
+  let ly = m.f + 4; o.sorok.forEach((sr, i) => { if (!sr.nev) return; const szin = sr.szin || SZINEK[i % SZINEK.length];
+    s += `<line x1="${W - m.j - 190}" x2="${W - m.j - 170}" y1="${ly + 6}" y2="${ly + 6}" stroke="${szin}" stroke-width="2.5" ${sr.szaggatott ? 'stroke-dasharray="6 4"' : ''}/><text x="${W - m.j - 165}" y="${ly + 10}" font-size="11" fill="#1F2933">${sr.nev}</text>`; ly += 16; });
+  tarolo.innerHTML = s + '</svg>';
+}
+// Vízszintes oszlopdiagram. adatok: [{nev, ertek, szin}], log: logaritmikus tengely
+function oszlopdiagram(tarolo, adatok, o = {}) {
+  const W = o.szel || 640, sor = 26, m = {b: o.balmargo || 190, j: 70, f: 8}; const H = m.f * 2 + sor * adatok.length + 22;
+  const ert = adatok.map(a => a.ertek).filter(v => v > 0); if (!ert.length) { tarolo.innerHTML = ''; return; }
+  let lo = o.log ? Math.floor(Math.log10(Math.min(...ert))) : 0, hi = o.log ? Math.ceil(Math.log10(Math.max(...ert))) : Math.max(...ert) * 1.05;
+  if (o.log && hi === lo) hi++;
+  const X = v => m.b + ((o.log ? Math.log10(v) : v) - lo) / (hi - lo) * (W - m.b - m.j);
+  let s = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px">`;
+  adatok.forEach((a, i) => { const y = m.f + i * sor; const x1 = X(Math.max(a.ertek, o.log ? Math.pow(10, lo) : 0));
+    s += `<text x="${m.b - 6}" y="${y + 16}" font-size="11.5" text-anchor="end" fill="#1F2933">${a.nev}</text>`;
+    s += `<rect x="${m.b}" y="${y + 4}" width="${Math.max(0, x1 - m.b)}" height="${sor - 8}" fill="${a.szin || '#285780'}" rx="2"/>`;
+    s += `<text x="${x1 + 5}" y="${y + 16}" font-size="11" fill="#1F2933">${a.felirat ?? fmt(a.ertek)}</text>`; });
+  if (o.vonal !== undefined) { const xv = X(o.vonal); s += `<line x1="${xv}" x2="${xv}" y1="${m.f}" y2="${H - 20}" stroke="#B83A3A" stroke-width="1.5" stroke-dasharray="5 3"/><text x="${xv}" y="${H - 6}" font-size="11" text-anchor="middle" fill="#B83A3A">${o.vonalcimke || ''}</text>`; }
+  tarolo.innerHTML = s + '</svg>';
+}
+function osszegzes(ertekek) { return ertekek.reduce((a, b) => a + b, 0); }
+
+let sorok = [];
+const PELDA = [
+ ['akadály észlelése 0,5–150 m-en', 'nem észleli az akadályt', 'elmaradó vészfékezés', 8, 'jég vagy sár a burkolaton', 'fűtött burkolat / vakulásdiagnosztika', 4, 4],
+ ['akadály észlelése', 'téves (szellem-) célpont', 'indokolatlan erős fékezés', 10, 'többutas visszaverődés', 'célpontkövetés / kevés szimulációs teszt', 4, 6],
+ ['távolságmérés', 'a mért távolság eltolódik', 'késve induló fékezés', 7, 'hőmérsékleti drift', 'hőkompenzáció / hőkamrás teszt', 3, 3],
+ ['adatküldés', 'késve érkező adat', 'késve induló fékezés', 7, 'CAN-busz túlterhelés', 'ütemezésanalízis / időzítésfigyelés', 2, 2],
+ ['tápellátás', 'a burkolatfűtés kiesik', 'kényelmi funkció hiánya', 3, 'csatlakozó oxidációja', 'nincs / vizuális ellenőrzés', 7, 8],
+ ['rögzítés', 'a konzol eltörik', 'a radar elfordul, téves célpontok', 9, 'fáradásos törés', 'méretezés / rezgésteszt', 2, 3]];
+function ap(S, O, D) { if ((S >= 9 && (O >= 4 || D >= 7)) || (S >= 7 && S <= 8 && O >= 6)) return 'H';
+  if (S >= 7 || (S >= 4 && S <= 6 && O >= 6)) return 'M'; return 'L'; }
+const APV = {H: 3, M: 2, L: 1};
+function uj(v = ['', '', '', 5, '', '', 5, 5]) { sorok.push({f: v[0], m: v[1], h: v[2], S: v[3], ok: v[4], k: v[5], O: v[6], D: v[7]}); rajzol(); }
+function pelda() { sorok = []; PELDA.forEach(p => uj(p)); }
+function mezo(s, k, tipus = 'text') { return el('input', {type: tipus, value: s[k], min: 1, max: 10, oninput: e => { s[k] = tipus === 'number' ? Math.min(10, Math.max(1, Math.round(szam(e.target.value) || 1))) : e.target.value; szamol(); }}); }
+function rajzol() { const tb = $('tab').querySelector('tbody'); tb.innerHTML = '';
+  sorok.forEach((s, i) => tb.append(el('tr', {id: 'sor' + i}, el('td', {}, String(i + 1)), el('td', {}, mezo(s, 'f')), el('td', {}, mezo(s, 'm')), el('td', {}, mezo(s, 'h')),
+    el('td', {}, mezo(s, 'S', 'number')), el('td', {}, mezo(s, 'ok')), el('td', {}, mezo(s, 'k')), el('td', {}, mezo(s, 'O', 'number')), el('td', {}, mezo(s, 'D', 'number')),
+    el('td', {class: 'szam', id: 'rpn' + i}), el('td', {id: 'ap' + i}), el('td', {}, el('button', {class: 'masodlagos', onclick: () => { sorok.splice(i, 1); rajzol(); }}, 'törlés')))));
+  szamol(); }
+function szamol() {
+  sorok.forEach((s, i) => { s.rpn = s.S * s.O * s.D; s.ap = ap(s.S, s.O, s.D); $('rpn' + i).textContent = s.rpn; $('ap' + i).innerHTML = `<span class="cimke c-${s.ap}">${s.ap}</span>`; });
+  const idx = sorok.map((s, i) => i);
+  const r1 = [...idx].sort((a, b) => sorok[b].rpn - sorok[a].rpn);
+  const r2 = [...idx].sort((a, b) => APV[sorok[b].ap] - APV[sorok[a].ap] || sorok[b].S - sorok[a].S || sorok[b].O - sorok[a].O || sorok[b].D - sorok[a].D);
+  let t = '<table><tr><th>helyezés</th><th>RPN szerint</th><th>AP (majd S, O, D) szerint</th></tr>';
+  idx.forEach(k => t += `<tr><td>${k + 1}.</td><td>#${r1[k] + 1} (RPN ${sorok[r1[k]].rpn})</td><td>#${r2[k] + 1} (${sorok[r2[k]].ap}, S=${sorok[r2[k]].S})</td></tr>`);
+  $('rang').innerHTML = t + '</table>';
+  const e = []; idx.forEach(i => $('sor' + i).classList.remove('ellentmond'));
+  for (const a of idx) for (const b of idx) if (sorok[a].rpn > sorok[b].rpn && APV[sorok[a].ap] < APV[sorok[b].ap]) {
+    e.push(`<li>#${a + 1} RPN-je nagyobb (${sorok[a].rpn} &gt; ${sorok[b].rpn}), de a prioritása alacsonyabb (${sorok[a].ap} &lt; ${sorok[b].ap}) – a #${b + 1} súlyossága ${sorok[b].S}.</li>`);
+    $('sor' + a).classList.add('ellentmond'); $('sor' + b).classList.add('ellentmond'); }
+  const s9 = idx.filter(i => sorok[i].S >= 9);
+  $('ellent').innerHTML = (e.length ? '<ul>' + e.join('') + '</ul>' : '<p class="ok">Az RPN és az AP sorrendje nem mond ellent egymásnak.</p>') +
+    (s9.length ? `<p>A ${s9.map(i => '#' + (i + 1)).join(', ')} sor súlyossága 9 vagy 10: az RPN-től és az AP-től függetlenül célzott intézkedés kell.</p>` : '');
+  // eloszlás
+  const db = new Map(); for (let S = 1; S <= 10; S++) for (let O = 1; O <= 10; O++) for (let D = 1; D <= 10; D++) db.set(S * O * D, (db.get(S * O * D) || 0) + 1);
+  const W = 640, H = 170, X = v => 40 + v / 1000 * (W - 60), mx = Math.max(...db.values()), Y = n => H - 26 - n / mx * (H - 40);
+  let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" style="max-width:${W}px">`;
+  for (const [v, n] of db) svg += `<line x1="${X(v)}" x2="${X(v)}" y1="${H - 26}" y2="${Y(n)}" stroke="#A9C4DE" stroke-width="2"/>`;
+  sorok.forEach(s => svg += `<line x1="${X(s.rpn)}" x2="${X(s.rpn)}" y1="${H - 26}" y2="${18}" stroke="#E07B39" stroke-width="2"/>`);
+  [0, 200, 400, 600, 800, 1000].forEach(v => svg += `<text x="${X(v)}" y="${H - 10}" font-size="11" text-anchor="middle">${v}</text>`);
+  svg += `<text x="${W - 20}" y="14" font-size="11" text-anchor="end" fill="#6B7280">${db.size} különböző RPN-érték</text>`;
+  $('eloszlas').innerHTML = svg + '</svg>';
+  ment('fmea', sorok);
+}
+function export_() { let t = 'sorszam;funkcio;meghibasodasi_mod;hatas;S;ok;intezkedesek;O;D;RPN;AP\n';
+  sorok.forEach((s, i) => t += [i + 1, s.f, s.m, s.h, s.S, s.ok, s.k, s.O, s.D, s.rpn, s.ap].map(x => String(x).replace(/;/g, ',')).join(';') + '\n');
+  letolt('fmea_munkalap.csv', t, 'text/csv;charset=utf-8'); }
+const m = betolt('fmea'); if (m && m.length) { sorok = m; rajzol(); } else pelda();
+</script></body></html>

@@ -1,0 +1,73 @@
+# Szabványok és jogszabályok {#sec-szabvanyok}
+
+Ez a függelék a könyvben hivatkozott szabványokat, irányelveket és jogszabályokat foglalja össze területenként, a könyv lezárásakor (2026 novemberében) érvényes kiadással. A szabványokat rendszeresen felülvizsgálják; alkalmazásuk előtt mindig a legfrissebb kiadást kell ellenőrizni. Ahol új kiadás készül, azt a megjegyzés jelzi.
+
+## Általános és módszertani szabványok {#sec-d-altalanos}
+
+| Szabvány | Tárgy | Fejezet |
+|:--|:--|:--|
+| IEC 61508-1…7:2010 [@iec61508] | az E/E/PE biztonsági rendszerek funkcionális biztonsága (alapszabvány; a 3. kiadás 2027-re várható) | [-@sec-eletciklus]., [-@sec-sil]., [-@sec-szoftver]. |
+| IEC 61511-1…3:2016 [@iec61511] | biztonsági műszeres rendszerek a folyamatiparban | [-@sec-eletciklus]., [-@sec-esemenyfa]., [-@sec-sil]. |
+| ISO 31000:2018 [@iso31000] | kockázatmenedzsment, irányelvek | [-@sec-kockazatertekeles]. |
+| IEC 31010:2019 [@iec31010] | kockázatfelmérési technikák | [-@sec-kockazatertekeles]. |
+| ISO/IEC Guide 51:2014 [@isoguide51] | a biztonsági szempontok szabványokba foglalása | [-@sec-fogalmak]. |
+| IEC 60050-192:2015 [@iec60050] | nemzetközi elektrotechnikai szótár: megbízhatóság | [-@sec-fogalmak]., [-@sec-markov]. |
+| IEC 61882:2016 [@iec61882] | HAZOP-vizsgálat | [-@sec-veszelyazonositas]. |
+| IEC 60812:2018 [@iec60812] | FMEA és FMECA | [-@sec-fmea]. |
+| AIAG–VDA FMEA kézikönyv, 2019 [@aiagvda2019] | az autóipari FMEA módszertana, intézkedési prioritás | [-@sec-fmea]. |
+| IEC 61025:2006 [@iec61025] | hibafa-elemzés | [-@sec-hibafa]. |
+| IEC 62502:2010 [@iec62502] | eseményfa-elemzés | [-@sec-esemenyfa]. |
+| IEC 61078:2016 [@iec61078] | megbízhatósági blokkdiagramok | [-@sec-rbd]. |
+| IEC 61165:2006 [@iec61165] | Markov-technikák | [-@sec-markov]. |
+| MIL-STD-882E:2012 [@milstd882e] | rendszerbiztonság (amerikai védelmi szabvány) | [-@sec-eletciklus]. |
+| ANSI/ISA-18.2:2016 [@isa182], EEMUA 191:2013 [@eemua191] | riasztáskezelés | [-@sec-ember]. |
+| GSN Community Standard v3, 2021 [@gsn2021] | célstruktúra-jelölés a biztonsági érvelésekhez | [-@sec-biztonsagi-erveles]. |
+
+: Általános és módszertani szabványok {#tbl-d-altalanos}
+
+## Ágazati szabványok {#sec-d-agazati}
+
+| Ágazat | Szabvány | Tárgy |
+|:--|:--|:--|
+| gépipar | ISO 12100:2010 [@iso12100] | a tervezés általános elvei, kockázatértékelés és -csökkentés |
+| | ISO 13849-1:2023 [@iso13849] | a biztonsági irányítórendszerek biztonsági részei, PL |
+| | IEC 62061:2021 [@iec62061] | a biztonsági irányítórendszerek funkcionális biztonsága, SIL |
+| | ISO 10218-1/-2:2025 [@iso10218] | ipari robotok biztonsága |
+| | ISO/TS 15066:2016 [@isots15066] | kollaboratív robotok, biomechanikai határértékek |
+| közúti járművek | ISO 26262:2018 [@iso26262] | funkcionális biztonság (a 3. kiadás előkészítés alatt) |
+| | ISO 21448:2022 [@iso21448] | a rendeltetésszerű funkció biztonsága (SOTIF) |
+| | ISO/PAS 8800:2024 [@isopas8800] | biztonság és mesterséges intelligencia |
+| | ISO/TS 5083:2025 [@isots5083] | automatizált vezetési rendszerek biztonsága |
+| | ISO/SAE 21434:2021 [@iso21434] | kiberbiztonsági mérnöki folyamat |
+| | SAE J3016:2021 [@sae3016] | a vezetésautomatizálás szintjei és fogalmai |
+| | EGAS felügyeleti koncepció, 6.0, 2015 [@egas2015] | a motorvezérlés háromszintű felügyelete |
+| vasút | EN 50126-1/-2:2017 [@en50126] | RAMS-folyamat |
+| | EN 50129:2018 [@en50129] | biztonsági elektronikus jelzőrendszerek |
+| | EN 50716:2023 [@en50716] | vasúti szoftverfejlesztés (az EN 50128 és az EN 50657 helyett) |
+| polgári repülés | ARP4754B:2023 [@arp4754b] | repülőgépek és rendszereik fejlesztése |
+| | ARP4761A:2023 [@arp4761a] | a biztonságértékelési folyamat |
+| | DO-178C:2011 [@do178c], DO-333:2011 [@do333] | fedélzeti szoftver, formális módszerek kiegészítése |
+| orvostechnika | ISO 14971:2019 [@iso14971] | kockázatkezelés |
+| | IEC 62304:2006+A1:2015 [@iec62304] | az orvostechnikai szoftverek életciklusa |
+| szoftver | MISRA C:2025 [@misra2025] | a C nyelv biztonságkritikus használata |
+| kiberbiztonság | IEC 62443 sorozat [@iec62443] | az ipari automatizálás kiberbiztonsága |
+| | IEC TR 63069:2019 [@iec63069] | a funkcionális biztonság és a kiberbiztonság összehangolása |
+| mesterséges intelligencia | ISO/IEC TR 5469:2024 [@isotr5469] | funkcionális biztonság és MI-rendszerek |
+| autonóm termékek | UL 4600, 3. kiadás, 2023 [@ul4600] | az autonóm termékek biztonsági értékelése |
+
+: Ágazati szabványok {#tbl-d-agazati}
+
+## Jogszabályok és járműipari előírások {#sec-d-jog}
+
+| Jogszabály | Tárgy | Alkalmazás |
+|:--|:--|:--|
+| 2012/18/EU irányelv (Seveso III) [@eu2012seveso] | a veszélyes anyagokkal kapcsolatos súlyos balesetek veszélyének kezelése | hatályos |
+| (EU) 2023/1230 rendelet [@eu2023machinery] | gépek (a 2006/42/EK irányelv helyett) | 2027. január 20-tól |
+| (EU) 2024/1689 rendelet [@eu2024ai] | mesterséges intelligencia (MI-rendelet) | fokozatosan; nagy kockázatú rendszerek: 2027. december 2-tól (III. melléklet), 2028. augusztus 2-tól (I. melléklet) |
+| digitális omnibusz az MI-ről, 2026 [@eu2026omnibus] | az MI-rendelet határidőinek és egyes rendelkezéseinek módosítása | 2026 júliusától hatályos |
+| (EU) 2024/2847 rendelet [@eu2024cra] | a digitális elemeket tartalmazó termékek kiberbiztonsága (CRA) | jelentési kötelezettség 2026. szeptember 11-től, teljes alkalmazás 2027. december 11-től |
+| ENSZ EGB 13. sz. előírás [@unr13] | fékrendszerek (haszonjárművek) | hatályos |
+| ENSZ EGB 155. sz. előírás [@unr155] | kiberbiztonsági irányítási rendszer | minden új járműre 2024 júliusától (EU) |
+| ENSZ EGB 157. sz. előírás [@unr157] | automatizált sávtartó rendszerek | hatályos |
+
+: Jogszabályok és járműipari előírások {#tbl-d-jog}

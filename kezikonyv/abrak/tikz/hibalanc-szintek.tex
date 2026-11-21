@@ -1,0 +1,26 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  f/.style={doboz=21mm, font=\scriptsize, minimum height=10mm},
+  e/.style={kiemeltdoboz=21mm, font=\scriptsize, minimum height=10mm},
+  m/.style={pirosdoboz=21mm, font=\scriptsize, minimum height=10mm},
+  szint/.style={font=\scriptsize\bfseries, text=peSotet, anchor=east, align=right}]
+  \foreach \y/\nev in {0/{alkatrész\\(érzékelő)},-2.0/{alrendszer\\(biztonsági funkció)},-4.0/{rendszer\\(reaktor, jármű)}}
+    \node[szint] at (-0.4,\y) {\nev};
+  \node[f] (f1) at (1.2,0) {\textbf{hibaok}\\öregedő\\kondenzátor};
+  \node[e] (e1) at (4.0,0) {\textbf{hiba}\\elcsúszott\\mért érték};
+  \node[m] (m1) at (6.8,0) {\textbf{meghibásodás}\\a távadó\\alacsony értéket ad};
+  \node[f] (f2) at (4.0,-2.0) {\textbf{hibaok}\\hibás bemenő\\jel};
+  \node[e] (e2) at (6.8,-2.0) {\textbf{hiba}\\a logika nem\\érzékel túllépést};
+  \node[m] (m2) at (9.6,-2.0) {\textbf{meghibásodás}\\igénykor nincs\\leállítás};
+  \node[f] (f3) at (6.8,-4.0) {\textbf{hibaok}\\elmaradó\\védelmi funkció};
+  \node[e] (e3) at (9.6,-4.0) {\textbf{hiba}\\megfutó\\reakció};
+  \node[m] (m3) at (12.4,-4.0) {\textbf{baleset}\\túlnyomás,\\kibocsátás};
+  \foreach \a/\b/\t in {f1/e1/{aktiválódás},e1/m1/{terjedés},f2/e2/{},e2/m2/{},f3/e3/{igény},e3/m3/{}}
+    \draw[nyil] (\a) -- node[above, font=\tiny, text=peSzurke] {\t} (\b);
+  \draw[nyil, peKek] (m1.south) -- ++(0,-0.35) -| (f2.north);
+  \draw[nyil, peKek] (m2.south) -- ++(0,-0.35) -| (f3.north);
+  \node[font=\scriptsize, text=peKek, align=left, anchor=west] at (7.95,-0.85) {az alacsonyabb szint meghibásodása\\a magasabb szint hibaoka};
+\end{tikzpicture}
+\end{document}

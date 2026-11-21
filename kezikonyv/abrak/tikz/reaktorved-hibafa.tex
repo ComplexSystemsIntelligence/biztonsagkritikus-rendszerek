@@ -1,0 +1,76 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\colorlet{peblue}{peKek}\colorlet{pelight}{peHalvany}\colorlet{accent}{peKiemel}
+\begin{document}
+\begin{tikzpicture}[
+  font=\footnotesize,
+  ev/.style={draw=peblue, fill=pelight, rounded corners=1.5pt, minimum width=3.1cm,
+             minimum height=0.95cm, text width=2.95cm, align=center, line width=0.6pt},
+  top/.style={ev, fill=peblue, text=white, font=\footnotesize\bfseries, minimum width=4.2cm, text width=4cm},
+  be/.style={draw=peblue, fill=white, circle, minimum size=0.95cm, inner sep=0pt, line width=0.6pt, font=\scriptsize\bfseries},
+  rep/.style={be, draw=accent, fill=accent!12, line width=1pt},
+  andg/.style={and gate US, draw=peblue, fill=white, rotate=90, logic gate inputs=nn, minimum size=0.75cm, line width=0.7pt},
+  org/.style={or gate US, draw=peblue, fill=white, rotate=90, logic gate inputs=nn, minimum size=0.75cm, line width=0.7pt},
+  lab/.style={font=\scriptsize, text=peblue!70!black, align=center, text width=2.2cm},
+  glab/.style={font=\scriptsize\bfseries, text=peblue},
+  wire/.style={draw=peblue, line width=0.6pt},
+  xfer/.style={draw=peblue, fill=white, regular polygon, regular polygon sides=3, minimum size=0.95cm, inner sep=0pt, line width=0.6pt}
+]
+% --- csúcsesemény
+\node[top] (top) at (0,0) {Működési igénykor a védelem nem állítja le a folyamatot};
+\node[andg] (g1) at (0,-1.45) {}; \node[glab, right=1mm of g1] {G1};
+\draw[wire] (top.south) -- (g1.output);
+% --- második szint
+\node[ev] (g2e) at (-4.2,-2.9) {A1 beavatkozó nem lép működésbe};
+\node[ev] (g3e) at ( 4.2,-2.9) {A2 beavatkozó nem lép működésbe};
+\draw[wire] (g1.input 1) |- ($(g1.input 1)+(0,-0.25)$) -| (g2e.north);
+\draw[wire] (g1.input 2) |- ($(g1.input 2)+(0,-0.25)$) -| (g3e.north);
+\node[org] (g2) at (-4.2,-4.15) {}; \node[glab, right=1mm of g2] {G2};
+\node[org] (g3) at ( 4.2,-4.15) {}; \node[glab, right=1mm of g3] {G3};
+\draw[wire] (g2e.south) -- (g2.output);
+\draw[wire] (g3e.south) -- (g3.output);
+% --- G2 bemenetei
+\node[be]  (be1) at (-7.3,-5.9) {BE1}; \node[lab, below=1mm of be1] {A1 belső hibája};
+\node[rep] (be3a) at (-5.5,-5.9) {BE3}; \node[lab, below=1mm of be3a] {E1 táp kiesik};
+\node[ev]  (g4e) at (-1.6,-5.75) {Nincs működtető jel a logikától};
+\foreach \t in {be1,be3a,g4e} \draw[wire] (g2.center) ++(0,-0.35) |- ($(g2.center)+(0,-0.75)$) -| (\t.north);
+% --- G3 bemenetei
+\node[be]  (be2) at (2.7,-5.9) {BE2}; \node[lab, below=1mm of be2] {A2 belső hibája};
+\node[rep] (be3b) at (4.5,-5.9) {BE3}; \node[lab, below=1mm of be3b] {E1 táp kiesik};
+\node[xfer] (tr) at (6.4,-5.95) {}; \node[lab, below=1mm of tr] {G4 átvitel\\(azonos ág)};
+\foreach \t in {be2,be3b} \draw[wire] (g3.center) ++(0,-0.35) |- ($(g3.center)+(0,-0.75)$) -| (\t.north);
+\draw[wire] ($(g3.center)+(0,-0.75)$) -| (tr.north);
+% --- G4 kifejtése
+\node[org] (g4) at (-1.6,-7.0) {}; \node[glab, right=1mm of g4] {G4};
+\draw[wire] (g4e.south) -- (g4.output);
+\node[be]  (be4) at (-4.6,-8.75) {BE4}; \node[lab, below=1mm of be4] {logikai egység belső hibája};
+\node[rep] (be3c) at (-2.9,-8.75) {BE3}; \node[lab, below=1mm of be3c] {E1 táp kiesik};
+\node[ev]  (g5e) at (0.6,-8.6) {Egyik érzékelő sem ad jelet};
+\foreach \t in {be4,be3c,g5e} \draw[wire] (g4.center) ++(0,-0.35) |- ($(g4.center)+(0,-0.75)$) -| (\t.north);
+\node[andg] (g5) at (0.6,-9.85) {}; \node[glab, right=1mm of g5] {G5};
+\draw[wire] (g5e.south) -- (g5.output);
+\node[ev] (g6e) at (-1.6,-11.2) {S1 érzékelő nem jelez};
+\node[ev] (g7e) at ( 2.8,-11.2) {S2 érzékelő nem jelez};
+\draw[wire] (g5.input 1) |- ($(g5.input 1)+(0,-0.25)$) -| (g6e.north);
+\draw[wire] (g5.input 2) |- ($(g5.input 2)+(0,-0.25)$) -| (g7e.north);
+\node[org] (g6) at (-1.6,-12.45) {}; \node[glab, right=1mm of g6] {G6};
+\node[org] (g7) at ( 2.8,-12.45) {}; \node[glab, right=1mm of g7] {G7};
+\draw[wire] (g6e.south) -- (g6.output); \draw[wire] (g7e.south) -- (g7.output);
+\node[be]  (be5) at (-2.6,-14.1) {BE5}; \node[lab, below=1mm of be5] {S1 belső hibája};
+\node[rep] (be6a) at (-0.6,-14.1) {BE6}; \node[lab, below=1mm of be6a] {E2 táp kiesik};
+\node[be]  (be7) at (1.8,-14.1) {BE7}; \node[lab, below=1mm of be7] {S2 belső hibája};
+\node[rep] (be6b) at (3.8,-14.1) {BE6}; \node[lab, below=1mm of be6b] {E2 táp kiesik};
+\foreach \t in {be5,be6a} \draw[wire] (g6.center) ++(0,-0.35) |- ($(g6.center)+(0,-0.75)$) -| (\t.north);
+\foreach \t in {be7,be6b} \draw[wire] (g7.center) ++(0,-0.35) |- ($(g7.center)+(0,-0.75)$) -| (\t.north);
+% --- minimális vágatok doboz
+\node[draw=peblue, fill=pelight!60, rounded corners=2pt, align=left, text width=4.6cm, anchor=north west, font=\scriptsize]
+  (mcs) at (5.0,-8.2) {\textbf{\color{peblue}Minimális vágatok}\\[2pt]
+  \textcolor{accent}{\textbf{1. rend (egypontos):}} \{BE3\}, \{BE4\}, \{BE6\}\\
+  \textbf{2. rend:} \{BE1, BE2\}, \{BE5, BE7\}\\[3pt]
+  \emph{Tanulság:} a kétcsatornás beavatkozás és érzékelés ellenére a közös tápellátás és a logika egypontos hibát okoz.};
+\node[anchor=north west, font=\scriptsize, align=left] at (5.0,-11.3)
+  {\tikz\node[rep, minimum size=0.4cm]{};\ ismétlődő alapesemény (közös ok)\\[2pt]
+   \tikz\node[be, minimum size=0.4cm]{};\ alapesemény\quad
+   \tikz\node[xfer, minimum size=0.45cm]{};\ átviteli szimbólum};
+\end{tikzpicture}
+\end{document}

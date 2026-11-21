@@ -1,0 +1,90 @@
+project:
+  type: book
+  output-dir: ../_site/gyakorlat
+  pre-render: ../_shared/scripts/prepare.py
+  post-render: ../_shared/scripts/postrender.py
+  resources:
+    - assets/fonts/*.woff2
+    - alkalmazasok/*.html
+    - notebookok/*.ipynb
+
+book:
+  title: "Biztonságkritikus rendszerek – gyakorlati útmutató"
+  subtitle: "Interaktív alkalmazások, Colab-notebookok és mintapromptok a kézikönyvhöz"
+  author: "Abonyi János"
+  date: "2026"
+  date-format: "YYYY"
+  publisher: "Pannon Egyetem"
+  publisher-place: "Veszprém"
+  description: "Gyakorlati útmutató a Biztonságkritikus rendszerek kézikönyvhöz: tizenkét gyakorlat böngészőben futó alkalmazásokkal, Google Colab-notebookokkal és mintapromptokkal."
+  output-file: biztonsagkritikus-rendszerek-gyakorlat
+  site-url: https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/
+  repo-url: https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek
+  repo-subdir: gyakorlat
+  repo-actions: [edit, issue, source]
+  downloads: [pdf]
+  search: true
+  open-graph: true
+  sidebar:
+    style: docked
+  page-navigation: true
+  page-footer:
+    left: "© 2026 Abonyi János · Pannon Egyetem · szöveg: CC BY-NC-SA 4.0 · kód: MIT"
+    right: "[Kézikönyv](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/)"
+  chapters:
+    - index.qmd
+    - part: "Veszélyazonosítás és kockázat"
+      chapters:
+        - laborok/01-balesetelemzes.qmd
+        - laborok/02-kockazati-matrix.qmd
+        - laborok/03-hazop.qmd
+        - laborok/04-fmea.qmd
+        - laborok/05-stpa.qmd
+    - part: "Kvantitatív módszerek"
+      chapters:
+        - laborok/06-megbizhatosag.qmd
+        - laborok/07-rbd.qmd
+        - laborok/08-hibafa.qmd
+        - laborok/09-lopa.qmd
+        - laborok/10-markov.qmd
+        - laborok/11-sil.qmd
+    - part: "Összegzés"
+      chapters:
+        - laborok/12-projekt.qmd
+    - irodalom.qmd
+
+lang: hu
+language: ../_shared/_language-hu.yml
+bibliography: ../_shared/references.bib
+link-citations: true
+crossref:
+  chapters: true
+number-sections: true
+filters:
+  - ../_shared/filters/dobozok.lua
+  - ../_shared/filters/kepformatum.lua
+
+format:
+  html:
+    theme:
+      light: [cosmo, ../_shared/pe.scss]
+    toc: true
+    toc-depth: 3
+    toc-title: "Ezen az oldalon"
+    number-depth: 2
+    fig-align: center
+    smooth-scroll: true
+    citations-hover: true
+    reference-location: margin
+    html-math-method: mathjax
+  pdf:
+    documentclass: scrbook
+    classoption: [paper=a4, fontsize=11pt, open=any, headings=standardclasses]
+    pdf-engine: xelatex
+    geometry: [top=24mm, bottom=26mm, inner=24mm, outer=24mm]
+    toc: true
+    toc-depth: 1
+    number-depth: 2
+    fig-pos: "htbp"
+    include-in-header: ../_shared/latex/preamble.tex
+    colorlinks: true

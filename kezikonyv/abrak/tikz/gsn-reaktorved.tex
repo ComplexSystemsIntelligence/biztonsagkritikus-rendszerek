@@ -1,0 +1,33 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm, every node/.append style={font=\scriptsize},
+  g/.style={draw=peKek, fill=peHalvany, line width=0.8pt, text width=#1, align=left, inner sep=3pt, minimum height=9mm}, g/.default=34mm,
+  s/.style={draw=peKek, fill=peHalvany, trapezium, trapezium left angle=75, trapezium right angle=105, line width=0.8pt, text width=60mm, align=center, inner sep=3pt, trapezium stretches body},
+  sn/.style={draw=peZold, fill=peZoldH, circle, line width=0.8pt, text width=15mm, align=center, inner sep=1pt, font=\tiny},
+  c/.style={draw=peSzurke, fill=peSzurkeH, rounded corners=4mm, line width=0.8pt, text width=#1, align=left, inner sep=4pt, font=\tiny}, c/.default=36mm,
+  a/.style={draw=peSarga, fill=peSargaH, ellipse, line width=0.8pt, text width=30mm, align=center, inner sep=1pt, font=\tiny},
+  tam/.style={draw=peSotet, line width=0.7pt, -{Triangle[length=2.2mm, width=2mm]}},
+  kon/.style={draw=peSotet, line width=0.7pt, -{Triangle[open, length=2.2mm, width=2mm]}}]
+  \node[g=62mm] (g1) at (0,0) {\textbf{G1} A ReaktorVéd biztonsági funkciója a meghatározott üzemi környezetben a megfutó reakció kockázatát a tolerálható szintre csökkenti};
+  \node[c=40mm] (c1) at (7.2,0.1) {\textbf{C1} biztonsági követelményspecifikáció: SIL 2, PFD $\le 2\cdot10^{-3}$, válaszidő 10 s, kioldás 95 °C-on};
+  \draw[kon] (g1) -- (c1);
+  \node[s] (s1) at (0,-1.65) {\textbf{S1} érvelés a veszélyek teljességével, a SIL három pillérével és az üzemeltetési feltevések fenntartásával};
+  \draw[tam] (g1) -- (s1);
+  \node[g=30mm] (g2) at (-7.2,-3.55) {\textbf{G2} minden lényeges veszélyes forgatókönyvet azonosítottak és értékeltek};
+  \node[g=30mm] (g3) at (-3.6,-3.55) {\textbf{G3} a funkció PFD$_{\text{avg}}$-je $\le 2\cdot10^{-3}$};
+  \node[g=30mm] (g4) at (0,-3.55) {\textbf{G4} az architekturális korlátok teljesülnek};
+  \node[g=30mm] (g5) at (3.6,-3.55) {\textbf{G5} a szisztematikus képesség megfelelő};
+  \node[g=30mm] (g6) at (7.2,-3.55) {\textbf{G6} a számítás feltevései üzem közben teljesülnek};
+  \foreach \x in {g2,g3,g4,g5,g6} \draw[tam] (s1.south) -- (\x.north);
+  \node[sn] (n2) at (-7.2,-5.6) {HAZOP-jelentés, LOPA-táblázat};
+  \node[sn] (n3) at (-3.6,-5.6) {SIL-számítás, hibafa, Markov-ellenőrzés};
+  \node[sn] (n4) at (0,-5.6) {HFT/SFF-táblázat, tanúsítványok};
+  \node[sn] (n5) at (3.6,-5.6) {PLC-tanúsítvány, alkalmazási program V\&V};
+  \node[sn] (n6) at (7.2,-5.6) {proof teszt eljárás, kiiktatási napló, mutatók};
+  \foreach \i in {2,3,4,5,6} \draw[tam] (g\i) -- (n\i);
+  \node[a] (a1) at (-3.6,-7.3) {\textbf{A1} a meghibásodási adatok az alkalmazásra érvényesek, a próbák lefedettsége a számítással összhangban van};
+  \draw[kon] (g3.south west) to[out=-120, in=150] (a1.west);
+  
+\end{tikzpicture}
+\end{document}

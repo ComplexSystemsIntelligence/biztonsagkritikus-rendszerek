@@ -1,0 +1,25 @@
+\documentclass[tikz,border=6pt]{standalone}
+\usepackage{peabra}
+\begin{document}
+\begin{tikzpicture}[x=1cm,y=1cm,
+  pont/.style={circle, fill=peKek, draw=white, line width=0.6pt, inner sep=0, minimum size=2.4mm},
+  cimke/.style={font=\scriptsize, text=peSzoveg, inner sep=1.5pt}]
+  \fill[peZoldH!70] (0,0) rectangle (4,3);
+  \fill[peSargaH] (4,0) rectangle (8,3);
+  \fill[peSargaH] (0,3) rectangle (4,6);
+  \fill[pePirosH] (4,3) rectangle (8,6);
+  \draw[white, line width=1.4pt] (4,0) -- (4,6) (0,3) -- (8,3);
+  \draw[nyil] (0,0) -- (8.4,0);
+  \draw[nyil] (0,0) -- (0,6.4);
+  \node[font=\footnotesize, anchor=north] at (4,-0.15) {kölcsönhatások: lineáris $\longrightarrow$ komplex};
+  \node[font=\footnotesize, anchor=south, rotate=90] at (-0.15,3) {csatolás: laza $\longrightarrow$ szoros};
+  \node[pont] (a) at (1.2,4.9) {}; \node[cimke, anchor=west] at (a.east) {gát, vasút};
+  \node[pont] (b) at (2.4,4.1) {}; \node[cimke, anchor=west] at (b.east) {futószalagos gyártás};
+  \node[pont] (c) at (6.6,5.2) {}; \node[cimke, anchor=east] at (c.west) {atomerőmű};
+  \node[pont] (d) at (5.6,4.4) {}; \node[cimke, anchor=west] at (d.east) {vegyipari üzem};
+  \node[pont] (e) at (6.9,3.6) {}; \node[cimke, anchor=east] at (e.west) {repülőgép};
+  \node[pont] (f) at (6.3,1.5) {}; \node[cimke, anchor=east] at (f.west) {egyetem, kutatóintézet};
+  \node[pont] (g) at (1.4,1.0) {}; \node[cimke, anchor=west] at (g.east) {posta, hivatal};
+  \node[font=\scriptsize\bfseries, text=pePiros, align=center] at (6.0,5.75) {„normál baleset” veszélye};
+\end{tikzpicture}
+\end{document}
