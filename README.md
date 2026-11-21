@@ -7,6 +7,8 @@
 
 # Biztonságkritikus rendszerek
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24413011.svg)](https://doi.org/10.5281/zenodo.24413011)
+
 **Kockázat, megbízhatóság és funkcionális biztonság a veszélyazonosítástól a biztonsági érvelésig**  
 Abonyi János · Pannon Egyetem, Veszprém, 2026
 
@@ -136,7 +138,7 @@ A fordítás előtt a `prepare.py` automatikusan újrafordítja a megváltozott 
 ## Közzététel és archiválás
 
 - A `main` ágra feltöltött minden változás után a [`publish.yml`](.github/workflows/publish.yml) munkafolyamat lefordítja a két könyvet (HTML, PDF, EPUB), és a `gh-pages` ágon közzéteszi a GitHub Pages-en.
-- A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el; a metaadatokat a [`.zenodo.json`](.zenodo.json) és a [`CITATION.cff`](CITATION.cff) adja. Kiadáskor a munkafolyamat a PDF- és EPUB-fájlokat is a kiadáshoz csatolja.
+- A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el (a kiadások közös azonosítója: [10.5281/zenodo.24413011](https://doi.org/10.5281/zenodo.24413011)); a metaadatokat a [`.zenodo.json`](.zenodo.json) és a [`CITATION.cff`](CITATION.cff) adja. Kiadáskor a munkafolyamat a PDF- és EPUB-fájlokat is a kiadáshoz csatolja.
 - **Új kiadás menete:** (1) a `CITATION.cff` `version` és `date-released` mezőjének és a `_shared/latex/preamble.tex` `\peverzio` sorának frissítése; (2) `./kiadas.sh` – lefordítja a könyveket, és a PDF/EPUB fájlokat a [`kiadas/`](kiadas/) mappába másolja, hogy a Zenodo az olvasható változatot is archiválja; (3) a változások feltöltése; (4) új GitHub Release (például `v1.1.0`).
 
 ## Hibajelzés, javaslat
@@ -156,6 +158,7 @@ A könyvek szövege és ábrái: [CC BY-NC-SA 4.0](LICENSE). A programkód (alka
   publisher = {Pannon Egyetem},
   address   = {Veszprém},
   year      = {2026},
+  doi       = {10.5281/zenodo.24413011},
   url       = {https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/}
 }
 ```

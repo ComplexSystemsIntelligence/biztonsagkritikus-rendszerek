@@ -85,7 +85,7 @@ Köszönettel tartozom a jegyzet egykori társszerzőjének, Fülep Tímeának, 
 
 ## Javítások és visszajelzés
 
-A könyv nyílt, folyamatosan javított kiadvány. Hibát, pontatlanságot vagy javaslatot a webes változat oldalain található „Hiba vagy javaslat bejelentése” hivatkozáson keresztül lehet jelezni. Minden kiadás saját DOI-azonosítót kap, így pontosan hivatkozható.
+A könyv nyílt, folyamatosan javított kiadvány. Hibát, pontatlanságot vagy javaslatot a webes változat oldalain található „Hiba vagy javaslat bejelentése” hivatkozáson keresztül lehet jelezni. Minden kiadás saját DOI-azonosítót kap, így pontosan hivatkozható; a kiadások közös azonosítója [10.5281/zenodo.24413011](https://doi.org/10.5281/zenodo.24413011), amely mindig a legfrissebb változatra mutat.
 
 ::: {.kitekintes title="A szabványokról"}
 A könyv sok szabványra hivatkozik, de egyiket sem helyettesíti. A szabványok pontos követelményeit mindig az érvényes kiadás eredeti szövegéből kell venni. A könyv a 2026 végén érvényes kiadásokat követi; ahol új kiadás készül (például az IEC 61508 és az ISO 26262 harmadik kiadása), ott ezt jelezzük.
