@@ -32,7 +32,7 @@ A három eset adatait és a könyv minden számolt eredményét a [`_shared/eset
 
 ## A kézikönyv felépítése
 
-![A könyv felépítése a biztonsági életciklus mentén](kezikonyv/abrak/gen/konyv-szerkezet.svg)
+![A könyv felépítése a biztonsági életciklus mentén](.github/readme/konyv-szerkezet.png)
 
 | Fejezet | Kapcsolódó gyakorlat |
 |:--|:--|
@@ -66,7 +66,7 @@ Minden fejezet tanulási eredményekkel indul, a módszereket kidolgozott péld�
 
 ## A gyakorlati útmutató
 
-![A gyakorlatok kapcsolata egymással és a kézikönyv fejezeteivel](gyakorlat/abrak/gen/labor-attekintes.svg)
+![A gyakorlatok kapcsolata egymással és a kézikönyv fejezeteivel](.github/readme/gyakorlatok.png)
 
 | Gyakorlat | Kézikönyv | Böngészős alkalmazás | Colab-notebook |
 |:--|:--|:--|:--|
