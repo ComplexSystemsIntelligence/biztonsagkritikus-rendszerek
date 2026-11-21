@@ -18,6 +18,7 @@ main{padding:14px 18px 30px;max-width:1180px;margin:0 auto}
 .kartya.eredmeny{border-left-color:var(--zold);background:#fbfdfc}
 .kartya.figyelem{border-left-color:var(--kiemel);background:#fffaf6}
 .racs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.racs.szeles{grid-template-columns:repeat(auto-fit,minmax(440px,1fr))}
 label{font-size:.85rem;color:var(--sotet);display:block;margin:.35rem 0 .1rem}
 input[type=text],input[type=number],select,textarea{font:inherit;font-size:.9rem;padding:4px 6px;border:1px solid #c5ced9;border-radius:3px;width:100%;background:#fff}
 textarea{font-family:'IBM Plex Mono',monospace;font-size:.82rem;min-height:9rem}
@@ -40,11 +41,16 @@ svg text{font-family:'IBM Plex Sans',sans-serif}
 .diagram{width:100%;overflow-x:auto}
 footer.app{font-size:.75rem;color:var(--szurke);padding:8px 18px;border-top:1px solid #e3e8ee}
 @media (max-width:640px){header.app p{max-width:100%}}
+/* szerkeszthető táblázatok: olvasható mezőszélesség, szűk nézetben vízszintes görgetés */
+.kartya{overflow-x:auto}
+td input[type=text],td input[type=number]{min-width:4.6em}
+td select{width:auto;min-width:4.6em}
+td:first-child input[type=text]{min-width:12em}
 
 </style></head><body>
 <header class="app"><h1>Markov-modell szerkesztő</h1><p>Biztonságkritikus rendszerek – 10. gyakorlat. Állapotok és átmeneti ráták megadása; pillanatnyi és tartós rendelkezésre állás, állapotvalószínűségek és MTTF.</p></header>
 <main>
-<div class="racs">
+<div class="racs szeles">
  <div class="kartya"><h2>1. Állapotok</h2>
   <table id="all"><thead><tr><th>#</th><th>név</th><th>működőképes</th><th>rendszerhiba</th><th></th></tr></thead><tbody></tbody></table>
   <button onclick="ujAll()">új állapot</button>
