@@ -12,6 +12,7 @@ on:
       - "gyakorlat/alkalmazasok/README.md"
       - "gyakorlat/notebookok/README.md"
       - ".github/readme/**"
+      - "kiadas/**"
   release:
     types: [published]
   workflow_dispatch:

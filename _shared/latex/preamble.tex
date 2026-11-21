@@ -93,6 +93,9 @@
 \graphicspath{{../_shared/logo/}}
 \providecommand{\peweb}{https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/}
 \providecommand{\petarolo}{https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek}
+% a kiadás azonosítója: kiadáskor a CITATION.cff fájllal együtt frissítendő
+\providecommand{\peverzio}{1.0.0, 2026. november 21.}
+\providecommand*{\pedoi}{}
 \makeatletter
 \renewcommand{\maketitle}{%
   % 1. borító (a TikZ-ben szerkesztett, a webes és EPUB-változatéval azonos kép)
@@ -137,11 +140,12 @@
   \@subtitle\par
   © \@date{} Abonyi János\par
   Kiadó: Pannon Egyetem, Veszprém\par
+  Változat: \peverzio\par
   A mű a Creative Commons Nevezd meg! -- Ne add el! -- Így add tovább! 4.0 Nemzetközi licenc (CC BY-NC-SA 4.0)
   feltételei szerint használható fel; a mellékelt programkód licence MIT.\par
   Webes változat: \url{\peweb}\par
   Forrás, hibajelzés és javaslat: \url{\petarolo}\par
-  A kiadások archivált változata és DOI-azonosítója a Zenodón érhető el.\par
+  \ifx\pedoi\empty A kiadások archivált változata és DOI-azonosítója a Zenodón érhető el.\else DOI: \href{https://doi.org/\pedoi}{\pedoi} (a kiadások közös azonosítója a Zenodón)\fi\par
   Betűkészletek: IBM Plex Serif, IBM Plex Sans, Raleway (SIL Open Font License 1.1). Szedés: Quarto és XeLaTeX.\par}
   \clearpage
 }

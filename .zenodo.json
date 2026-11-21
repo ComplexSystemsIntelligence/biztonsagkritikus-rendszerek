@@ -4,14 +4,34 @@
   "publication_type": "book",
   "description": "<p>Nyílt hozzáférésű magyar nyelvű kézikönyv és gyakorlati útmutató a biztonságkritikus rendszerek tervezéséről és igazolásáról. A kézikönyv tizennyolc fejezetben tárgyalja a balesetmodelleket, a kockázatértékelést, a veszélyazonosítást (HAZOP, FMEA, FMEDA, STPA), a kvantitatív megbízhatósági és biztonsági modelleket (blokkdiagram, hibafa, eseményfa, LOPA, Markov-modellek, PFD/PFH, SIL), a biztonságos architektúrákat, a szoftver és az ember szerepét, a biztonsági érvelést, valamint a rendeltetésszerű funkció biztonságát, a gépi tanulás és a kiberbiztonság kérdéseit. A gyakorlati útmutató kilenc böngészős alkalmazást, hét Google Colab-notebookot és mintapromptokat tartalmaz.</p><p>An open-access Hungarian textbook and practice guide on the design and assurance of safety-critical systems.</p>",
   "creators": [
-    {"name": "Abonyi, János", "affiliation": "Pannon Egyetem / University of Pannonia"}
+    {
+      "name": "Abonyi, János",
+      "affiliation": "Pannon Egyetem / University of Pannonia"
+    }
   ],
   "language": "hun",
   "license": "cc-by-nc-sa-4.0",
   "access_right": "open",
-  "keywords": ["safety-critical systems", "functional safety", "reliability engineering", "risk assessment", "fault tree analysis", "STPA", "IEC 61508", "biztonságkritikus rendszerek", "funkcionális biztonság", "tankönyv"],
+  "keywords": [
+    "safety-critical systems",
+    "functional safety",
+    "reliability engineering",
+    "risk assessment",
+    "fault tree analysis",
+    "STPA",
+    "IEC 61508",
+    "biztonságkritikus rendszerek",
+    "funkcionális biztonság",
+    "tankönyv"
+  ],
   "related_identifiers": [
-    {"identifier": "https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/", "relation": "isSupplementTo", "scheme": "url"},
-    {"identifier": "https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek", "relation": "isSupplementTo", "scheme": "url"}
+    {
+      "identifier": "https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/",
+      "relation": "isSupplementTo"
+    },
+    {
+      "identifier": "https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek",
+      "relation": "isSupplementTo"
+    }
   ]
 }

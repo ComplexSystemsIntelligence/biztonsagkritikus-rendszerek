@@ -115,6 +115,7 @@ _shared/                   a két könyv közös elemei
   references.bib           a közös irodalomjegyzék
 landing/index.html         a webhely nyitóoldala
 build.sh                   a teljes webhely összeállítása a _site/ mappába
+kiadas.sh, kiadas/         a kiadás olvasható változata (PDF, EPUB) a Zenodo-archívumhoz
 .github/workflows/         automatikus fordítás és közzététel
 ```
 
@@ -136,7 +137,7 @@ A fordítás előtt a `prepare.py` automatikusan újrafordítja a megváltozott 
 
 - A `main` ágra feltöltött minden változás után a [`publish.yml`](.github/workflows/publish.yml) munkafolyamat lefordítja a két könyvet (HTML, PDF, EPUB), és a `gh-pages` ágon közzéteszi a GitHub Pages-en.
 - A kiadásokat (GitHub Release) a Zenodo–GitHub integráció archiválja és DOI-val látja el; a metaadatokat a [`.zenodo.json`](.zenodo.json) és a [`CITATION.cff`](CITATION.cff) adja. Kiadáskor a munkafolyamat a PDF- és EPUB-fájlokat is a kiadáshoz csatolja.
-- Kiadás előtt a `CITATION.cff` `version` és `date-released` mezőjét kell frissíteni; az első kiadás után a Zenodo közös (concept) DOI-ja a `CITATION.cff` fájlba és a nyitóoldal hivatkozási blokkjába kerül.
+- **Új kiadás menete:** (1) a `CITATION.cff` `version` és `date-released` mezőjének és a `_shared/latex/preamble.tex` `\peverzio` sorának frissítése; (2) `./kiadas.sh` – lefordítja a könyveket, és a PDF/EPUB fájlokat a [`kiadas/`](kiadas/) mappába másolja, hogy a Zenodo az olvasható változatot is archiválja; (3) a változások feltöltése; (4) új GitHub Release (például `v1.1.0`).
 
 ## Hibajelzés, javaslat
 
