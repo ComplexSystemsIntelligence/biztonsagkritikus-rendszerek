@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Renderelés előtti előkészítés (Quarto pre-render).
 
-- a közös webes betűket a könyv `assets/fonts` mappájába másolja;
+- a közös webes betűket a könyv `assets/fonts`, a logókat az `assets/logo` mappájába másolja;
 - lefordítja az elavult ábrákat (TikZ -> PDF + SVG, Python -> SVG + PDF), ha van LaTeX.
 """
 import os
@@ -18,6 +18,15 @@ for f in (gyoker / "_shared" / "fonts" / "web").glob("*.woff2"):
     t = cel / f.name
     if not t.exists() or t.stat().st_mtime < f.stat().st_mtime:
         shutil.copy2(f, t)
+
+# a Pannon Egyetem logói (webes kimenet: oldalsáv, favicon)
+logo_cel = konyv / "assets" / "logo"
+logo_cel.mkdir(parents=True, exist_ok=True)
+for f in (gyoker / "_shared" / "logo").iterdir():
+    if f.suffix in (".svg", ".png"):
+        t = logo_cel / f.name
+        if not t.exists() or t.stat().st_mtime < f.stat().st_mtime:
+            shutil.copy2(f, t)
 
 # a böngészős alkalmazások összeállítása (ha a könyvnek vannak ilyenek)
 epit = konyv / "alkalmazasok" / "epit.py"

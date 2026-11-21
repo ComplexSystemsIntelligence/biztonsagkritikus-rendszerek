@@ -9,8 +9,11 @@ import sys
 REPO = "ComplexSystemsIntelligence/biztonsagkritikus-rendszerek"
 HERE = Path(__file__).parent
 
+LOGO = ('<img src="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/assets/logo/pe-cimer-nevjel-fekvo-kek.png" '
+        'alt="Pannon Egyetem – University of Pannonia" height="56">\n\n')
+
 def colab(nev):
-    return (f"[Megnyitás a Google Colabban](https://colab.research.google.com/github/{REPO}/blob/main/gyakorlat/notebookok/{nev}) · "
+    return LOGO + (f"[Megnyitás a Google Colabban](https://colab.research.google.com/github/{REPO}/blob/main/gyakorlat/notebookok/{nev}) · "
             "*Biztonságkritikus rendszerek – gyakorlati útmutató* · © 2026 Abonyi János, Pannon Egyetem · kód: MIT, szöveg: CC BY-NC-SA 4.0")
 
 STILUS = '''import numpy as np

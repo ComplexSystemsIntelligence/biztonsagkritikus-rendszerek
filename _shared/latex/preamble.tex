@@ -85,9 +85,25 @@
 \widowpenalty=10000
 \clubpenalty=10000
 
-% --- Arculatos címoldal ferde sávval -------------------------------------
+% --- A Pannon Egyetem arculati elemei: borító, címoldal, impresszum, részoldalak, hátsó borító ---
+% A könyvenkénti adatokat a _quarto.yml include-in-header szövege adja:
+%   \peweb (a webes változat címe), \pekotet (a kötet megnevezése, elhagyható),
+%   \peboritofajl (a borító PDF-je).
+\usepackage{graphicx}
+\graphicspath{{../_shared/logo/}}
+\providecommand{\peweb}{https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/}
+\providecommand{\petarolo}{https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek}
 \makeatletter
 \renewcommand{\maketitle}{%
+  % 1. borító (a TikZ-ben szerkesztett, a webes és EPUB-változatéval azonos kép)
+  \ifdefined\peboritofajl
+  \begin{titlepage}\thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[inner sep=0] at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{\peboritofajl}};
+  \end{tikzpicture}%
+  \end{titlepage}%
+  \fi
+  % 2. címoldal: cím felül, ferde kék sáv a logóval alul
   \begin{titlepage}
   \thispagestyle{empty}
   \begin{tikzpicture}[remember picture, overlay]
@@ -95,19 +111,66 @@
       -- ($(current page.south east)+(0,10.5cm)$) -- ($(current page.south west)+(0,7cm)$) -- cycle;
     \fill[peKiemel] ($(current page.south west)+(0,7.35cm)$) -- ($(current page.south east)+(0,10.85cm)$)
       -- ($(current page.south east)+(0,11.15cm)$) -- ($(current page.south west)+(0,7.65cm)$) -- cycle;
+    \node[anchor=north west, inner sep=0] at ($(current page.north west)+(2.4cm,-2.2cm)$)
+      {\includegraphics[width=6.2cm]{pe-cimer-nevjel-fekvo-kek}};
     \node[anchor=north west, text width=14cm, align=left, inner sep=0]
-      at ($(current page.north west)+(2.4cm,-5.2cm)$) {%
+      at ($(current page.north west)+(2.4cm,-7.4cm)$) {%
+      \ifdefined\pekotet{\ralewayextra\fontsize{15}{18}\selectfont\color{peKiemel}\pekotet\par}\vspace{5mm}\fi
       {\ralewayfekete\fontsize{40}{44}\selectfont\color{peSotet}\@title\par}
       \vspace{7mm}
       {\ralewayextra\fontsize{17}{22}\selectfont\color{peKek}\@subtitle\par}
       \vspace{16mm}
       {\ralewaynormal\Large\color{peSzoveg}\@author\par}};
-    \node[anchor=south west, text width=14cm, align=left, inner sep=0, text=white]
-      at ($(current page.south west)+(2.4cm,2.6cm)$) {%
-      {\ralewayextra\large Pannon Egyetem\par}\vspace{1mm}{\sffamily\small Veszprém, \@date\par}};
+    \node[anchor=south west, inner sep=0] at ($(current page.south west)+(2.4cm,3.0cm)$)
+      {\includegraphics[width=7.4cm]{pe-cimer-nevjel-fekvo-feher}};
+    \node[anchor=south west, inner sep=0, text=white] at ($(current page.south west)+(2.4cm,1.9cm)$)
+      {\sffamily\small Veszprém, \@date};
   \end{tikzpicture}
   \end{titlepage}%
+  % 3. impresszum
+  \thispagestyle{empty}%
+  \null\vfill
+  {\noindent\includegraphics[width=1.5cm]{pe-cimer-kek}\par}
+  \vspace{5mm}
+  {\sffamily\footnotesize\color{peSzoveg}\setlength{\parskip}{1.6mm}\raggedright
+  {\bfseries Abonyi János: \@title\ifdefined\pekotet{} -- \pekotet\fi}\par
+  \@subtitle\par
+  © \@date{} Abonyi János\par
+  Kiadó: Pannon Egyetem, Veszprém\par
+  A mű a Creative Commons Nevezd meg! -- Ne add el! -- Így add tovább! 4.0 Nemzetközi licenc (CC BY-NC-SA 4.0)
+  feltételei szerint használható fel; a mellékelt programkód licence MIT.\par
+  Webes változat: \url{\peweb}\par
+  Forrás, hibajelzés és javaslat: \url{\petarolo}\par
+  A kiadások archivált változata és DOI-azonosítója a Zenodón érhető el.\par
+  Betűkészletek: IBM Plex Serif, IBM Plex Sans, Raleway (SIL Open Font License 1.1). Szedés: Quarto és XeLaTeX.\par}
+  \clearpage
 }
+% részoldalak: a címer névjellel a lap alsó harmadában
+\newif\ifpereszoldal
+\newcommand*{\pereszjelol}[1]{\global\pereszoldaltrue}
+\AddtoDoHook{heading/endgroup/part}{\pereszjelol}
+\AddToHook{shipout/background}{\ifpereszoldal
+  \put(0.5\paperwidth,-0.80\paperheight){\makebox[0pt]{\includegraphics[width=40mm]{pe-cimer-nevjel-allo-kek}}}%
+  \global\pereszoldalfalse\fi}
+% hátsó borító: kék lap a fehér címerrel (egyetlen fordítási menetben is helyes: shipout-háttérként rajzolva)
+\newif\ifpehatlap
+\AddToHook{shipout/background}{\ifpehatlap
+  \put(0,-\paperheight){\begin{tikzpicture}[x=1mm, y=1mm]
+    \useasboundingbox (0,0) rectangle (210,297);
+    \fill[peKek] (0,0) rectangle (210,297);
+    \fill[peKiemel] (0,53.5) -- (210,88.5) -- (210,91.5) -- (0,56.5) -- cycle;
+    \node[inner sep=0] at (105,193) {\includegraphics[width=64mm]{pe-cimer-nevjel-allo-feher}};
+    \node[text=white, align=center, text width=150mm] at (105,114) {%
+      {\ralewayfekete\fontsize{22}{26}\selectfont \pehatlapcim\par}\vspace{3mm}
+      \ifdefined\pekotet{\ralewayextra\large\color{peVilagos}\pekotet\par}\vspace{6mm}\fi
+      {\sffamily\small Nyílt hozzáférésű tankönyv\par}\vspace{1.5mm}
+      {\sffamily\footnotesize\nolinkurl{\peweb}\par}};
+  \end{tikzpicture}}%
+  \global\pehatlapfalse\fi}
+\AtBeginDocument{\edef\pehatlapcim{\@title}}
+\AtEndDocument{%
+  \cleardoubleevenemptypage
+  \thispagestyle{empty}\global\pehatlaptrue\null\clearpage}
 \makeatother
 
 % A dobozokon belül az ábrák nem úszhatnak: helyben, minipage-ben jelennek meg.

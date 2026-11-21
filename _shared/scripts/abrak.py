@@ -28,7 +28,7 @@ sty = gyoker / "_shared" / "tikz" / "peabra.sty"
 MOTOR = os.environ.get("PE_TEX_ENGINE", "xelatex")  # xelatex vagy lualatex
 env = dict(os.environ)
 # saját stílus elöl, a rendszer könyvtárai középen, a pótlékok (compat) a végén
-env["TEXINPUTS"] = f".:{gyoker/'_shared'/'tikz'}:{tikz_dir}//::{gyoker/'_shared'/'tikz'/'compat'}"
+env["TEXINPUTS"] = f".:{gyoker/'_shared'/'tikz'}:{gyoker/'_shared'/'logo'}:{tikz_dir}//::{gyoker/'_shared'/'tikz'/'compat'}"
 env["OSFONTDIR"] = str(gyoker / "_shared" / "fonts" / "ttf") + ":" + env.get("OSFONTDIR", "")
 
 
@@ -51,7 +51,10 @@ def elavult(forras: Path, cel: Path, extra=()):
 def tikz(tex: Path):
     pdf = gen / (tex.stem + ".pdf")
     svg = gen / (tex.stem + ".svg")
-    if not elavult(tex, svg, (sty, *sorted(tikz_dir.glob("_*")))):
+    extra = [sty, *sorted(tikz_dir.glob("_*"))]
+    if tex.stem.startswith("borito"):
+        extra += [gyoker / "_shared" / "tikz" / "peborito.sty", *sorted((gyoker / "_shared" / "logo").glob("*.pdf"))]
+    if not elavult(tex, svg, extra):
         return None
     with tempfile.TemporaryDirectory() as tmp:
         r = subprocess.run([MOTOR, "-interaction=nonstopmode", "-halt-on-error",
@@ -65,6 +68,9 @@ def tikz(tex: Path):
             return f"HIBA {tex.name}: {' | '.join(hiba) or r.stdout[-400:]}"
         shutil.copy2(out, pdf)
     svg_from_pdf(pdf, svg)
+    if tex.stem.startswith("borito") and shutil.which("pdftoppm"):
+        # a borító PNG-változata (EPUB-borító, webes nyitókép, közösségi előnézet)
+        subprocess.run(["pdftoppm", "-r", "160", "-png", "-singlefile", str(pdf), str(gen / tex.stem)], check=True)
     return f"ok   {tex.name}"
 
 

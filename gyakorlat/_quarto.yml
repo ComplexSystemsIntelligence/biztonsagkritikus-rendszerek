@@ -5,6 +5,7 @@ project:
   post-render: ../_shared/scripts/postrender.py
   resources:
     - assets/fonts/*.woff2
+    - assets/logo/*
     - alkalmazasok/*.html
     - notebookok/*.ipynb
 
@@ -25,8 +26,15 @@ book:
   downloads: [pdf]
   search: true
   open-graph: true
+  favicon: assets/logo/pe-favicon.png
+  cover-image: abrak/gen/borito.png
+  cover-image-alt: "A Biztonságkritikus rendszerek gyakorlati útmutató borítója"
+  image: abrak/gen/borito.png
   sidebar:
     style: docked
+    logo: assets/logo/pe-cimer-nevjel-fekvo-kek.svg
+    logo-alt: "Pannon Egyetem"
+    logo-href: https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/
   page-navigation: true
   page-footer:
     left: "© 2026 Abonyi János · Pannon Egyetem · szöveg: CC BY-NC-SA 4.0 · kód: MIT"
@@ -86,5 +94,9 @@ format:
     toc-depth: 1
     number-depth: 2
     fig-pos: "htbp"
-    include-in-header: ../_shared/latex/preamble.tex
+    include-in-header:
+      - text: |
+          \def\peweb{https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/}
+          \def\peboritofajl{abrak/gen/borito.pdf}
+      - ../_shared/latex/preamble.tex
     colorlinks: true

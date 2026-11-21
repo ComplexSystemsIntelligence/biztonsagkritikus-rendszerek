@@ -1,0 +1,35 @@
+% peborito.sty -- a PE nyílt tankönyvsorozat borítója (A4, a Pannon Egyetem arculatával)
+% Használat egy standalone dokumentumban:
+%   \peborito{<sorozatcím>}{<kötet>}{<alcím>}{<szerző>}{<hely, év>}
+\ProvidesPackage{peborito}
+\RequirePackage{peabra}
+\RequirePackage{graphicx}
+\usetikzlibrary{calc}
+\newcommand{\peborito}[5]{%
+\begin{tikzpicture}[x=1mm,y=1mm]
+  % lap: 210 x 297 mm
+  \useasboundingbox (0,0) rectangle (210,297);
+  % kék alap
+  \fill[peKek] (0,0) rectangle (210,297);
+  % halvány címer vízjel jobbra, a lap széléig kifutva
+  \begin{scope}
+    \clip (0,0) rectangle (210,297);
+    \begin{scope}[transparency group, opacity=0.08]
+      \node[inner sep=0] at (178,152) {\includegraphics[width=180mm]{pe-cimer-feher.pdf}};
+    \end{scope}
+  \end{scope}
+  % fehér alsó mező ferde felső éllel és narancs sávval
+  \fill[white] (0,0) -- (210,0) -- (210,92) -- (0,62) -- cycle;
+  \fill[peKiemel] (0,62) -- (210,92) -- (210,97) -- (0,67) -- cycle;
+  % logó
+  \node[anchor=north west, inner sep=0] at (20,277) {\includegraphics[width=86mm]{pe-cimer-nevjel-fekvo-feher.pdf}};
+  % cím
+  \node[anchor=north west, text width=168mm, align=left, inner sep=0, text=white] at (20,214) {%
+    {\fontspec{Raleway ExtraBold}\fontsize{15}{18}\selectfont\color{peVilagos}#2\par}\vspace{5mm}
+    {\fontspec{Raleway Black}\fontsize{46}{50}\selectfont #1\par}\vspace{9mm}
+    {\fontspec{Raleway}\fontsize{17}{23}\selectfont #3\par}};
+  % szerző és kiadó
+  \node[anchor=south west, text width=150mm, align=left, inner sep=0] at (20,22) {%
+    {\fontspec{Raleway ExtraBold}\fontsize{20}{24}\selectfont\color{peSotet}#4\par}\vspace{3mm}
+    {\fontspec{IBM Plex Sans}\fontsize{11}{14}\selectfont\color{peSzurke}Pannon Egyetem · #5\par}};
+\end{tikzpicture}}

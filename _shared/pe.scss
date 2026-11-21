@@ -85,3 +85,7 @@ details.megoldas > summary { cursor: pointer; color: $pe-zold; font-weight: 600;
 .alkalmazas .alkalmazas-lab { font-family: "IBM Plex Sans", sans-serif; font-size: .85rem;
   background: #F7F9FC; padding: .35rem .8rem; color: $pe-szurke; }
 .colab-gomb img { vertical-align: middle; }
+
+// A Pannon Egyetem logója az oldalsávban és a borítókép a nyitóoldalon
+.sidebar-logo { max-width: 190px; margin: .2rem 0 .6rem; }
+.quarto-cover-image { border: 1px solid #d8dee6; box-shadow: 0 3px 14px rgba(27, 58, 87, .18); border-radius: 2px; }

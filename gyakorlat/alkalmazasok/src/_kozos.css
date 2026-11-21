@@ -5,10 +5,13 @@
 :root{--kek:#285780;--sotet:#1B3A57;--kozep:#4F7FAD;--vilagos:#A9C4DE;--halvany:#E6EEF6;--kiemel:#E07B39;--kiemelh:#FBE7D9;--zold:#3E8E63;--zoldh:#DDEFE4;--piros:#B83A3A;--pirosh:#F6DEDE;--lila:#7A5C99;--sarga:#D9A520;--sargah:#FAF0D2;--szurke:#6B7280;--szurkeh:#F1F2F4;--szoveg:#1F2933}
 *{box-sizing:border-box}
 body{margin:0;font-family:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--szoveg);background:#fff;font-size:15px;line-height:1.45}
-header.app{background:var(--kek);color:#fff;padding:12px 18px;position:relative;overflow:hidden}
+header.app{background:var(--kek);color:#fff;padding:12px 18px;position:relative;overflow:hidden;display:flex;align-items:center;gap:16px}
+header.app .pe-logo{flex:0 0 auto;position:relative;z-index:1;display:block;padding-right:16px;border-right:1px solid rgba(255,255,255,.35)}
+header.app .pe-logo img{height:42px;width:auto;display:block}
+header.app .szoveg{position:relative;z-index:1;min-width:0}
 header.app::after{content:"";position:absolute;right:-40px;top:0;bottom:0;width:180px;background:var(--kiemel);transform:skewX(-20deg);opacity:.9}
 header.app h1{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.25rem;margin:0;position:relative;z-index:1}
-header.app p{margin:.2rem 0 0;font-size:.85rem;opacity:.9;position:relative;z-index:1;max-width:75%}
+header.app p{margin:.2rem 0 0;font-size:.85rem;opacity:.9;position:relative;z-index:1;max-width:calc(100% - 130px)}
 main{padding:14px 18px 30px;max-width:1180px;margin:0 auto}
 .kartya{border:1px solid #d8dee6;border-left:4px solid var(--kek);border-radius:4px;padding:10px 14px;margin:12px 0;background:#fff}
 .kartya h2{font-family:'Raleway',sans-serif;font-weight:800;font-size:1.02rem;color:var(--sotet);margin:.1rem 0 .5rem}
@@ -37,7 +40,7 @@ td.szam,th.szam{text-align:right;font-variant-numeric:tabular-nums}
 svg text{font-family:'IBM Plex Sans',sans-serif}
 .diagram{width:100%;overflow-x:auto}
 footer.app{font-size:.75rem;color:var(--szurke);padding:8px 18px;border-top:1px solid #e3e8ee}
-@media (max-width:640px){header.app p{max-width:100%}}
+@media (max-width:640px){header.app{flex-wrap:wrap}header.app .pe-logo{border-right:0;padding-right:0}header.app p{max-width:100%}}
 /* szerkeszthető táblázatok: olvasható mezőszélesség, szűk nézetben vízszintes görgetés */
 .kartya{overflow-x:auto}
 td input[type=text],td input[type=number]{min-width:4.6em}

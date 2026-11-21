@@ -1,3 +1,10 @@
+<p align="left">
+  <a href="https://uni-pannon.hu/"><picture>
+    <source media="(prefers-color-scheme: dark)" srcset="_shared/logo/pe-cimer-nevjel-fekvo-feher.svg">
+    <img src="_shared/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem – University of Pannonia" height="72">
+  </picture></a>
+</p>
+
 # Biztonságkritikus rendszerek
 
 **Kockázat, megbízhatóság és funkcionális biztonság a veszélyazonosítástól a biztonsági érvelésig**  
@@ -15,6 +22,8 @@ Nyílt hozzáférésű tankönyv a biztonságkritikus rendszerek tervezéséről
 | Gyakorlati útmutató – PDF | [biztonsagkritikus-rendszerek-gyakorlat.pdf](https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/biztonsagkritikus-rendszerek-gyakorlat.pdf) |
 | Böngészős alkalmazások (9) | [gyakorlat/alkalmazasok/](gyakorlat/alkalmazasok/README.md) – telepítés nélkül, internetkapcsolat nélkül is |
 | Colab-notebookok (7) | [gyakorlat/notebookok/](gyakorlat/notebookok/README.md) – egy kattintással futtathatók |
+
+<p><a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/"><img src="kezikonyv/abrak/gen/borito.png" width="230" alt="A kézikönyv borítója"></a>&nbsp;&nbsp;&nbsp;<a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/"><img src="gyakorlat/abrak/gen/borito.png" width="230" alt="A gyakorlati útmutató borítója"></a></p>
 
 ## Kinek szól a könyv?
 
