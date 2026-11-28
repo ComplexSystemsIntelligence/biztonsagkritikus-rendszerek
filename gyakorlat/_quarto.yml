@@ -30,6 +30,18 @@ book:
   cover-image: abrak/gen/borito.png
   cover-image-alt: "A Biztonságkritikus rendszerek gyakorlati útmutató borítója"
   image: abrak/gen/borito.png
+  # Közös sorozatsáv: cím → a könyv nyitóoldala, a két kötet, jobbra a sorozat főoldala
+  navbar:
+    title: "Biztonságkritikus rendszerek"
+    logo-href: https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/
+    left:
+      - text: "Kézikönyv"
+        href: https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/
+      - text: "Gyakorlati útmutató"
+        href: index.qmd
+    right:
+      - text: "Összes tankönyv"
+        href: https://complexsystemsintelligence.github.io/#textbooks
   sidebar:
     style: docked
     logo: assets/logo/pe-cimer-nevjel-fekvo-kek.svg
@@ -75,7 +87,7 @@ filters:
 format:
   html:
     theme:
-      light: [cosmo, ../_shared/pe.scss]
+      light: [cosmo, ../_shared/pe.scss, ../_shared/sorozat.scss]
     toc: true
     toc-depth: 3
     toc-title: "Ezen az oldalon"
