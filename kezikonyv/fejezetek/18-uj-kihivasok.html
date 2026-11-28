@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+
+<title>18&nbsp; Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság – Biztonságkritikus rendszerek</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../irodalom.html" rel="next">
+<link href="../fejezetek/17-biztonsagi-erveles.html" rel="prev">
+<link href="../assets/logo/pe-favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4bb6adbf2c391f8ec7a8d9fd34cf9cbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési hivatkozás másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a fejezetben",
+    "search-more-matches-text": "további találat ebben a fejezetben",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "Keresés a könyvben",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="18&nbsp; Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság – Biztonságkritikus rendszerek">
+<meta property="og:description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+<meta property="og:image" content="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/abrak/gen/terkep-18.svg">
+<meta property="og:site_name" content="Biztonságkritikus rendszerek">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/">
+    <span class="navbar-title">Biztonságkritikus rendszerek</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigáció ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Kézikönyv</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/"> 
+<span class="menu-text">Gyakorlati útmutató</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/#textbooks"> 
+<span class="menu-text">Összes tankönyv</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/tree/main/kezikonyv/" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+            <div id="quarto-search" class="" title="Keresés"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/17-biztonsagi-erveles.html">V. rész – Bizonyítás és új kihívások</a></li><li class="breadcrumb-item"><a href="../fejezetek/18-uj-kihivasok.html"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/" class="sidebar-logo-link">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. rész – Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/01-balesetek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/02-fogalmak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2.</span>&nbsp; <span class="chapter-title">Fogalmak: veszély, kockázat, biztonság, megbízhatóság</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/03-kockazatertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3.</span>&nbsp; <span class="chapter-title">Kockázatértékelés és a kockázat elfogadhatósága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/04-eletciklus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4.</span>&nbsp; <span class="chapter-title">A biztonsági életciklus és a szabványok rendszere</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. rész – Veszélyazonosítás</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/05-veszelyazonositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5.</span>&nbsp; <span class="chapter-title">Veszélyazonosítás: a veszélylistáktól a HAZOP-ig</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/06-fmea.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6.</span>&nbsp; <span class="chapter-title">FMEA, FMECA és FMEDA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/07-stpa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. rész – Kvantitatív megbízhatóság és biztonság</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/08-megbizhatosag.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8.</span>&nbsp; <span class="chapter-title">Megbízhatóság-elmélet és élettartam-adatok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/09-rbd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9.</span>&nbsp; <span class="chapter-title">Rendszermegbízhatóság: blokkdiagramok és k-ból-n rendszerek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/10-hibafa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10.</span>&nbsp; <span class="chapter-title">Hibafa-elemzés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/11-esemenyfa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/12-markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12.</span>&nbsp; <span class="chapter-title">Markov-modellek és rendelkezésre állás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/13-sil.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13.</span>&nbsp; <span class="chapter-title">A biztonsági integritás igazolása: PFD, PFH és SIL</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. rész – Tervezés biztonságra</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/14-architekturak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14.</span>&nbsp; <span class="chapter-title">Biztonságos architektúrák és tervezési elvek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/15-szoftver.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15.</span>&nbsp; <span class="chapter-title">A szoftver biztonsága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/16-ember.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16.</span>&nbsp; <span class="chapter-title">Az ember a biztonságkritikus rendszerben</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. rész – Bizonyítás és új kihívások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/17-biztonsagi-erveles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17.</span>&nbsp; <span class="chapter-title">Biztonsági érvelés és igazolás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/18-uj-kihivasok.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../irodalom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalom</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/a-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A.</span>&nbsp; <span class="chapter-title">Valószínűségszámítási összefoglaló</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/b-esettanulmanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B.</span>&nbsp; <span class="chapter-title">A három esettanulmány</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/c-szoszedet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C.</span>&nbsp; <span class="chapter-title">Magyar–angol szószedet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/d-szabvanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D.</span>&nbsp; <span class="chapter-title">Szabványok és jogszabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Ezen az oldalon</h2>
+   
+  <ul>
+  <li><a href="#sec-sotif" id="toc-sec-sotif" class="nav-link active" data-scroll-target="#sec-sotif"><span class="header-section-number">18.1.</span> A rendeltetésszerű funkció biztonsága</a>
+  <ul class="collapse">
+  <li><a href="#sec-mennyi-teszt" id="toc-sec-mennyi-teszt" class="nav-link" data-scroll-target="#sec-mennyi-teszt"><span class="header-section-number">18.1.1.</span> Mennyi tesztelés kell?</a></li>
+  </ul></li>
+  <li><a href="#sec-gepi-tanulas" id="toc-sec-gepi-tanulas" class="nav-link" data-scroll-target="#sec-gepi-tanulas"><span class="header-section-number">18.2.</span> Gépi tanulás a biztonságkritikus rendszerekben</a>
+  <ul class="collapse">
+  <li><a href="#sec-simplex" id="toc-sec-simplex" class="nav-link" data-scroll-target="#sec-simplex"><span class="header-section-number">18.2.1.</span> Architekturális válasz: egyszerűség a bonyolultság felügyeletére</a></li>
+  </ul></li>
+  <li><a href="#sec-kiberbiztonsag" id="toc-sec-kiberbiztonsag" class="nav-link" data-scroll-target="#sec-kiberbiztonsag"><span class="header-section-number">18.3.</span> Kiberbiztonság és funkcionális biztonság</a></li>
+  <li><a href="#sec-uj-szabalyozas" id="toc-sec-uj-szabalyozas" class="nav-link" data-scroll-target="#sec-uj-szabalyozas"><span class="header-section-number">18.4.</span> A szabályozás új rétegei</a></li>
+  <li><a href="#sec-mi-eszkoz" id="toc-sec-mi-eszkoz" class="nav-link" data-scroll-target="#sec-mi-eszkoz"><span class="header-section-number">18.5.</span> A mesterséges intelligencia mint a biztonsági mérnök eszköze</a></li>
+  <li><a href="#sec-kitekintes" id="toc-sec-kitekintes" class="nav-link" data-scroll-target="#sec-kitekintes"><span class="header-section-number">18.6.</span> Kitekintés</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/18-uj-kihivasok.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/18-uj-kihivasok.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/17-biztonsagi-erveles.html">V. rész – Bizonyítás és új kihívások</a></li><li class="breadcrumb-item"><a href="../fejezetek/18-uj-kihivasok.html"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-uj-kihivasok" class="quarto-section-identifier"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="../abrak/gen/terkep-18.svg" class="img-fluid" style="width:100.0%"></p>
+<p>A könyv eddigi módszerei egy közös feltevésre épültek: a veszélyes helyzetek forrása valaminek a <em>meghibásodása</em> (egy alkatrész, egy szoftver, egy emberi művelet), vagy legalábbis az elemek közötti nem szándékolt kölcsönhatás. Három fejlemény ezt a képet alapjaiban bővíti. Az automatizált járművek és robotok veszélyt okozhatnak úgy is, hogy semmi sem hibásodik meg, egyszerűen azért, mert a funkciójuk teljesítőképessége egy adott helyzetben nem elegendő. A gépi tanulással készült komponensek viselkedését nem egyenként megírt követelmények, hanem adatok határozzák meg, és a hagyományos verifikációs módszerek nagy része nem alkalmazható rájuk. A hálózatba kapcsolt rendszerekben pedig egy szándékos támadás is veszélyes helyzetet teremthet, amely ellen a valószínűségi modellek nem védenek. Ez a fejezet ezt a három kihívást, a rájuk adott szabványosítási és szabályozási válaszokat, végül a mesterséges intelligencia szerepét a biztonsági mérnök munkájában tekinti át.</p>
+<div class="doboz doboz-cel"><div class="doboz-cim">Tanulási eredmények</div><div class="doboz-tartalom">
+<p>A fejezet végére képes leszel</p>
+<ul>
+<li>megkülönböztetni a funkcionális biztonság és a rendeltetésszerű funkció biztonságának (SOTIF) tárgykörét, és alkalmazni a SOTIF négy területének gondolatmenetét;</li>
+<li>megbecsülni, mekkora üzemi tapasztalat kell egy automatizált rendszer biztonságának statisztikai igazolásához;</li>
+<li>összefoglalni a gépi tanulási komponensek biztonságának fő kihívásait és az AMLAS, az ISO/PAS 8800 és az ISO/IEC TR 5469 válaszait;</li>
+<li>biztonsági architektúrát javasolni gépi tanulási komponenst tartalmazó rendszerre;</li>
+<li>elemezni a kiberbiztonság és a funkcionális biztonság kapcsolatát, és alkalmazni az IEC 62443 zóna- és csatornamodelljét;</li>
+<li>áttekinteni az MI-rendelet, a gépekre vonatkozó rendelet és a kiberrezilienciáról szóló jogszabály biztonsági vonatkozásait és ütemezését;</li>
+<li>felelősen használni a nagy nyelvi modelleket a biztonsági elemzések támogatására.</li>
+</ul>
+</div></div>
+<section id="sec-sotif" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="sec-sotif"><span class="header-section-number">18.1.</span> A rendeltetésszerű funkció biztonsága</h2>
+<p>A 2018-as tempei baleset (<a href="01-balesetek.html" class="quarto-xref"><span>1</span></a>. fejezet) jól mutatja a problémát: az automatizált jármű érzékelői működtek, a szoftver a specifikációja szerint futott, mégis halálos baleset történt, mert a rendszer nem tudta időben helyesen osztályozni a kerékpárját toló gyalogost <span class="citation" data-cites="ntsb2019">(<a href="../irodalom.html#ref-ntsb2019" role="doc-biblioref">National Transportation Safety Board 2019</a>)</span>. Az ISO 26262 a hibák és a meghibásodások okozta veszélyekkel foglalkozik, ezért ilyen esetekre nem ad választ. Ezt a rést tölti ki az ISO 21448, a <strong>rendeltetésszerű funkció biztonsága</strong> (<em>safety of the intended functionality</em>, SOTIF) <span class="citation" data-cites="iso21448">(<a href="../irodalom.html#ref-iso21448" role="doc-biblioref">ISO 2022</a>)</span>.</p>
+<p>A SOTIF szerint veszélyt okozhatnak a <strong>funkcionális elégtelenségek</strong>: a specifikáció hiányosságai (a tervezők nem gondoltak egy helyzetre) és a teljesítőképesség korlátai (az érzékelő vagy az algoritmus egy helyzetben nem elég pontos). Ezeket <strong>kiváltó feltételek</strong> (<em>triggering conditions</em>) hozzák felszínre: alacsonyan álló nap, köd, erős eső, tükröződő felület, szokatlan alakú tárgy, váratlan emberi viselkedés. A SOTIF célja, hogy a lehetséges forgatókönyveket négy területre osztva (<a href="#fig-sotif-teruletek" class="quarto-xref"><span>18.1</span></a>. ábra) a <strong>nem biztonságos ismert</strong> (2.) és különösen a <strong>nem biztonságos ismeretlen</strong> (3.) területet elfogadhatóan kicsire csökkentse. Az ismert veszélyes forgatókönyveket funkciómódosítással kezeljük (jobb érzékelés, érzékelőfúzió, a működési tartomány korlátozása, a vezető figyelmeztetése); az ismeretlen területet pedig elemzéssel, szimulációval, célzott teszteléssel és a terepi adatok gyűjtésével „tárjuk fel”, azaz ismertté tesszük.</p>
+<div id="fig-sotif-teruletek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sotif-teruletek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/sotif-teruletek.svg" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sotif-teruletek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">18.1. ábra.</span> A SOTIF négy területe. A cél a nem biztonságos forgatókönyvek, különösen a fel nem tártak arányának elfogadhatóan kicsire csökkentése.
+</figcaption>
+</figure>
+</div>
+<p>A SOTIF kulcsfogalma a <strong>működési tervezési tartomány</strong> (<em>operational design domain</em>, ODD): azoknak a körülményeknek a köre (úttípus, sebesség, időjárás, napszak, forgalmi helyzetek), amelyekre a rendszert tervezték. A biztonsági igazolás csak az ODD-n belül érvényes, és a rendszernek fel kell ismernie, ha elhagyja azt. Az automatizált vezetési rendszerek tervezésére, verifikációjára és validálására az ISO/TS 5083 ad átfogó keretet, amely a funkcionális biztonságot, a SOTIF-ot és a kiberbiztonságot egyetlen biztonsági érvelésbe foglalja <span class="citation" data-cites="isots5083">(<a href="../irodalom.html#ref-isots5083" role="doc-biblioref">ISO 2025</a>)</span>; az ENSZ 157. számú előírása pedig a sávtartó automatizált rendszerek jóváhagyási követelményeit rögzíti <span class="citation" data-cites="unr157">(<a href="../irodalom.html#ref-unr157" role="doc-biblioref">UNECE 2021b</a>)</span>.</p>
+<div class="doboz doboz-esetB"><div class="doboz-cim">VészFék: kiváltó feltételek és fantomfékezés</div><div class="doboz-tartalom">
+<p>A vészfékező asszisztens SOTIF-elemzése két irányban keres kiváltó feltételeket. A <strong>téves fékezés</strong> (fantomfékezés) jellegzetes kiváltói: hidak és felüljárók, amelyeket a radar akadálynak érzékel; az úttestbe épített fémfedlapok és -lemezek erős radarvisszaverődése; a kamerát elvakító alacsony nap; árnyékok és útburkolati jelek, amelyeket a képfeldolgozás tárgynak vél. A <strong>fékezés elmaradásának</strong> kiváltói: sötét ruhás gyalogos éjszaka, szokatlan alakú tárgy (például kerékpárt toló ember vagy egy felborult jármű), köd és erős eső. A funkciómódosítások: a radar és a kamera eredményének összevetése (a téves fékezés ellen mindkettő megerősítése, a fékezés elmaradása ellen a figyelmeztetés már egyetlen érzékelő jelzésére), a működés korlátozása rossz látási viszonyok között, és a vezető tájékoztatása. Az ismeretlen terület csökkentésére a gyártó nagy mennyiségű terepi adatot és szimulált forgatókönyvet elemez, és a kiadott járművek adataiból folyamatosan keresi az új kiváltó feltételeket.</p>
+</div></div>
+<section id="sec-mennyi-teszt" class="level3" data-number="18.1.1">
+<h3 data-number="18.1.1" class="anchored" data-anchor-id="sec-mennyi-teszt"><span class="header-section-number">18.1.1.</span> Mennyi tesztelés kell?</h3>
+<p>Az automatizált járművek biztonságának egyik kézenfekvő igazolása az lenne, hogy elég sokat vezetünk velük baleset nélkül. A <a href="08-megbizhatosag.html" class="quarto-xref"><span>8</span></a>. fejezet megbízhatósági becslései megmutatják, miért nem járható ez az út. Ha egy rendszer <span class="math inline">\(t\)</span> ideig (vagy távolságon) hibamentesen működött, akkor <span class="math inline">\(C\)</span> konfidenciaszinten a hibagyakoriság felső korlátja <span class="math inline">\(\lambda_C = -\ln(1 - C)/t\)</span>. Kalra és Paddock ezt az amerikai közúti halálozási gyakoriságra alkalmazta, amely 2013-ban körülbelül 1,09 haláleset volt százmillió mérföldenként <span class="citation" data-cites="kalra2016">(<a href="../irodalom.html#ref-kalra2016" role="doc-biblioref">Kalra és Paddock 2016</a>)</span>. Ahhoz, hogy 95%-os konfidenciával kimutassuk, hogy egy automatizált járműflotta <em>legalább ilyen jó</em>, halálos baleset nélkül</p>
+<p><span class="math display">\[
+t = \frac{-\ln(1 - 0{,}95)}{1{,}09\cdot10^{-8}\ \text{mérföld}^{-1}} = \frac{3{,}0}{1{,}09\cdot10^{-8}} \approx 2{,}75\cdot10^{8}\ \text{mérföld}
+\]</span></p>
+<p>vezetés kellene, és annak kimutatásához, hogy <em>lényegesen jobb</em> is, nagyságrendekkel több. Ez a gondolatmenet ugyanaz, amelyet Butler és Finelli a szoftverekre alkalmazott (<a href="15-szoftver.html#sec-szoftver-mas" class="quarto-xref"><span>15.1</span></a>. szakasz): a nagyon ritka eseményekre vonatkozó biztonsági állítás nem igazolható pusztán üzemi tapasztalattal. A megoldás a <strong>forgatókönyv-alapú validálás</strong>, amely a releváns és a kritikus helyzeteket szisztematikusan azonosítja, szimulációban és tesztpályán vizsgálja, és a közúti tapasztalatot ennek kiegészítésére használja <span class="citation" data-cites="koopman2016">(<a href="../irodalom.html#ref-koopman2016" role="doc-biblioref">Koopman és Wagner 2016</a>)</span>; valamint a biztonsági érvelés, amely ezeket a bizonyítékokat összefogja, és az üzemeltetés során folyamatosan frissül (<a href="17-biztonsagi-erveles.html#sec-elo-erveles" class="quarto-xref"><span>17.5</span></a>. szakasz) <span class="citation" data-cites="ul4600">(<a href="../irodalom.html#ref-ul4600" role="doc-biblioref">UL Standards &amp; Engagement 2023</a>)</span>.</p>
+</section>
+</section>
+<section id="sec-gepi-tanulas" class="level2" data-number="18.2">
+<h2 data-number="18.2" class="anchored" data-anchor-id="sec-gepi-tanulas"><span class="header-section-number">18.2.</span> Gépi tanulás a biztonságkritikus rendszerekben</h2>
+<p>A gépi tanulási (ML) komponensek, különösen a mély neurális hálók, olyan feladatokban érnek el kiemelkedő teljesítményt, amelyekre hagyományos algoritmust nem lehet írni: képek és jelenetek értelmezésében, összetett mintázatok felismerésében, az emberi viselkedés előrejelzésében. A biztonsági igazolás szempontjából azonban alapvetően különböznek a hagyományos szoftvertől:</p>
+<ul>
+<li><strong>Az adat a specifikáció.</strong> A komponens viselkedését nem egyenként megírt követelmények, hanem a tanítóadatok határozzák meg. Ha egy helyzet nem szerepel megfelelő arányban az adatokban, a modell viselkedése ott kiszámíthatatlan.</li>
+<li><strong>Eloszláseltolódás.</strong> A modell a tanítási adatok eloszlásán működik jól; ha a valós környezet ettől eltér (új járműtípusok, más éghajlat, kopott útburkolati jelek), a teljesítmény észrevétlenül romolhat.</li>
+<li><strong>Robusztusság.</strong> Szegedy és munkatársai kimutatták, hogy szemmel észrevehetetlen, gondosan megválasztott változtatások a bemeneten egy neurális hálót teljesen téves osztályozásra késztethetnek <span class="citation" data-cites="szegedy2014">(<a href="../irodalom.html#ref-szegedy2014" role="doc-biblioref">Szegedy és mtsai. 2014</a>)</span>; ez egyszerre biztonsági és kiberbiztonsági kockázat.</li>
+<li><strong>Átláthatatlanság.</strong> A modell belső működése nem vezethető vissza ember által érthető szabályokra, ezért a hagyományos felülvizsgálat és a strukturális lefedettség nem alkalmazható.</li>
+<li><strong>Nem szándékolt optimalizálás.</strong> Amodei és munkatársai számos módját írták le annak, ahogyan egy tanuló rendszer a célfüggvényét a tervezők szándékával ellentétesen, nem kívánt mellékhatásokkal teljesítheti <span class="citation" data-cites="amodei2016">(<a href="../irodalom.html#ref-amodei2016" role="doc-biblioref">Amodei és mtsai. 2016</a>)</span>.</li>
+</ul>
+<p>Salay, Queiroz és Czarnecki elemzése szerint az ISO 26262 szoftverfejlesztési módszereinek jelentős része csak részben vagy egyáltalán nem alkalmazható a gépi tanulási komponensekre <span class="citation" data-cites="salay2017">(<a href="../irodalom.html#ref-salay2017" role="doc-biblioref">Salay és mtsai. 2017</a>)</span>. Erre a kihívásra az elmúlt években több útmutató és szabvány született.</p>
+<p>Az <strong>AMLAS</strong> (<em>Assurance of Machine Learning for use in Autonomous Systems</em>) a York-i Egyetem módszertana, amely a gépi tanulási komponens fejlesztését hat lépésre bontja, és mindegyikhez egy biztonsági érvelési mintát és a szükséges bizonyítékokat rendeli (<a href="#fig-amlas-folyamat" class="quarto-xref"><span>18.2</span></a>. ábra) <span class="citation" data-cites="hawkins2021">(<a href="../irodalom.html#ref-hawkins2021" role="doc-biblioref">Hawkins és mtsai. 2021</a>)</span>: a gépi tanulás biztonsági hatókörének meghatározása, a komponens biztonsági követelményei (például a teljesítmény, a robusztusság és az értelmezhetőség követelményei), az adatkezelés (a tanító-, a validáló- és a tesztadatok relevanciája, teljessége, pontossága és kiegyensúlyozottsága), a modell tanítása, a modell verifikációja (független tesztadatokon, robusztussági vizsgálatokkal, ahol lehet, formális módszerekkel), végül a telepítés és az üzem közbeni megfigyelés.</p>
+<div id="fig-amlas-folyamat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-amlas-folyamat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/amlas-folyamat.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-amlas-folyamat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">18.2. ábra.</span> Az AMLAS hat lépése. Minden lépés egy biztonsági érvelési mintát és a hozzá tartozó bizonyítékokat állít elő; a verifikáció és a telepítés tapasztalatai visszahatnak a követelményekre.
+</figcaption>
+</figure>
+</div>
+<p>Az <strong>ISO/PAS 8800</strong> a közúti járművek mesterséges intelligenciát tartalmazó rendszereinek biztonságára ad útmutatást: az ISO 26262 és az ISO 21448 kiegészítéseként az MI-alapú rendszerelemek biztonsági életciklusát, a biztonsági követelmények levezetését, az adatok életciklusát és az üzem közbeni megfigyelést szabályozza <span class="citation" data-cites="isopas8800">(<a href="../irodalom.html#ref-isopas8800" role="doc-biblioref">ISO 2024</a>)</span>. Az <strong>ISO/IEC TR 5469</strong> ágazatfüggetlen technikai jelentés a mesterséges intelligencia funkcionális biztonsági alkalmazásairól: áttekinti, milyen szerepben (a biztonsági funkción belül vagy azon kívül) és milyen feltételekkel használható MI, milyen tulajdonságai befolyásolják a biztonságot, és milyen intézkedések segítenek a kockázatok kezelésében <span class="citation" data-cites="isotr5469">(<a href="../irodalom.html#ref-isotr5469" role="doc-biblioref">ISO/IEC 2024</a>)</span>.</p>
+<section id="sec-simplex" class="level3" data-number="18.2.1">
+<h3 data-number="18.2.1" class="anchored" data-anchor-id="sec-simplex"><span class="header-section-number">18.2.1.</span> Architekturális válasz: egyszerűség a bonyolultság felügyeletére</h3>
+<p>A gépi tanulási komponensek biztonságának talán legerősebb eszköze az architektúra. A <strong>Simplex-architektúra</strong> gondolata szerint egy nagy teljesítményű, de nehezen igazolható vezérlő mellé egy egyszerű, hagyományos módszerekkel igazolható biztonsági vezérlőt és egy döntési logikát teszünk, amely átkapcsol az egyszerű vezérlőre, ha a rendszer állapota a biztonságos tartomány határához közelít <span class="citation" data-cites="sha2001">(<a href="../irodalom.html#ref-sha2001" role="doc-biblioref">Sha 2001</a>)</span>. Ugyanez a minta jelenik meg a <a href="14-architekturak.html#sec-egas" class="quarto-xref"><span>14.6</span></a>. szakasz E-Gas felügyeletében és a ReaktorVéd független biztonsági funkciójában: a bonyolult funkciót egy egyszerű, diverz, független felügyelet ellenőrzi. Gépi tanulási komponensekre alkalmazva ez lehet egy fizikai plauzibilitás-ellenőrzés (a jármű nem fékezhet erősen, ha egyik független érzékelő sem lát akadályt), egy hagyományos érzékelőre épülő biztonsági burok (a robot sebességét a tanúsított lézerszkenner korlátozza, akármit is javasol a kamerás MI), vagy a bemenet eloszláson kívüliségének (<em>out-of-distribution</em>) felismerése, amely ilyenkor egy óvatosabb üzemmódba kapcsol.</p>
+<div class="doboz doboz-esetC"><div class="doboz-cim">KoboCella: kamerás személyfelismerés gépi tanulással</div><div class="doboz-tartalom">
+<p>A KoboCella fejlesztői szeretnék a lézerszkennert egy kamerás, gépi tanulásos személyfelismerővel kiegészíteni, amely a szerelő testtartását és mozgásának irányát is felismeri, és így finomabban szabályozhatná a robot sebességét. A gépekre vonatkozó (EU) 2023/1230 rendelet szerint azonban a teljesen vagy részben önfejlesztő viselkedésű, gépi tanulást alkalmazó biztonsági alkatrészek, amelyek biztonsági funkciót látnak el, a fokozott kockázatú termékek közé tartoznak, és bejelentett szervezet bevonásával kell értékelni a megfelelőségüket <span class="citation" data-cites="eu2023machinery">(<a href="../irodalom.html#ref-eu2023machinery" role="doc-biblioref">Európai Parlament és Tanács 2023</a>)</span>. A csapat ezért olyan architektúrát választ, amelyben a biztonsági funkciót továbbra is a tanúsított lézerszkenner és a robotvezérlő kétcsatornás biztonsági része látja el (PL<sub>r</sub> szerint igazolva); a kamerás MI csak a <em>termelékenységet</em> javítja, a biztonsági határokon belül (például a robot pályáját tervezi át, hogy elkerülje a szerelőt). Az MI hibája így legfeljebb felesleges lassítást okozhat, veszélyes helyzetet nem. Ha a jövőben az MI-t a biztonsági funkcióba is be akarják építeni, az AMLAS-hoz és az ISO/IEC TR 5469-hez hasonló teljes igazolásra lesz szükség.</p>
+</div></div>
+</section>
+</section>
+<section id="sec-kiberbiztonsag" class="level2" data-number="18.3">
+<h2 data-number="18.3" class="anchored" data-anchor-id="sec-kiberbiztonsag"><span class="header-section-number">18.3.</span> Kiberbiztonság és funkcionális biztonság</h2>
+<p>A biztonsági elemzések hagyományosan véletlen meghibásodásokkal és nem szándékos tévedésekkel számolnak. A támadó azonban nem véletlenszerűen viselkedik: a leggyengébb pontot keresi, több „meghibásodást” idézhet elő egyszerre, és éppen a ritka, nem tesztelt állapotokat használja ki. A valószínűségi modellek függetlenségi feltevései vele szemben értelmetlenek. Ezért a kiberbiztonság (<em>security</em>) nem illeszthető be egyszerűen a megbízhatósági számításokba, hanem külön elemzést és külön intézkedéseket igényel, amelyeket a funkcionális biztonsággal (<em>safety</em>) össze kell hangolni <span class="citation" data-cites="iec63069 young2014">(<a href="../irodalom.html#ref-iec63069" role="doc-biblioref">IEC 2019</a>; <a href="../irodalom.html#ref-young2014" role="doc-biblioref">Young és Leveson 2014</a>)</span>.</p>
+<p>Az ipari irányítórendszerek elleni támadások közül a biztonsági mérnök számára a legtanulságosabb a 2017-ben egy közel-keleti petrolkémiai üzemben felfedezett kártevő, amelyet az amerikai hatóságok HatMan, a kutatók Triton vagy Trisis néven írtak le: a támadók a biztonsági műszeres rendszer vezérlőit vették célba, és megpróbálták átprogramozni őket. A támadás azért derült ki, mert a vezérlők hibát észleltek, és biztonságos állapotba, leállásba vitték az üzemet <span class="citation" data-cites="cisa2019">(<a href="../irodalom.html#ref-cisa2019" role="doc-biblioref">Cybersecurity and Infrastructure Security Agency 2019</a>)</span>. A tanulság súlyos: a biztonsági funkció, az utolsó műszaki védelmi réteg maga is célpont lehet, és egy sikeres támadás egyszerre iktathatja ki a védelmet és idézheti elő a veszélyes helyzetet.</p>
+<p>A folyamatiparban az IEC 61511 2016-os kiadása előírja, hogy a biztonsági műszeres rendszerre kiberbiztonsági kockázatértékelést kell végezni <span class="citation" data-cites="iec61511">(<a href="../irodalom.html#ref-iec61511" role="doc-biblioref">IEC 2016</a>)</span>, az ipari automatizálás kiberbiztonságának szabványsorozata pedig az IEC 62443. Ennek alapgondolata a <strong>zónák és csatornák</strong> modellje (<a href="#fig-zonak-csatornak" class="quarto-xref"><span>18.3</span></a>. ábra): a rendszert azonos biztonsági követelményű zónákra osztjuk, a zónák közötti kommunikációt ellenőrzött csatornákra korlátozzuk, és minden zónához célzott biztonsági szintet rendelünk <span class="citation" data-cites="iec62443">(<a href="../irodalom.html#ref-iec62443" role="doc-biblioref">IEC 2009--2024</a>)</span>. A közúti járművekben az ISO/SAE 21434 a kiberbiztonsági mérnöki folyamatot, benne a fenyegetés- és kockázatelemzést (TARA) szabályozza <span class="citation" data-cites="iso21434">(<a href="../irodalom.html#ref-iso21434" role="doc-biblioref">ISO/SAE 2021</a>)</span>, az ENSZ 155. számú előírása pedig 2024 júliusától minden új jármű forgalomba helyezésének feltétele egy tanúsított kiberbiztonsági irányítási rendszer <span class="citation" data-cites="unr155">(<a href="../irodalom.html#ref-unr155" role="doc-biblioref">UNECE 2021a</a>)</span>.</p>
+<div id="fig-zonak-csatornak" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-zonak-csatornak-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/zonak-csatornak.svg" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-zonak-csatornak-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">18.3. ábra.</span> A ReaktorVéd irányítórendszerének zónái és csatornái az IEC 62443 szerint. A biztonsági funkció külön zónában van, ahonnan csak állapotadat megy ki, befelé nincs írási út.
+</figcaption>
+</figure>
+</div>
+<p>A biztonság és a kiberbiztonság nemcsak kiegészítik, hanem befolyásolhatják is egymást. Egy kiberbiztonsági intézkedés veszélyeztetheti a biztonságot: ha a kezelői állomás néhány hibás jelszó után zárol, egy vészhelyzetben a kezelő kizárhatja magát; ha egy biztonsági frissítés a biztonsági PLC szoftverét módosítja, az újra validálást igényel. Fordítva, egy biztonsági funkció kiberbiztonsági kockázatot teremthet: egy távoli kioldás-visszaállítási lehetőség támadási útvonal lehet. Ezért a két terület elemzését közös keretben érdemes végezni; az STPA rendszerelméleti megközelítése (<a href="07-stpa.html" class="quarto-xref"><span>7</span></a>. fejezet) például kiterjeszthető a nem biztonságos irányítási műveletek szándékos előidézésére is (STPA-Sec) <span class="citation" data-cites="young2014">(<a href="../irodalom.html#ref-young2014" role="doc-biblioref">Young és Leveson 2014</a>)</span>.</p>
+<div class="doboz doboz-esetA"><div class="doboz-cim">ReaktorVéd: a biztonsági funkció kiberbiztonsága</div><div class="doboz-tartalom">
+<p>A ReaktorVéd kiberbiztonsági kockázatértékelése megállapította, hogy a biztonsági PLC diagnosztikai adatait a karbantartók a vállalati hálózatról is szeretnék látni, és a mérnöki állomás az eredeti tervben állandóan csatlakozott a biztonsági hálózathoz. A módosított architektúrában a biztonsági funkció önálló zóna; a BPCS felé csak egy egyirányú adatkapun keresztül megy ki állapotadat; a mérnöki állomás csak engedélyezett módosításkor, fizikai kulccsal csatlakoztatható; a biztonsági PLC-n a program módosítása csak a helyszínen, kulcskapcsolóval engedélyezhető. A biztonsági érvelés (<a href="17-biztonsagi-erveles.html" class="quarto-xref"><span>17</span></a>. fejezet) G5 ága kiegészül egy állítással: a biztonsági funkció integritását kiberbiztonsági intézkedések védik, és a feltevések (például hogy a mérnöki állomás csak engedéllyel csatlakozik) teljesülését a változáskezelés és az auditok ellenőrzik.</p>
+</div></div>
+</section>
+<section id="sec-uj-szabalyozas" class="level2" data-number="18.4">
+<h2 data-number="18.4" class="anchored" data-anchor-id="sec-uj-szabalyozas"><span class="header-section-number">18.4.</span> A szabályozás új rétegei</h2>
+<p>Az Európai Unióban három új rendelet alakítja át a biztonságkritikus termékek szabályozását (<a href="#fig-szabalyozasi-idovonal" class="quarto-xref"><span>18.4</span></a>. ábra).</p>
+<p>A <strong>gépekre vonatkozó (EU) 2023/1230 rendelet</strong> 2027. január 20-tól váltja fel a gépi irányelvet. Az új rendelet kifejezetten kezeli a mesterséges intelligenciát és a kiberbiztonságot: a gépeknek a kiszámíthatóan változó, önfejlesztő viselkedés mellett is biztonságosnak kell maradniuk, és a biztonsági funkciókat védeni kell a rosszindulatú befolyásolással szemben <span class="citation" data-cites="eu2023machinery">(<a href="../irodalom.html#ref-eu2023machinery" role="doc-biblioref">Európai Parlament és Tanács 2023</a>)</span>.</p>
+<p>A <strong>mesterséges intelligenciáról szóló (EU) 2024/1689 rendelet</strong> (MI-rendelet) kockázatalapú szabályozást vezet be. A nagy kockázatú MI-rendszerek közé tartoznak azok, amelyek az uniós harmonizációs jogszabályok (például a gépekre, a játékokra, az orvostechnikai eszközökre vonatkozó szabályok) hatálya alá tartozó termékek biztonsági alkatrészei. Rájuk kockázatkezelési rendszer, adatkezelési követelmények, műszaki dokumentáció, naplózás, átláthatóság, emberi felügyelet, valamint pontossági, robusztussági és kiberbiztonsági követelmények vonatkoznak <span class="citation" data-cites="eu2024ai">(<a href="../irodalom.html#ref-eu2024ai" role="doc-biblioref">Európai Parlament és Tanács 2024a</a>)</span>. A nagy kockázatú rendszerekre vonatkozó kötelezettségek alkalmazását a 2026 júliusában kihirdetett digitális omnibusz-rendelet elhalasztotta: az önálló (III. mellékletbeli) rendszerekre 2027. december 2-tól, a termékekbe biztonsági alkatrészként beépített (I. mellékletbeli) rendszerekre 2028. augusztus 2-tól kell alkalmazni őket <span class="citation" data-cites="eu2026omnibus">(<a href="../irodalom.html#ref-eu2026omnibus" role="doc-biblioref">Európai Parlament és Tanács 2026</a>)</span>.</p>
+<p>A <strong>kiberrezilienciáról szóló (EU) 2024/2847 rendelet</strong> a digitális elemeket tartalmazó termékekre ír elő kiberbiztonsági követelményeket a teljes életciklusra, a sérülékenységek kezelésével és a biztonsági frissítésekkel együtt. A súlyos incidensek és az aktívan kihasznált sérülékenységek jelentési kötelezettsége 2026. szeptember 11-től, a rendelet többi része 2027. december 11-től alkalmazandó <span class="citation" data-cites="eu2024cra">(<a href="../irodalom.html#ref-eu2024cra" role="doc-biblioref">Európai Parlament és Tanács 2024b</a>)</span>.</p>
+<div id="fig-szabalyozasi-idovonal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-szabalyozasi-idovonal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/szabalyozasi-idovonal.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-szabalyozasi-idovonal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">18.4. ábra.</span> Az EU biztonsági szempontból lényeges új jogszabályainak ütemezése. A nagy kockázatú MI-rendszerekre vonatkozó határidők a 2026-os digitális omnibusz-rendelet szerint módosultak.
+</figcaption>
+</figure>
+</div>
+<p>A három rendelet egymásra épül: egy MI-alapú biztonsági alkatrészt tartalmazó, hálózatba kapcsolt gépre egyszerre vonatkozhat mindhárom. A harmonizált szabványok kidolgozása folyamatban van, és a következő években várhatóan a funkcionális biztonsági szabványok (köztük az IEC 61508 harmadik, 2027-re várt kiadása) is beépítik az MI-re és a kiberbiztonságra vonatkozó követelményeket. A mérnöki gyakorlat szempontjából a legfontosabb üzenet: a biztonság, a kiberbiztonság és az MI megbízhatósága nem kezelhető külön silókban; közös kockázatelemzés, közös architektúra és közös, élő biztonsági érvelés kell hozzájuk.</p>
+</section>
+<section id="sec-mi-eszkoz" class="level2" data-number="18.5">
+<h2 data-number="18.5" class="anchored" data-anchor-id="sec-mi-eszkoz"><span class="header-section-number">18.5.</span> A mesterséges intelligencia mint a biztonsági mérnök eszköze</h2>
+<p>A nagy nyelvi modellek a biztonsági mérnök munkáját is megváltoztatják. Segíthetnek a veszélyazonosítás ötletgyűjtésében (vezérszavas eltérések, meghibásodási módok, nem biztonságos irányítási műveletek felvetésében), a szabványok és a szakirodalom áttekintésében, a dokumentáció előkészítésében, a számítások ellenőrzésében és a gyakorlati útmutató notebookjaihoz hasonló elemző kódok megírásában. Diemert és Weber kísérleti vizsgálata szerint egy nagy nyelvi modell hasznos javaslatokkal segítheti a veszélyelemzést, de a javaslatok egy része téves vagy irreleváns, és a modell nem helyettesíti a szakértői ítéletet <span class="citation" data-cites="diemert2023">(<a href="../irodalom.html#ref-diemert2023" role="doc-biblioref">Diemert és Weber 2023</a>)</span>.</p>
+<p>A felelős használat elvei a <a href="16-ember.html" class="quarto-xref"><span>16</span></a>. fejezet automatizálási tanulságaiból következnek: a modell ötletgyűjtő partner, nem döntéshozó; minden állítását ellenőrizni kell, különösen a számokat, a szabványhivatkozásokat és a jogi állításokat; vigyázni kell az automatizálási torzításra, amely a gépi javaslatot hajlamos elfogadni akkor is, ha a saját tudásunk ellentmond neki; a bizalmas tervadatokat csak megfelelő adatvédelmi feltételekkel szabad megosztani; és a biztonsági érvelésben dokumentálni kell, hogy egy elemzésben milyen szerepet játszott a modell, és ki ellenőrizte a kimenetét.</p>
+<div class="doboz doboz-prompt"><div class="doboz-cim">Nagy nyelvi modell mint STPA-segítő</div><div class="doboz-tartalom">
+<p><em>„Egy kollaboratív robotcella STPA-elemzését végezzük. Az irányító a robotvezérlő biztonsági része; irányítási műveletei: sebességcsökkentés, biztonságos megállás, újraindítás. A visszacsatolás a lézerszkenner jele (személy a 0,5 m-es, illetve az 1,2 m-es zónában) és a robot sebességmérése. A veszteség: a szerelő sérülése; a veszély: a robot nagy sebességgel mozog, miközben a szerelő a közös munkatérben van. Mind a négy nem biztonságos irányítási művelet típusára (nem adja ki; kiadja, amikor nem kellene; rossz időben vagy sorrendben adja ki; túl korán leállítja vagy túl sokáig alkalmazza) sorolj fel lehetséges eseteket, és mindegyikhez a kontextust. Utána javasolj okozati forgatókönyveket a visszacsatolás hibáira is. Jelöld, ha egy javaslatod bizonytalan, és ne hivatkozz olyan szabványpontra, amelyben nem vagy biztos.”</em></p>
+<p>A modell válaszát a csapat a saját elemzésével veti össze (<a href="07-stpa.html" class="quarto-xref"><span>7</span></a>. fejezet); a kimenet csak akkor kerülhet a jegyzőkönyvbe, ha egy szakértő ellenőrizte és elfogadta.</p>
+</div></div>
+</section>
+<section id="sec-kitekintes" class="level2" data-number="18.6">
+<h2 data-number="18.6" class="anchored" data-anchor-id="sec-kitekintes"><span class="header-section-number">18.6.</span> Kitekintés</h2>
+<p>A biztonságkritikus rendszerek tudománya az első hibafáktól a tanuló, hálózatba kapcsolt, ember és gép közötti munkamegosztásra épülő rendszerekig jutott. A könyv módszerei ehhez a fejlődéshez három irányban adnak kapaszkodót. A <strong>valószínűségi modellek</strong> (megbízhatóság, hibafa, eseményfa, Markov-modellek, SIL-igazolás) ott maradnak nélkülözhetetlenek, ahol a meghibásodások véletlenszerűek és az adatok megbízhatók. A <strong>rendszerelméleti szemlélet</strong> (STAMP, STPA, a biztonsági kultúra, a Safety-II) ott, ahol a balesetek a kölcsönhatásokból, a szervezetből és a változásból fakadnak. A <strong>biztonsági érvelés</strong> pedig az a keret, amely a kettőt, a tervezési döntéseket és az üzemeltetés tapasztalatait egyetlen, ellenőrizhető és élő egésszé fogja össze. Az új technológiák nem teszik feleslegessé ezeket az eszközöket; éppen ellenkezőleg, a gépi tanulás, az autonómia és a hálózatosodás korában a biztonsági mérnök legfontosabb képessége az lesz, hogy tudja, melyik eszköz mire alkalmas, és mire nem.</p>
+<div class="doboz doboz-labor"><div class="doboz-cim">Gyakorlat</div><div class="doboz-tartalom">
+<p>A gyakorlati útmutató 12. laborja egy projektfeladat: egy választott rendszerre (például egy automatizált raktári járműre vagy egy orvostechnikai infúziós pumpára) a könyv módszereit végigvezetve kell elkészíteni a veszélyelemzést, a kockázatértékelést, a biztonsági követelményeket, a kvantitatív igazolást és a biztonsági érvelés vázát. Az útmutató mintapromptokat is ad a nagy nyelvi modellek felelős használatához az egyes lépésekben.</p>
+</div></div>
+<div class="doboz doboz-osszefoglalo"><div class="doboz-cim">Összefoglalás</div><div class="doboz-tartalom">
+<ul>
+<li>A SOTIF (ISO 21448) a meghibásodás nélkül, a funkcionális elégtelenségekből és a kiváltó feltételekből eredő veszélyekkel foglalkozik; célja a nem biztonságos ismert és ismeretlen forgatókönyvek elfogadhatóan kicsire csökkentése.</li>
+<li>A ritka eseményekre vonatkozó biztonsági állítás nem igazolható pusztán üzemi tapasztalattal: az emberi vezetővel egyenértékű halálozási gyakoriság 95%-os konfidenciájú kimutatásához mintegy 275 millió mérföld kellene; a forgatókönyv-alapú validálás és a biztonsági érvelés a megoldás.</li>
+<li>A gépi tanulási komponensek biztonságának kihívásai: az adat mint specifikáció, az eloszláseltolódás, a robusztusság, az átláthatatlanság és a nem szándékolt optimalizálás; az AMLAS, az ISO/PAS 8800 és az ISO/IEC TR 5469 ad rájuk választ.</li>
+<li>Az architektúra a legerősebb eszköz: egy egyszerű, igazolható felügyelet (Simplex-minta) korlátozza a bonyolult komponens hatását.</li>
+<li>A támadó nem véletlenszerű; a kiberbiztonságot külön, de a funkcionális biztonsággal összehangoltan kell kezelni (IEC 62443, ISO/SAE 21434, IEC 61511 kiberbiztonsági értékelés). A Triton-támadás a biztonsági funkciót vette célba.</li>
+<li>A gépekre vonatkozó rendelet, az MI-rendelet és a kiberrezilienciáról szóló jogszabály 2026 és 2028 között fokozatosan alkalmazandó; a nagy kockázatú MI-rendszerek határidejét a 2026-os digitális omnibusz-rendelet 2027 decemberére, illetve 2028 augusztusára tolta ki.</li>
+<li>A nagy nyelvi modellek hasznos segítők a biztonsági elemzésben, de minden kimenetüket szakértőnek kell ellenőriznie.</li>
+</ul>
+</div></div>
+<div class="doboz doboz-onell"><div class="doboz-cim">Önellenőrzés</div><div class="doboz-tartalom">
+<ol type="1">
+<li>Miben különbözik a fantomfékezés oka egy hibás radarérzékelő okozta téves fékezéstől? Melyik szabvány melyiket kezeli?</li>
+<li>Egy automatizált rendszer hibagyakoriságára <span class="math inline">\(10^{-7}\)</span> óránkénti felső korlátot szeretnénk igazolni 90%-os konfidenciával, hibamentes üzemi tapasztalatból. Hány üzemóra kell?</li>
+<li>Miért nem elég egy gépi tanulási modell tesztadatokon mért 99,9%-os pontossága a biztonsági igazoláshoz?</li>
+<li>Javasolj Simplex-jellegű architektúrát egy MI-alapú gyalogosfelismerőt tartalmazó vészfékező rendszerre!</li>
+<li>Mondj egy példát arra, amikor egy kiberbiztonsági intézkedés a funkcionális biztonságot rontja, és egyet a fordítottjára!</li>
+</ol>
+<details class="megoldas"><summary>Megoldás</summary>
+<ol type="1">
+<li>A fantomfékezés során semmi sem hibásodik meg: az érzékelés teljesítőképessége egy kiváltó feltétel (például egy híd vagy fémlemez) mellett nem elegendő, ez a SOTIF (ISO 21448) tárgya. A hibás radar okozta téves fékezés meghibásodás következménye, ez az ISO 26262 tárgya.</li>
+<li><span class="math inline">\(t = -\ln(1 - 0{,}9)/10^{-7} = 2{,}30\cdot10^{7}\)</span> óra, azaz több mint 2600 év egyetlen rendszerre, vagy például ezer rendszer 2,6 évnyi hibamentes működése.</li>
+<li>Mert a pontosság egy átlag a tesztadatok eloszlásán: nem mond semmit a ritka, de veszélyes helyzetekről, az eloszláson kívüli bemenetekről, a robusztusságról és arról, hogy a tévedések <em>milyen</em> hibák (veszélyes vagy ártalmatlan). A biztonsági követelményeket a veszélyes hibamódokra kell megfogalmazni és igazolni, a működési tartomány teljes lefedésével.</li>
+<li>Például: az MI-alapú felismerő javaslatot tesz a fékezésre, de az erős fékezéshez egy független, hagyományos módszerrel igazolt csatorna (például a radar távolság- és sebességmérése alapján számolt ütközési idő) megerősítése kell; a téves fékezés ellen az MI egyedül csak figyelmeztetést vagy enyhe fékezést kezdeményezhet. Ha a felismerő bemenete eloszláson kívülinek tűnik (például szokatlan időjárás), a rendszer óvatosabb üzemmódba vált, és a vezetőt figyelmezteti.</li>
+<li>Kiberbiztonság rontja a biztonságot: a kezelői állomás zárolása hibás jelszavak után vészhelyzetben kizárhatja a kezelőt; egy kötelező frissítés újravalidálás nélkül megváltoztathatja a biztonsági funkció viselkedését. Biztonság rontja a kiberbiztonságot: egy távoli kioldás-visszaállítás vagy egy állandóan csatlakozó karbantartói hozzáférés, amelyet a gyors helyreállítás érdekében építettek be, támadási útvonalat nyit.</li>
+</ol>
+</details>
+</div></div>
+<div class="doboz doboz-forras"><div class="doboz-cim">Továbbolvasás</div><div class="doboz-tartalom">
+<ul>
+<li>ISO 21448:2022 – a rendeltetésszerű funkció biztonsága <span class="citation" data-cites="iso21448">(<a href="../irodalom.html#ref-iso21448" role="doc-biblioref">ISO 2022</a>)</span>; ISO/TS 5083:2025 – az automatizált vezetési rendszerek biztonsága <span class="citation" data-cites="isots5083">(<a href="../irodalom.html#ref-isots5083" role="doc-biblioref">ISO 2025</a>)</span>.</li>
+<li>Kalra, N., Paddock, S. M. (2016): Driving to safety. <em>Transportation Research Part A</em> <span class="citation" data-cites="kalra2016">(<a href="../irodalom.html#ref-kalra2016" role="doc-biblioref">Kalra és Paddock 2016</a>)</span>.</li>
+<li>Hawkins, R. et al.&nbsp;(2021): <em>Guidance on the Assurance of Machine Learning in Autonomous Systems (AMLAS)</em> <span class="citation" data-cites="hawkins2021">(<a href="../irodalom.html#ref-hawkins2021" role="doc-biblioref">Hawkins és mtsai. 2021</a>)</span>; ISO/PAS 8800:2024 <span class="citation" data-cites="isopas8800">(<a href="../irodalom.html#ref-isopas8800" role="doc-biblioref">ISO 2024</a>)</span>; ISO/IEC TR 5469:2024 <span class="citation" data-cites="isotr5469">(<a href="../irodalom.html#ref-isotr5469" role="doc-biblioref">ISO/IEC 2024</a>)</span>.</li>
+<li>Sha, L. (2001): Using simplicity to control complexity. <em>IEEE Software</em> <span class="citation" data-cites="sha2001">(<a href="../irodalom.html#ref-sha2001" role="doc-biblioref">Sha 2001</a>)</span>.</li>
+<li>IEC 62443 és IEC TR 63069 – az ipari kiberbiztonság és a funkcionális biztonság összehangolása <span class="citation" data-cites="iec62443 iec63069">(<a href="../irodalom.html#ref-iec62443" role="doc-biblioref">IEC 2009--2024</a>, <a href="../irodalom.html#ref-iec63069" role="doc-biblioref">2019</a>)</span>.</li>
+<li>(EU) 2023/1230, (EU) 2024/1689 és (EU) 2024/2847 rendelet, valamint a 2026-os digitális omnibusz-rendelet <span class="citation" data-cites="eu2023machinery eu2024ai eu2024cra eu2026omnibus">(<a href="../irodalom.html#ref-eu2023machinery" role="doc-biblioref">Európai Parlament és Tanács 2023</a>, <a href="../irodalom.html#ref-eu2024ai" role="doc-biblioref">2024a</a>, <a href="../irodalom.html#ref-eu2024cra" role="doc-biblioref">2024b</a>, <a href="../irodalom.html#ref-eu2026omnibus" role="doc-biblioref">2026</a>)</span>.</li>
+</ul>
+</div></div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-amodei2016" class="csl-entry" role="listitem">
+Amodei, Dario, Chris Olah, Jacob Steinhardt, Paul Christiano, John Schulman, és Dan Mané. 2016. <span>„Concrete Problems in <span>AI</span> Safety”</span>. <em>arXiv preprint arXiv:1606.06565</em>.
+</div>
+<div id="ref-cisa2019" class="csl-entry" role="listitem">
+Cybersecurity and Infrastructure Security Agency. 2019. <em><span>MAR-17-352-01</span> <span>HatMan</span> – Safety System Targeted Malware (Update <span>B</span>)</em>. CISA.
+</div>
+<div id="ref-diemert2023" class="csl-entry" role="listitem">
+Diemert, Simon, és Jens H. Weber. 2023. <span>„Can Large Language Models Assist in Hazard Analysis?”</span> <em>Computer Safety, Reliability, and Security. SAFECOMP 2023 Workshops</em>, Lecture Notes in Computer Science, köt. 14182: 410–22.
+</div>
+<div id="ref-eu2023machinery" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2023. <em>(EU) 2023/1230 rendelet a gépekről</em>.
+</div>
+<div id="ref-eu2024ai" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2024a. <em>(EU) 2024/1689 rendelet a mesterséges intelligenciára vonatkozó harmonizált szabályok megállapításáról (mesterséges intelligenciáról szóló rendelet)</em>.
+</div>
+<div id="ref-eu2024cra" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2024b. <em>(EU) 2024/2847 rendelet a digitális elemeket tartalmazó termékekre vonatkozó horizontális kiberbiztonsági követelményekről (kiberrezilienciáról szóló jogszabály)</em>.
+</div>
+<div id="ref-eu2026omnibus" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2026. <em>Rendelet az (EU) 2024/1689 rendeletnek a mesterséges intelligenciára vonatkozó harmonizált szabályok végrehajtásának egyszerűsítése tekintetében történő módosításáról (digitális omnibusz a mesterséges intelligenciáról)</em>.
+</div>
+<div id="ref-hawkins2021" class="csl-entry" role="listitem">
+Hawkins, Richard, Colin Paterson, Chiara Picardi, Yan Jia, Radu Calinescu, és Ibrahim Habli. 2021. <em>Guidance on the Assurance of Machine Learning in Autonomous Systems (<span>AMLAS</span>)</em>. Assuring Autonomy International Programme, University of York.
+</div>
+<div id="ref-iec62443" class="csl-entry" role="listitem">
+IEC. 2009--2024. <em><span>IEC</span> 62443: Security for Industrial Automation and Control Systems (szabványsorozat)</em>.
+</div>
+<div id="ref-iec61511" class="csl-entry" role="listitem">
+IEC. 2016. <em><span>IEC</span> 61511-1: Functional Safety – Safety Instrumented Systems for the Process Industry Sector – Part 1: Framework, Definitions, System, Hardware and Application Programming Requirements</em>. 2. kiad.
+</div>
+<div id="ref-iec63069" class="csl-entry" role="listitem">
+IEC. 2019. <em><span>IEC TR</span> 63069: Industrial-Process Measurement, Control and Automation – Framework for Functional Safety and Security</em>.
+</div>
+<div id="ref-iso21448" class="csl-entry" role="listitem">
+ISO. 2022. <em><span>ISO</span> 21448: Road Vehicles – Safety of the Intended Functionality</em>.
+</div>
+<div id="ref-isopas8800" class="csl-entry" role="listitem">
+ISO. 2024. <em><span>ISO/PAS</span> 8800: Road Vehicles – Safety and Artificial Intelligence</em>.
+</div>
+<div id="ref-isots5083" class="csl-entry" role="listitem">
+ISO. 2025. <em><span>ISO/TS</span> 5083: Road Vehicles – Safety for Automated Driving Systems – Design, Verification and Validation</em>.
+</div>
+<div id="ref-isotr5469" class="csl-entry" role="listitem">
+ISO/IEC. 2024. <em><span>ISO/IEC TR</span> 5469: Artificial Intelligence – Functional Safety and <span>AI</span> Systems</em>.
+</div>
+<div id="ref-iso21434" class="csl-entry" role="listitem">
+ISO/SAE. 2021. <em><span>ISO/SAE</span> 21434: Road Vehicles – Cybersecurity Engineering</em>.
+</div>
+<div id="ref-kalra2016" class="csl-entry" role="listitem">
+Kalra, Nidhi, és Susan M. Paddock. 2016. <span>„Driving to Safety: How Many Miles of Driving Would It Take to Demonstrate Autonomous Vehicle Reliability?”</span> <em>Transportation Research Part A: Policy and Practice</em> 94: 182–93. <a href="https://doi.org/10.1016/j.tra.2016.09.010">https://doi.org/10.1016/j.tra.2016.09.010</a>.
+</div>
+<div id="ref-koopman2016" class="csl-entry" role="listitem">
+Koopman, Philip, és Michael Wagner. 2016. <span>„Challenges in Autonomous Vehicle Testing and Validation”</span>. <em>SAE International Journal of Transportation Safety</em> 4 (1): 15–24. <a href="https://doi.org/10.4271/2016-01-0128">https://doi.org/10.4271/2016-01-0128</a>.
+</div>
+<div id="ref-ntsb2019" class="csl-entry" role="listitem">
+National Transportation Safety Board. 2019. <em>Collision Between Vehicle Controlled by Developmental Automated Driving System and Pedestrian, <span>Tempe</span>, <span>Arizona</span>, March 18, 2018</em>. NTSB/HAR-19/03. NTSB.
+</div>
+<div id="ref-salay2017" class="csl-entry" role="listitem">
+Salay, Rick, Rodrigo Queiroz, és Krzysztof Czarnecki. 2017. <em>An Analysis of <span>ISO</span> 26262: Using Machine Learning Safely in Automotive Software</em>. arXiv:1709.02435.
+</div>
+<div id="ref-sha2001" class="csl-entry" role="listitem">
+Sha, Lui. 2001. <span>„Using Simplicity to Control Complexity”</span>. <em>IEEE Software</em> 18 (4): 20–28. <a href="https://doi.org/10.1109/MS.2001.936213">https://doi.org/10.1109/MS.2001.936213</a>.
+</div>
+<div id="ref-szegedy2014" class="csl-entry" role="listitem">
+Szegedy, Christian, Wojciech Zaremba, Ilya Sutskever, és mtsai. 2014. <span>„Intriguing Properties of Neural Networks”</span>. <em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-ul4600" class="csl-entry" role="listitem">
+UL Standards &amp; Engagement. 2023. <em><span>UL</span> 4600: Standard for Evaluation of Autonomous Products</em>. 3. kiad.
+</div>
+<div id="ref-unr155" class="csl-entry" role="listitem">
+UNECE. 2021a. <em><span>UN</span> Regulation No. 155: Cyber Security and Cyber Security Management System</em>.
+</div>
+<div id="ref-unr157" class="csl-entry" role="listitem">
+UNECE. 2021b. <em><span>UN</span> Regulation No. 157: Automated Lane Keeping Systems (<span>ALKS</span>)</em>.
+</div>
+<div id="ref-young2014" class="csl-entry" role="listitem">
+Young, William, és Nancy G. Leveson. 2014. <span>„An Integrated Approach to Safety and Security Based on Systems Theory”</span>. <em>Communications of the ACM</em> 57 (2): 31–35. <a href="https://doi.org/10.1145/2556938">https://doi.org/10.1145/2556938</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/biztonsagkritikus-rendszerek\/kezikonyv\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../fejezetek/17-biztonsagi-erveles.html" class="pagination-link" aria-label="Biztonsági érvelés és igazolás">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17.</span>&nbsp; <span class="chapter-title">Biztonsági érvelés és igazolás</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../irodalom.html" class="pagination-link" aria-label="Irodalom">
+        <span class="nav-page-text">Irodalom</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Abonyi János · Pannon Egyetem · CC BY-NC-SA 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/18-uj-kihivasok.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/18-uj-kihivasok.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/">Gyakorlati útmutató</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

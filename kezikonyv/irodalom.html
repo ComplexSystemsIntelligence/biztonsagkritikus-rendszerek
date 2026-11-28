@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+
+<title>Irodalom – Biztonságkritikus rendszerek</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./fuggelek/a-valoszinuseg.html" rel="next">
+<link href="./fejezetek/18-uj-kihivasok.html" rel="prev">
+<link href="./assets/logo/pe-favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-4bb6adbf2c391f8ec7a8d9fd34cf9cbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési hivatkozás másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a fejezetben",
+    "search-more-matches-text": "további találat ebben a fejezetben",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "Keresés a könyvben",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<meta property="og:title" content="Irodalom – Biztonságkritikus rendszerek">
+<meta property="og:description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+<meta property="og:image" content="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/abrak/gen/borito.png">
+<meta property="og:site_name" content="Biztonságkritikus rendszerek">
+<meta property="og:image:height" content="1871">
+<meta property="og:image:width" content="1323">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/">
+    <span class="navbar-title">Biztonságkritikus rendszerek</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigáció ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Kézikönyv</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/"> 
+<span class="menu-text">Gyakorlati útmutató</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/#textbooks"> 
+<span class="menu-text">Összes tankönyv</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/tree/main/kezikonyv/" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="./biztonsagkritikus-rendszerek.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="./biztonsagkritikus-rendszerek.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+            <div id="quarto-search" class="" title="Keresés"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./irodalom.html">Irodalom</a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/" class="sidebar-logo-link">
+      <img src="./assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. rész – Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/01-balesetek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/02-fogalmak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2.</span>&nbsp; <span class="chapter-title">Fogalmak: veszély, kockázat, biztonság, megbízhatóság</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/03-kockazatertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3.</span>&nbsp; <span class="chapter-title">Kockázatértékelés és a kockázat elfogadhatósága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/04-eletciklus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4.</span>&nbsp; <span class="chapter-title">A biztonsági életciklus és a szabványok rendszere</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. rész – Veszélyazonosítás</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/05-veszelyazonositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5.</span>&nbsp; <span class="chapter-title">Veszélyazonosítás: a veszélylistáktól a HAZOP-ig</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/06-fmea.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6.</span>&nbsp; <span class="chapter-title">FMEA, FMECA és FMEDA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/07-stpa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. rész – Kvantitatív megbízhatóság és biztonság</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/08-megbizhatosag.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8.</span>&nbsp; <span class="chapter-title">Megbízhatóság-elmélet és élettartam-adatok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/09-rbd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9.</span>&nbsp; <span class="chapter-title">Rendszermegbízhatóság: blokkdiagramok és k-ból-n rendszerek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/10-hibafa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10.</span>&nbsp; <span class="chapter-title">Hibafa-elemzés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/11-esemenyfa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/12-markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12.</span>&nbsp; <span class="chapter-title">Markov-modellek és rendelkezésre állás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/13-sil.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13.</span>&nbsp; <span class="chapter-title">A biztonsági integritás igazolása: PFD, PFH és SIL</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. rész – Tervezés biztonságra</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/14-architekturak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14.</span>&nbsp; <span class="chapter-title">Biztonságos architektúrák és tervezési elvek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/15-szoftver.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15.</span>&nbsp; <span class="chapter-title">A szoftver biztonsága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/16-ember.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16.</span>&nbsp; <span class="chapter-title">Az ember a biztonságkritikus rendszerben</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. rész – Bizonyítás és új kihívások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/17-biztonsagi-erveles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17.</span>&nbsp; <span class="chapter-title">Biztonsági érvelés és igazolás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fejezetek/18-uj-kihivasok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./irodalom.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Irodalom</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fuggelek/a-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A.</span>&nbsp; <span class="chapter-title">Valószínűségszámítási összefoglaló</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fuggelek/b-esettanulmanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B.</span>&nbsp; <span class="chapter-title">A három esettanulmány</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fuggelek/c-szoszedet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C.</span>&nbsp; <span class="chapter-title">Magyar–angol szószedet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./fuggelek/d-szabvanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D.</span>&nbsp; <span class="chapter-title">Szabványok és jogszabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Irodalom</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-abernethy2006" class="csl-entry" role="listitem">
+Abernethy, Robert B. 2006. <em>The New Weibull Handbook</em>. 5th ed. R.
+B. Abernethy.
+</div>
+<div id="ref-abonyi2014" class="csl-entry" role="listitem">
+Abonyi, János, and Tímea Fülep. 2014. <em>Biztonságkritikus
+Rendszerek</em>. Pannon Egyetem.
+</div>
+<div id="ref-aiagvda2019" class="csl-entry" role="listitem">
+AIAG, and VDA. 2019. <em>Failure Mode and Effects Analysis –
+<span>FMEA</span> Handbook</em>. Automotive Industry Action Group;
+Verband der Automobilindustrie.
+</div>
+<div id="ref-amodei2016" class="csl-entry" role="listitem">
+Amodei, Dario, Chris Olah, Jacob Steinhardt, Paul Christiano, John
+Schulman, and Dan Mané. 2016. <span>“Concrete Problems in
+<span>AI</span> Safety.”</span> <em>arXiv Preprint
+arXiv:1606.06565</em>.
+</div>
+<div id="ref-gsn2021" class="csl-entry" role="listitem">
+Assurance Case Working Group. 2021. <em>Goal Structuring Notation
+Community Standard, Version 3</em>. SCSC-141C. Safety-Critical Systems
+Club.
+</div>
+<div id="ref-avizienis1985" class="csl-entry" role="listitem">
+Avižienis, Algirdas. 1985. <span>“The <span>N</span>-Version Approach to
+Fault-Tolerant Software.”</span> <em>IEEE Transactions on Software
+Engineering</em> SE-11 (12): 1491–501.
+</div>
+<div id="ref-avizienis2004" class="csl-entry" role="listitem">
+Avižienis, Algirdas, Jean-Claude Laprie, Brian Randell, and Carl
+Landwehr. 2004. <span>“Basic Concepts and Taxonomy of Dependable and
+Secure Computing.”</span> <em>IEEE Transactions on Dependable and Secure
+Computing</em> 1 (1): 11–33. <a href="https://doi.org/10.1109/TDSC.2004.2">https://doi.org/10.1109/TDSC.2004.2</a>.
+</div>
+<div id="ref-bainbridge1983" class="csl-entry" role="listitem">
+Bainbridge, Lisanne. 1983. <span>“Ironies of Automation.”</span>
+<em>Automatica</em> 19 (6): 775–79. <a href="https://doi.org/10.1016/0005-1098(83)90046-8">https://doi.org/10.1016/0005-1098(83)90046-8</a>.
+</div>
+<div id="ref-behm1999" class="csl-entry" role="listitem">
+Behm, Patrick, Paul Benoit, Alain Faivre, and Jean-Marc Meynadier. 1999.
+<span>“Météor: A Successful Application of <span>B</span> in a Large
+Project.”</span> <em>FM’99 – Formal Methods</em>, Lecture notes in
+computer science, vol. 1708: 369–87.
+</div>
+<div id="ref-birnbaum1969" class="csl-entry" role="listitem">
+Birnbaum, Zygmunt W. 1969. <span>“On the Importance of Different
+Components in a Multicomponent System.”</span> In <em>Multivariate
+Analysis II</em>, edited by P. R. Krishnaiah. Academic Press.
+</div>
+<div id="ref-borst2001" class="csl-entry" role="listitem">
+Borst, M. van der, and H. Schoonakker. 2001. <span>“An Overview of
+<span>PSA</span> Importance Measures.”</span> <em>Reliability
+Engineering &amp; System Safety</em> 72 (3): 241–45.
+</div>
+<div id="ref-bryant1986" class="csl-entry" role="listitem">
+Bryant, Randal E. 1986. <span>“Graph-Based Algorithms for
+<span>B</span>oolean Function Manipulation.”</span> <em>IEEE
+Transactions on Computers</em> C-35 (8): 677–91. <a href="https://doi.org/10.1109/TC.1986.1676819">https://doi.org/10.1109/TC.1986.1676819</a>.
+</div>
+<div id="ref-buncefield2008" class="csl-entry" role="listitem">
+Buncefield Major Incident Investigation Board. 2008. <em>The
+<span>Buncefield</span> Incident 11 December 2005: The Final Report of
+the Major Incident Investigation Board</em>. HSE Books.
+</div>
+<div id="ref-bea2012" class="csl-entry" role="listitem">
+Bureau d’Enquêtes et d’Analyses. 2012. <em>Final Report on the Accident
+on 1st June 2009 to the <span>Airbus A330-203</span> Registered
+<span>F-GZCP</span> Operated by <span>Air France</span> Flight <span>AF
+447</span> <span class="nocase">Rio de Janeiro–Paris</span></em>. BEA.
+</div>
+<div id="ref-butler1993" class="csl-entry" role="listitem">
+Butler, Ricky W., and George B. Finelli. 1993. <span>“The Infeasibility
+of Quantifying the Reliability of Life-Critical Real-Time
+Software.”</span> <em>IEEE Transactions on Software Engineering</em> 19
+(1): 3–12. <a href="https://doi.org/10.1109/32.210303">https://doi.org/10.1109/32.210303</a>.
+</div>
+<div id="ref-en50126" class="csl-entry" role="listitem">
+CENELEC. 2017. <em><span>EN</span> 50126-1: Railway Applications – the
+Specification and Demonstration of Reliability, Availability,
+Maintainability and Safety (<span>RAMS</span>) – Part 1: Generic
+<span>RAMS</span> Process</em>.
+</div>
+<div id="ref-en50129" class="csl-entry" role="listitem">
+CENELEC. 2018. <em><span>EN</span> 50129: Railway Applications –
+Communication, Signalling and Processing Systems – Safety Related
+Electronic Systems for Signalling</em>.
+</div>
+<div id="ref-en50716" class="csl-entry" role="listitem">
+CENELEC. 2023. <em><span>EN</span> 50716: Railway Applications –
+Requirements for Software Development</em>.
+</div>
+<div id="ref-ccps2001" class="csl-entry" role="listitem">
+Center for Chemical Process Safety. 2001. <em>Layer of Protection
+Analysis: Simplified Process Risk Assessment</em>. American Institute of
+Chemical Engineers.
+</div>
+<div id="ref-ccps2015" class="csl-entry" role="listitem">
+Center for Chemical Process Safety. 2015. <em>Guidelines for Initiating
+Events and Independent Protection Layers in Layer of Protection
+Analysis</em>. American Institute of Chemical Engineers – Wiley.
+</div>
+<div id="ref-ccps2018" class="csl-entry" role="listitem">
+Center for Chemical Process Safety, and Energy Institute. 2018. <em>Bow
+Ties in Risk Management: A Concept Book for Process Safety</em>.
+American Institute of Chemical Engineers – Wiley.
+</div>
+<div id="ref-cox2008" class="csl-entry" role="listitem">
+Cox, Louis Anthony. 2008. <span>“What’s Wrong with Risk
+Matrices?”</span> <em>Risk Analysis</em> 28 (2): 497–512. <a href="https://doi.org/10.1111/j.1539-6924.2008.01030.x">https://doi.org/10.1111/j.1539-6924.2008.01030.x</a>.
+</div>
+<div id="ref-cullen1990" class="csl-entry" role="listitem">
+Cullen, W. Douglas. 1990. <em>The Public Inquiry into the <span>Piper
+Alpha</span> Disaster</em>. Cm 1310. HMSO.
+</div>
+<div id="ref-cisa2019" class="csl-entry" role="listitem">
+Cybersecurity and Infrastructure Security Agency. 2019.
+<em><span>MAR-17-352-01</span> <span>HatMan</span> – Safety System
+Targeted Malware (Update <span>B</span>)</em>. CISA.
+</div>
+<div id="ref-delmas2007" class="csl-entry" role="listitem">
+Delmas, David, and Jean Souyris. 2007. <span>“Astrée: From Research to
+Industry.”</span> <em>Static Analysis (SAS 2007)</em>, Lecture notes in
+computer science, vol. 4634: 437–51.
+</div>
+<div id="ref-denney2015" class="csl-entry" role="listitem">
+Denney, Ewen, Ganesh Pai, and Ibrahim Habli. 2015. <span>“Dynamic Safety
+Cases for Through-Life Safety Assurance.”</span> <em>Proceedings of the
+37th IEEE/ACM International Conference on Software Engineering
+(ICSE)</em> 2: 587–90. <a href="https://doi.org/10.1109/ICSE.2015.199">https://doi.org/10.1109/ICSE.2015.199</a>.
+</div>
+<div id="ref-diemert2023" class="csl-entry" role="listitem">
+Diemert, Simon, and Jens H. Weber. 2023. <span>“Can Large Language
+Models Assist in Hazard Analysis?”</span> <em>Computer Safety,
+Reliability, and Security. SAFECOMP 2023 Workshops</em>, Lecture notes
+in computer science, vol. 14182: 410–22.
+</div>
+<div id="ref-dugan1992" class="csl-entry" role="listitem">
+Dugan, Joanne Bechta, Salvatore J. Bavuso, and Mark A. Boyd. 1992.
+<span>“Dynamic Fault-Tree Models for Fault-Tolerant Computer
+Systems.”</span> <em>IEEE Transactions on Reliability</em> 41 (3):
+363–77. <a href="https://doi.org/10.1109/24.159800">https://doi.org/10.1109/24.159800</a>.
+</div>
+<div id="ref-eemua191" class="csl-entry" role="listitem">
+EEMUA. 2013. <em><span>EEMUA</span> Publication 191: Alarm Systems – a
+Guide to Design, Management and Procurement</em>. 3rd ed.
+</div>
+<div id="ref-egas2015" class="csl-entry" role="listitem">
+EGAS Workgroup. 2015. <em>Standardized <span>E-Gas</span> Monitoring
+Concept for Gasoline and Diesel Engine Control Units</em>. Version 6.0.
+Verband der Automobilindustrie (VDA) – Arbeitskreis EGAS.
+</div>
+<div id="ref-endsley1995" class="csl-entry" role="listitem">
+Endsley, Mica R. 1995. <span>“Toward a Theory of Situation Awareness in
+Dynamic Systems.”</span> <em>Human Factors</em> 37 (1): 32–64. <a href="https://doi.org/10.1518/001872095779049543">https://doi.org/10.1518/001872095779049543</a>.
+</div>
+<div id="ref-ericson1999" class="csl-entry" role="listitem">
+Ericson, Clifton A. 1999. <span>“Fault Tree Analysis – a
+History.”</span> <em>Proceedings of the 17th International System Safety
+Conference</em> (Orlando, FL).
+</div>
+<div id="ref-eu2012seveso" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2012. <em>2012/18/EU Irányelv a Veszélyes
+Anyagokkal Kapcsolatos Súlyos Balesetek Veszélyének Kezeléséről (Seveso
+III.)</em>.
+</div>
+<div id="ref-eu2023machinery" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2023. <em>(EU) 2023/1230 Rendelet a
+Gépekről</em>.
+</div>
+<div id="ref-eu2024ai" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2024a. <em>(EU) 2024/1689 Rendelet a
+Mesterséges Intelligenciára Vonatkozó Harmonizált Szabályok
+Megállapításáról (Mesterséges Intelligenciáról Szóló Rendelet)</em>.
+</div>
+<div id="ref-eu2024cra" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2024b. <em>(EU) 2024/2847 Rendelet a
+Digitális Elemeket Tartalmazó Termékekre Vonatkozó Horizontális
+Kiberbiztonsági Követelményekről (Kiberrezilienciáról Szóló
+Jogszabály)</em>.
+</div>
+<div id="ref-eu2026omnibus" class="csl-entry" role="listitem">
+Európai Parlament és Tanács. 2026. <em>Rendelet Az (EU) 2024/1689
+Rendeletnek a Mesterséges Intelligenciára Vonatkozó Harmonizált
+Szabályok Végrehajtásának Egyszerűsítése Tekintetében Történő
+Módosításáról (Digitális Omnibusz a Mesterséges Intelligenciáról)</em>.
+</div>
+<div id="ref-fussell1975" class="csl-entry" role="listitem">
+Fussell, Jerry B. 1975. <span>“How to Hand-Calculate System Reliability
+and Safety Characteristics.”</span> <em>IEEE Transactions on
+Reliability</em> R-24 (3): 169–74.
+</div>
+<div id="ref-fussell1972" class="csl-entry" role="listitem">
+Fussell, Jerry B., and William E. Vesely. 1972. <span>“A New Methodology
+for Obtaining Cut Sets for Fault Trees.”</span> <em>Transactions of the
+American Nuclear Society</em> 15: 262–63.
+</div>
+<div id="ref-gertman2005" class="csl-entry" role="listitem">
+Gertman, David, Harold Blackman, Julie Marble, James Byers, and Curtis
+Smith. 2005. <em>The <span>SPAR-H</span> Human Reliability Analysis
+Method</em>. NUREG/CR-6883. U.S. Nuclear Regulatory Commission.
+</div>
+<div id="ref-goldberg1994" class="csl-entry" role="listitem">
+Goldberg, Bruce E., Kay Everhart, Rachel Stevens, Nelson Babbitt, Pat
+Clemens, and Leslie Stout. 1994. <em>System Engineering
+<span>“Toolbox”</span> for Design-Oriented Engineers</em>. NASA
+Reference Publication No. 1358. NASA Marshall Space Flight Center.
+</div>
+<div id="ref-haddon1973" class="csl-entry" role="listitem">
+Haddon, William. 1973. <span>“Energy Damage and the Ten Countermeasure
+Strategies.”</span> <em>Journal of Trauma</em> 13 (4): 321–31.
+</div>
+<div id="ref-haddoncave2009" class="csl-entry" role="listitem">
+Haddon-Cave, Charles. 2009. <em>The <span>Nimrod</span> Review: An
+Independent Review into the Broader Issues Surrounding the Loss of the
+<span>RAF Nimrod MR2</span> Aircraft <span>XV230</span> in
+<span>Afghanistan</span> in 2006</em>. HC 1025. The Stationery Office.
+</div>
+<div id="ref-hauge2013" class="csl-entry" role="listitem">
+Hauge, Stein, Mary Ann Lundteigen, Per Hokstad, and Solfrid Håbrekke.
+2013. <em>Reliability Prediction Method for Safety Instrumented Systems
+– <span>PDS</span> Method Handbook</em>. SINTEF A24442. SINTEF.
+</div>
+<div id="ref-hawkins2021" class="csl-entry" role="listitem">
+Hawkins, Richard, Colin Paterson, Chiara Picardi, Yan Jia, Radu
+Calinescu, and Ibrahim Habli. 2021. <em>Guidance on the Assurance of
+Machine Learning in Autonomous Systems (<span>AMLAS</span>)</em>.
+Assuring Autonomy International Programme, University of York.
+</div>
+<div id="ref-hayhurst2001" class="csl-entry" role="listitem">
+Hayhurst, Kelly J., Dan S. Veerhusen, John J. Chilenski, and Leanna K.
+Rierson. 2001. <em>A Practical Tutorial on Modified Condition/Decision
+Coverage</em>. NASA/TM-2001-210876. NASA Langley Research Center.
+</div>
+<div id="ref-hse2001" class="csl-entry" role="listitem">
+Health and Safety Executive. 2001. <em>Reducing Risks, Protecting
+People: <span>HSE</span>’s Decision-Making Process</em>. HSE Books.
+</div>
+<div id="ref-hse2003" class="csl-entry" role="listitem">
+Health and Safety Executive. 2003. <em>Out of Control: Why Control
+Systems Go Wrong and How to Prevent Failure</em>. 2nd ed. HSE Books.
+</div>
+<div id="ref-heinrich1931" class="csl-entry" role="listitem">
+Heinrich, Herbert W. 1931. <em>Industrial Accident Prevention: A
+Scientific Approach</em>. McGraw-Hill.
+</div>
+<div id="ref-hollnagel2014" class="csl-entry" role="listitem">
+Hollnagel, Erik. 2014. <em>Safety-<span>I</span> and
+Safety-<span>II</span>: The Past and Future of Safety Management</em>.
+Ashgate.
+</div>
+<div id="ref-iec62443" class="csl-entry" role="listitem">
+IEC. 2009--2024. <em><span>IEC</span> 62443: Security for Industrial
+Automation and Control Systems (Szabványsorozat)</em>.
+</div>
+<div id="ref-iec61025" class="csl-entry" role="listitem">
+IEC. 2006a. <em><span>IEC</span> 61025: Fault Tree Analysis
+(<span>FTA</span>)</em>. 2nd ed.
+</div>
+<div id="ref-iec61165" class="csl-entry" role="listitem">
+IEC. 2006b. <em><span>IEC</span> 61165: Application of
+<span>Markov</span> Techniques</em>. 2nd ed.
+</div>
+<div id="ref-iec62304" class="csl-entry" role="listitem">
+IEC. 2006c. <em><span>IEC</span> 62304: Medical Device Software –
+Software Life Cycle Processes</em>.
+</div>
+<div id="ref-iec61508" class="csl-entry" role="listitem">
+IEC. 2010a. <em><span>IEC</span> 61508-1…7: Functional Safety of
+Electrical/Electronic/Programmable Electronic Safety-Related
+Systems</em>. 2nd ed. International Electrotechnical Commission.
+</div>
+<div id="ref-iec62502" class="csl-entry" role="listitem">
+IEC. 2010b. <em><span>IEC</span> 62502: Analysis Techniques for
+Dependability – Event Tree Analysis (<span>ETA</span>)</em>.
+</div>
+<div id="ref-iec60050" class="csl-entry" role="listitem">
+IEC. 2015. <em><span>IEC</span> 60050-192: International
+Electrotechnical Vocabulary – Part 192: Dependability</em>.
+</div>
+<div id="ref-iec61078" class="csl-entry" role="listitem">
+IEC. 2016a. <em><span>IEC</span> 61078: Reliability Block Diagrams</em>.
+3rd ed.
+</div>
+<div id="ref-iec61511" class="csl-entry" role="listitem">
+IEC. 2016b. <em><span>IEC</span> 61511-1: Functional Safety – Safety
+Instrumented Systems for the Process Industry Sector – Part 1:
+Framework, Definitions, System, Hardware and Application Programming
+Requirements</em>. 2nd ed.
+</div>
+<div id="ref-iec61882" class="csl-entry" role="listitem">
+IEC. 2016c. <em><span>IEC</span> 61882: Hazard and Operability Studies
+(<span>HAZOP</span> Studies) – Application Guide</em>. 2nd ed.
+</div>
+<div id="ref-iec60812" class="csl-entry" role="listitem">
+IEC. 2018. <em><span>IEC</span> 60812: Failure Modes and Effects
+Analysis (<span>FMEA</span> and <span>FMECA</span>)</em>. 3rd ed.
+</div>
+<div id="ref-iec31010" class="csl-entry" role="listitem">
+IEC. 2019a. <em><span>IEC</span> 31010: Risk Management – Risk
+Assessment Techniques</em>. 2nd ed.
+</div>
+<div id="ref-iec63069" class="csl-entry" role="listitem">
+IEC. 2019b. <em><span>IEC TR</span> 63069: Industrial-Process
+Measurement, Control and Automation – Framework for Functional Safety
+and Security</em>.
+</div>
+<div id="ref-iec62061" class="csl-entry" role="listitem">
+IEC. 2021. <em><span>IEC</span> 62061: Safety of Machinery – Functional
+Safety of Safety-Related Control Systems</em>. 2nd ed.
+</div>
+<div id="ref-isa182" class="csl-entry" role="listitem">
+ISA. 2016. <em><span>ANSI/ISA</span>-18.2: Management of Alarm Systems
+for the Process Industries</em>.
+</div>
+<div id="ref-iso12100" class="csl-entry" role="listitem">
+ISO. 2010. <em><span>ISO</span> 12100: Safety of Machinery – General
+Principles for Design – Risk Assessment and Risk Reduction</em>.
+</div>
+<div id="ref-isots15066" class="csl-entry" role="listitem">
+ISO. 2016. <em><span>ISO/TS</span> 15066: Robots and Robotic Devices –
+Collaborative Robots</em>.
+</div>
+<div id="ref-iso26262" class="csl-entry" role="listitem">
+ISO. 2018a. <em><span>ISO</span> 26262-1…12: Road Vehicles – Functional
+Safety</em>. 2nd ed.
+</div>
+<div id="ref-iso31000" class="csl-entry" role="listitem">
+ISO. 2018b. <em><span>ISO</span> 31000: Risk Management –
+Guidelines</em>. 2nd ed.
+</div>
+<div id="ref-iso14971" class="csl-entry" role="listitem">
+ISO. 2019. <em><span>ISO</span> 14971: Medical Devices – Application of
+Risk Management to Medical Devices</em>. 3rd ed.
+</div>
+<div id="ref-iso21448" class="csl-entry" role="listitem">
+ISO. 2022. <em><span>ISO</span> 21448: Road Vehicles – Safety of the
+Intended Functionality</em>.
+</div>
+<div id="ref-iso13849" class="csl-entry" role="listitem">
+ISO. 2023. <em><span>ISO</span> 13849-1: Safety of Machinery –
+Safety-Related Parts of Control Systems – Part 1: General Principles for
+Design</em>. 4th ed.
+</div>
+<div id="ref-isopas8800" class="csl-entry" role="listitem">
+ISO. 2024. <em><span>ISO/PAS</span> 8800: Road Vehicles – Safety and
+Artificial Intelligence</em>.
+</div>
+<div id="ref-iso10218" class="csl-entry" role="listitem">
+ISO. 2025a. <em><span>ISO</span> 10218-1/-2: Robotics – Safety
+Requirements</em>.
+</div>
+<div id="ref-isots5083" class="csl-entry" role="listitem">
+ISO. 2025b. <em><span>ISO/TS</span> 5083: Road Vehicles – Safety for
+Automated Driving Systems – Design, Verification and Validation</em>.
+</div>
+<div id="ref-isoguide51" class="csl-entry" role="listitem">
+ISO/IEC. 2014. <em><span>ISO/IEC Guide</span> 51: Safety Aspects –
+Guidelines for Their Inclusion in Standards</em>. 3rd ed.
+</div>
+<div id="ref-isotr5469" class="csl-entry" role="listitem">
+ISO/IEC. 2024. <em><span>ISO/IEC TR</span> 5469: Artificial Intelligence
+– Functional Safety and <span>AI</span> Systems</em>.
+</div>
+<div id="ref-iso21434" class="csl-entry" role="listitem">
+ISO/SAE. 2021. <em><span>ISO/SAE</span> 21434: Road Vehicles –
+Cybersecurity Engineering</em>.
+</div>
+<div id="ref-jatr2019" class="csl-entry" role="listitem">
+Joint Authorities Technical Review. 2019. <em>Boeing 737
+<span>MAX</span> Flight Control System: Observations, Findings, and
+Recommendations</em>. Federal Aviation Administration.
+</div>
+<div id="ref-kalra2016" class="csl-entry" role="listitem">
+Kalra, Nidhi, and Susan M. Paddock. 2016. <span>“Driving to Safety: How
+Many Miles of Driving Would It Take to Demonstrate Autonomous Vehicle
+Reliability?”</span> <em>Transportation Research Part A: Policy and
+Practice</em> 94: 182–93. <a href="https://doi.org/10.1016/j.tra.2016.09.010">https://doi.org/10.1016/j.tra.2016.09.010</a>.
+</div>
+<div id="ref-kaplan1958" class="csl-entry" role="listitem">
+Kaplan, Edward L., and Paul Meier. 1958. <span>“Nonparametric Estimation
+from Incomplete Observations.”</span> <em>Journal of the American
+Statistical Association</em> 53 (282): 457–81. <a href="https://doi.org/10.1080/01621459.1958.10501452">https://doi.org/10.1080/01621459.1958.10501452</a>.
+</div>
+<div id="ref-kelly1998" class="csl-entry" role="listitem">
+Kelly, Timothy P. 1998. <span>“Arguing Safety – a Systematic Approach to
+Managing Safety Cases.”</span> PhD thesis, University of York.
+</div>
+<div id="ref-kelly2004" class="csl-entry" role="listitem">
+Kelly, Tim, and Rob Weaver. 2004. <span>“The Goal Structuring Notation –
+a Safety Argument Notation.”</span> <em>Proceedings of the Dependable
+Systems and Networks 2004 Workshop on Assurance Cases</em>.
+</div>
+<div id="ref-kirwan1994" class="csl-entry" role="listitem">
+Kirwan, Barry. 1994. <em>A Guide to Practical Human Reliability
+Assessment</em>. Taylor &amp; Francis.
+</div>
+<div id="ref-klein2009" class="csl-entry" role="listitem">
+<span class="nocase">Klein, Gerwin, Kevin Elphinstone, Gernot Heiser, et
+al.</span> 2009. <span>“<span class="nocase">seL4</span>: Formal
+Verification of an <span>OS</span> Kernel.”</span> <em>Proceedings of
+the 22nd ACM Symposium on Operating Systems Principles (SOSP)</em>,
+207–20. <a href="https://doi.org/10.1145/1629575.1629596">https://doi.org/10.1145/1629575.1629596</a>.
+</div>
+<div id="ref-kletz2010" class="csl-entry" role="listitem">
+Kletz, Trevor, and Paul Amyotte. 2010. <em>Process Plants: A Handbook
+for Inherently Safer Design</em>. 2nd ed. CRC Press.
+</div>
+<div id="ref-knight1986" class="csl-entry" role="listitem">
+Knight, John C., and Nancy G. Leveson. 1986. <span>“An Experimental
+Evaluation of the Assumption of Independence in Multiversion
+Programming.”</span> <em>IEEE Transactions on Software Engineering</em>
+SE-12 (1): 96–109.
+</div>
+<div id="ref-koopman2016" class="csl-entry" role="listitem">
+Koopman, Philip, and Michael Wagner. 2016. <span>“Challenges in
+Autonomous Vehicle Testing and Validation.”</span> <em>SAE International
+Journal of Transportation Safety</em> 4 (1): 15–24. <a href="https://doi.org/10.4271/2016-01-0128">https://doi.org/10.4271/2016-01-0128</a>.
+</div>
+<div id="ref-lamport1982" class="csl-entry" role="listitem">
+Lamport, Leslie, Robert Shostak, and Marshall Pease. 1982. <span>“The
+<span>B</span>yzantine Generals Problem.”</span> <em>ACM Transactions on
+Programming Languages and Systems</em> 4 (3): 382–401. <a href="https://doi.org/10.1145/357172.357176">https://doi.org/10.1145/357172.357176</a>.
+</div>
+<div id="ref-leveson2011" class="csl-entry" role="listitem">
+Leveson, Nancy G. 2011. <em>Engineering a Safer World: Systems Thinking
+Applied to Safety</em>. MIT Press. <a href="https://doi.org/10.7551/mitpress/8179.001.0001">https://doi.org/10.7551/mitpress/8179.001.0001</a>.
+</div>
+<div id="ref-leveson2018" class="csl-entry" role="listitem">
+Leveson, Nancy G., and John P. Thomas. 2018. <em><span>STPA</span>
+Handbook</em>. MIT Partnership for Systems Approaches to Safety;
+Security.
+</div>
+<div id="ref-leveson1993" class="csl-entry" role="listitem">
+Leveson, Nancy G., and Clark S. Turner. 1993. <span>“An Investigation of
+the <span>Therac-25</span> Accidents.”</span> <em>Computer</em> 26 (7):
+18–41. <a href="https://doi.org/10.1109/MC.1993.274940">https://doi.org/10.1109/MC.1993.274940</a>.
+</div>
+<div id="ref-lions1996" class="csl-entry" role="listitem">
+Lions, Jacques-Louis. 1996. <em><span>ARIANE 5</span> Flight 501
+Failure: Report by the Inquiry Board</em>. European Space Agency.
+</div>
+<div id="ref-littlewood1993" class="csl-entry" role="listitem">
+Littlewood, Bev, and Lorenzo Strigini. 1993. <span>“Validation of
+Ultrahigh Dependability for Software-Based Systems.”</span>
+<em>Communications of the ACM</em> 36 (11): 69–80. <a href="https://doi.org/10.1145/163359.163373">https://doi.org/10.1145/163359.163373</a>.
+</div>
+<div id="ref-lundteigen2009" class="csl-entry" role="listitem">
+Lundteigen, Mary Ann, and Marvin Rausand. 2009. <span>“Architectural
+Constraints in <span>IEC</span> 61508: Do They Have the Intended
+Effect?”</span> <em>Reliability Engineering &amp; System Safety</em> 94
+(2): 520–25. <a href="https://doi.org/10.1016/j.ress.2008.06.003">https://doi.org/10.1016/j.ress.2008.06.003</a>.
+</div>
+<div id="ref-lutz1993" class="csl-entry" role="listitem">
+Lutz, Robyn R. 1993. <span>“Analyzing Software Requirements Errors in
+Safety-Critical, Embedded Systems.”</span> <em>Proceedings of the IEEE
+International Symposium on Requirements Engineering</em>, 126–33.
+</div>
+<div id="ref-meeker1998" class="csl-entry" role="listitem">
+Meeker, William Q., and Luis A. Escobar. 1998. <em>Statistical Methods
+for Reliability Data</em>. Wiley.
+</div>
+<div id="ref-misra2025" class="csl-entry" role="listitem">
+MISRA. 2025. <em><span>MISRA C:2025</span> – Guidelines for the Use of
+the <span>C</span> Language in Critical Systems</em>. The MISRA
+Consortium.
+</div>
+<div id="ref-modarres2016" class="csl-entry" role="listitem">
+Modarres, Mohammad, Mark P. Kaminskiy, and Vasiliy Krivtsov. 2016.
+<em>Reliability Engineering and Risk Analysis: A Practical Guide</em>.
+3rd ed. CRC Press.
+</div>
+<div id="ref-mosleh1988" class="csl-entry" role="listitem">
+Mosleh, Ali, Karl N. Fleming, Gareth W. Parry, Henrique M. Paula, David
+H. Worledge, and Dale M. Rasmuson. 1988. <em>Procedures for Treating
+Common Cause Failures in Safety and Reliability Studies</em>.
+NUREG/CR-4780. U.S. Nuclear Regulatory Commission.
+</div>
+<div id="ref-ntsb2019" class="csl-entry" role="listitem">
+National Transportation Safety Board. 2019. <em>Collision Between
+Vehicle Controlled by Developmental Automated Driving System and
+Pedestrian, <span>Tempe</span>, <span>Arizona</span>, March 18,
+2018</em>. NTSB/HAR-19/03. NTSB.
+</div>
+<div id="ref-newcombe2015" class="csl-entry" role="listitem">
+Newcombe, Chris, Tim Rath, Fan Zhang, Bogdan Munteanu, Marc Brooker, and
+Michael Deardeuff. 2015. <span>“How <span>A</span>mazon Web Services
+Uses Formal Methods.”</span> <em>Communications of the ACM</em> 58 (4):
+66–73. <a href="https://doi.org/10.1145/2699417">https://doi.org/10.1145/2699417</a>.
+</div>
+<div id="ref-parasuraman2000" class="csl-entry" role="listitem">
+Parasuraman, Raja, Thomas B. Sheridan, and Christopher D. Wickens. 2000.
+<span>“A Model for Types and Levels of Human Interaction with
+Automation.”</span> <em>IEEE Transactions on Systems, Man, and
+Cybernetics – Part A</em> 30 (3): 286–97. <a href="https://doi.org/10.1109/3468.844354">https://doi.org/10.1109/3468.844354</a>.
+</div>
+<div id="ref-perrow1984" class="csl-entry" role="listitem">
+Perrow, Charles. 1984. <em>Normal Accidents: Living with High-Risk
+Technologies</em>. Basic Books.
+</div>
+<div id="ref-rasmussen1983" class="csl-entry" role="listitem">
+Rasmussen, Jens. 1983. <span>“Skills, Rules, and Knowledge; Signals,
+Signs, and Symbols, and Other Distinctions in Human Performance
+Models.”</span> <em>IEEE Transactions on Systems, Man, and
+Cybernetics</em> SMC-13 (3): 257–66. <a href="https://doi.org/10.1109/TSMC.1983.6313160">https://doi.org/10.1109/TSMC.1983.6313160</a>.
+</div>
+<div id="ref-rasmussen1997" class="csl-entry" role="listitem">
+Rasmussen, Jens. 1997. <span>“Risk Management in a Dynamic Society: A
+Modelling Problem.”</span> <em>Safety Science</em> 27 (2–3): 183–213. <a href="https://doi.org/10.1016/S0925-7535(97)00052-0">https://doi.org/10.1016/S0925-7535(97)00052-0</a>.
+</div>
+<div id="ref-rausand2014" class="csl-entry" role="listitem">
+Rausand, Marvin. 2014. <em>Reliability of Safety-Critical Systems:
+Theory and Applications</em>. Wiley. <a href="https://doi.org/10.1002/9781118776353">https://doi.org/10.1002/9781118776353</a>.
+</div>
+<div id="ref-rausand2020" class="csl-entry" role="listitem">
+Rausand, Marvin, Anne Barros, and Arnljot Høyland. 2020. <em>System
+Reliability Theory: Models, Statistical Methods, and Applications</em>.
+3rd ed. Wiley. <a href="https://doi.org/10.1002/9781119373940">https://doi.org/10.1002/9781119373940</a>.
+</div>
+<div id="ref-rauzy1993" class="csl-entry" role="listitem">
+Rauzy, Antoine. 1993. <span>“New Algorithms for Fault Trees
+Analysis.”</span> <em>Reliability Engineering &amp; System Safety</em>
+40 (3): 203–11. <a href="https://doi.org/10.1016/0951-8320(93)90060-C">https://doi.org/10.1016/0951-8320(93)90060-C</a>.
+</div>
+<div id="ref-reason1990" class="csl-entry" role="listitem">
+Reason, James. 1990. <em>Human Error</em>. Cambridge University Press.
+</div>
+<div id="ref-reason1997" class="csl-entry" role="listitem">
+Reason, James. 1997. <em>Managing the Risks of Organizational
+Accidents</em>. Ashgate.
+</div>
+<div id="ref-do178c" class="csl-entry" role="listitem">
+RTCA. 2011a. <em><span>DO-178C</span>: Software Considerations in
+Airborne Systems and Equipment Certification</em>.
+</div>
+<div id="ref-do333" class="csl-entry" role="listitem">
+RTCA. 2011b. <em><span>DO-333</span>: Formal Methods Supplement to
+<span>DO-178C</span> and <span>DO-278A</span></em>.
+</div>
+<div id="ref-ruijters2015" class="csl-entry" role="listitem">
+Ruijters, Enno, and Mariëlle Stoelinga. 2015. <span>“Fault Tree
+Analysis: A Survey of the State-of-the-Art in Modeling, Analysis and
+Tools.”</span> <em>Computer Science Review</em> 15–16: 29–62. <a href="https://doi.org/10.1016/j.cosrev.2015.03.001">https://doi.org/10.1016/j.cosrev.2015.03.001</a>.
+</div>
+<div id="ref-sae3016" class="csl-entry" role="listitem">
+SAE International. 2021. <em><span>J3016</span>: Taxonomy and
+Definitions for Terms Related to Driving Automation Systems for on-Road
+Motor Vehicles</em>.
+</div>
+<div id="ref-arp4754b" class="csl-entry" role="listitem">
+SAE International. 2023a. <em><span>ARP4754B</span>: Guidelines for
+Development of Civil Aircraft and Systems</em>. <a href="https://doi.org/10.4271/ARP4754B">https://doi.org/10.4271/ARP4754B</a>.
+</div>
+<div id="ref-arp4761a" class="csl-entry" role="listitem">
+SAE International. 2023b. <em><span>ARP4761A</span>: Guidelines for
+Conducting the Safety Assessment Process on Civil Aircraft, Systems, and
+Equipment</em>.
+</div>
+<div id="ref-salay2017" class="csl-entry" role="listitem">
+Salay, Rick, Rodrigo Queiroz, and Krzysztof Czarnecki. 2017. <em>An
+Analysis of <span>ISO</span> 26262: Using Machine Learning Safely in
+Automotive Software</em>. arXiv:1709.02435.
+</div>
+<div id="ref-sha2001" class="csl-entry" role="listitem">
+Sha, Lui. 2001. <span>“Using Simplicity to Control Complexity.”</span>
+<em>IEEE Software</em> 18 (4): 20–28. <a href="https://doi.org/10.1109/MS.2001.936213">https://doi.org/10.1109/MS.2001.936213</a>.
+</div>
+<div id="ref-smith2020" class="csl-entry" role="listitem">
+Smith, David J., and Kenneth G. L. Simpson. 2020. <em>The Safety
+Critical Systems Handbook: A Straightforward Guide to Functional
+Safety</em>. 5th ed. Butterworth-Heinemann.
+</div>
+<div id="ref-stamatelatos2002" class="csl-entry" role="listitem">
+Stamatelatos, Michael, William Vesely, Joanne Dugan, Joseph Fragola,
+Joseph Minarick, and Jan Railsback. 2002. <em>Fault Tree Handbook with
+Aerospace Applications</em>. Version 1.1. NASA Office of Safety; Mission
+Assurance.
+</div>
+<div id="ref-swain1983" class="csl-entry" role="listitem">
+Swain, Alan D., and Henry E. Guttmann. 1983. <em>Handbook of Human
+Reliability Analysis with Emphasis on Nuclear Power Plant
+Applications</em>. NUREG/CR-1278. U.S. Nuclear Regulatory Commission.
+</div>
+<div id="ref-szegedy2014" class="csl-entry" role="listitem">
+Szegedy, Christian, Wojciech Zaremba, Ilya Sutskever, et al. 2014.
+<span>“Intriguing Properties of Neural Networks.”</span>
+<em>International Conference on Learning Representations (ICLR)</em>.
+</div>
+<div id="ref-traverse2004" class="csl-entry" role="listitem">
+Traverse, Pascal, Isabelle Lacaze, and Jean Souyris. 2004. <span>“Airbus
+Fly-by-Wire: A Total Approach to Dependability.”</span> In <em>Building
+the Information Society (IFIP 18th World Computer Congress)</em>.
+Springer.
+</div>
+<div id="ref-trivedi2017" class="csl-entry" role="listitem">
+Trivedi, Kishor S., and Andrea Bobbio. 2017. <em>Reliability and
+Availability Engineering: Modeling, Analysis, and Applications</em>.
+Cambridge University Press. <a href="https://doi.org/10.1017/9781316163047">https://doi.org/10.1017/9781316163047</a>.
+</div>
+<div id="ref-ul4600" class="csl-entry" role="listitem">
+UL Standards &amp; Engagement. 2023. <em><span>UL</span> 4600: Standard
+for Evaluation of Autonomous Products</em>. 3rd ed.
+</div>
+<div id="ref-unr13" class="csl-entry" role="listitem">
+UNECE. 2016. <em><span>UN</span> Regulation No. 13: Uniform Provisions
+Concerning the Approval of Vehicles of Categories <span>M</span>,
+<span>N</span> and <span>O</span> with Regard to Braking</em>.
+</div>
+<div id="ref-unr155" class="csl-entry" role="listitem">
+UNECE. 2021a. <em><span>UN</span> Regulation No. 155: Cyber Security and
+Cyber Security Management System</em>.
+</div>
+<div id="ref-unr157" class="csl-entry" role="listitem">
+UNECE. 2021b. <em><span>UN</span> Regulation No. 157: Automated Lane
+Keeping Systems (<span>ALKS</span>)</em>.
+</div>
+<div id="ref-csb2007" class="csl-entry" role="listitem">
+U.S. Chemical Safety and Hazard Investigation Board. 2007.
+<em>Investigation Report: Refinery Explosion and Fire, <span>BP</span>
+<span>Texas City</span>, <span>Texas</span>, March 23, 2005</em>.
+2005-04-I-TX. CSB.
+</div>
+<div id="ref-milstd882e" class="csl-entry" role="listitem">
+U.S. Department of Defense. 2012. <em><span>MIL-STD-882E</span>:
+Standard Practice – System Safety</em>.
+</div>
+<div id="ref-nrc1975" class="csl-entry" role="listitem">
+U.S. Nuclear Regulatory Commission. 1975. <em>Reactor Safety Study: An
+Assessment of Accident Risks in <span>U.S.</span> Commercial Nuclear
+Power Plants</em>. WASH-1400 (NUREG-75/014). U.S. Nuclear Regulatory
+Commission.
+</div>
+<div id="ref-vesely1981" class="csl-entry" role="listitem">
+Vesely, William E., Francine F. Goldberg, Norman H. Roberts, and David
+F. Haasl. 1981. <em>Fault Tree Handbook</em>. NUREG-0492. U.S. Nuclear
+Regulatory Commission.
+</div>
+<div id="ref-weibull1951" class="csl-entry" role="listitem">
+Weibull, Waloddi. 1951. <span>“A Statistical Distribution Function of
+Wide Applicability.”</span> <em>Journal of Applied Mechanics</em> 18:
+293–97.
+</div>
+<div id="ref-williams1988" class="csl-entry" role="listitem">
+Williams, Jeremy C. 1988. <span>“A Data-Based Method for Assessing and
+Reducing Human Error to Improve Operational Performance.”</span>
+<em>Proceedings of the IEEE Fourth Conference on Human Factors and Power
+Plants</em> (Monterey, CA), 436–50.
+</div>
+<div id="ref-yeh1996" class="csl-entry" role="listitem">
+Yeh, Y. C. 1996. <span>“Triple-Triple Redundant 777 Primary Flight
+Computer.”</span> <em>Proceedings of the IEEE Aerospace Applications
+Conference</em> 1: 293–307.
+</div>
+<div id="ref-young2014" class="csl-entry" role="listitem">
+Young, William, and Nancy G. Leveson. 2014. <span>“An Integrated
+Approach to Safety and Security Based on Systems Theory.”</span>
+<em>Communications of the ACM</em> 57 (2): 31–35. <a href="https://doi.org/10.1145/2556938">https://doi.org/10.1145/2556938</a>.
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/biztonsagkritikus-rendszerek\/kezikonyv\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="./fejezetek/18-uj-kihivasok.html" class="pagination-link" aria-label="Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./fuggelek/a-valoszinuseg.html" class="pagination-link" aria-label="Valószínűségszámítási összefoglaló">
+        <span class="nav-page-text"><span class="chapter-number">A.</span>&nbsp; <span class="chapter-title">Valószínűségszámítási összefoglaló</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Abonyi János · Pannon Egyetem · CC BY-NC-SA 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/irodalom.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/irodalom.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/">Gyakorlati útmutató</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

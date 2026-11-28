@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+
+<title>11&nbsp; Eseményfa, rétegzett védelem és csokornyakkendő-modell – Biztonságkritikus rendszerek</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../fejezetek/12-markov.html" rel="next">
+<link href="../fejezetek/10-hibafa.html" rel="prev">
+<link href="../assets/logo/pe-favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4bb6adbf2c391f8ec7a8d9fd34cf9cbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési hivatkozás másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a fejezetben",
+    "search-more-matches-text": "további találat ebben a fejezetben",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "Keresés a könyvben",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="11&nbsp; Eseményfa, rétegzett védelem és csokornyakkendő-modell – Biztonságkritikus rendszerek">
+<meta property="og:description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+<meta property="og:image" content="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/abrak/gen/terkep-11.svg">
+<meta property="og:site_name" content="Biztonságkritikus rendszerek">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/">
+    <span class="navbar-title">Biztonságkritikus rendszerek</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigáció ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Kézikönyv</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/"> 
+<span class="menu-text">Gyakorlati útmutató</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/#textbooks"> 
+<span class="menu-text">Összes tankönyv</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/tree/main/kezikonyv/" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+            <div id="quarto-search" class="" title="Keresés"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/08-megbizhatosag.html">III. rész – Kvantitatív megbízhatóság és biztonság</a></li><li class="breadcrumb-item"><a href="../fejezetek/11-esemenyfa.html"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/" class="sidebar-logo-link">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. rész – Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/01-balesetek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/02-fogalmak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2.</span>&nbsp; <span class="chapter-title">Fogalmak: veszély, kockázat, biztonság, megbízhatóság</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/03-kockazatertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3.</span>&nbsp; <span class="chapter-title">Kockázatértékelés és a kockázat elfogadhatósága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/04-eletciklus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4.</span>&nbsp; <span class="chapter-title">A biztonsági életciklus és a szabványok rendszere</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. rész – Veszélyazonosítás</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/05-veszelyazonositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5.</span>&nbsp; <span class="chapter-title">Veszélyazonosítás: a veszélylistáktól a HAZOP-ig</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/06-fmea.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6.</span>&nbsp; <span class="chapter-title">FMEA, FMECA és FMEDA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/07-stpa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. rész – Kvantitatív megbízhatóság és biztonság</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/08-megbizhatosag.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8.</span>&nbsp; <span class="chapter-title">Megbízhatóság-elmélet és élettartam-adatok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/09-rbd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9.</span>&nbsp; <span class="chapter-title">Rendszermegbízhatóság: blokkdiagramok és k-ból-n rendszerek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/10-hibafa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10.</span>&nbsp; <span class="chapter-title">Hibafa-elemzés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/11-esemenyfa.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/12-markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12.</span>&nbsp; <span class="chapter-title">Markov-modellek és rendelkezésre állás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/13-sil.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13.</span>&nbsp; <span class="chapter-title">A biztonsági integritás igazolása: PFD, PFH és SIL</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. rész – Tervezés biztonságra</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/14-architekturak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14.</span>&nbsp; <span class="chapter-title">Biztonságos architektúrák és tervezési elvek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/15-szoftver.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15.</span>&nbsp; <span class="chapter-title">A szoftver biztonsága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/16-ember.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16.</span>&nbsp; <span class="chapter-title">Az ember a biztonságkritikus rendszerben</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. rész – Bizonyítás és új kihívások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/17-biztonsagi-erveles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17.</span>&nbsp; <span class="chapter-title">Biztonsági érvelés és igazolás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/18-uj-kihivasok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../irodalom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalom</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/a-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A.</span>&nbsp; <span class="chapter-title">Valószínűségszámítási összefoglaló</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/b-esettanulmanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B.</span>&nbsp; <span class="chapter-title">A három esettanulmány</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/c-szoszedet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C.</span>&nbsp; <span class="chapter-title">Magyar–angol szószedet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/d-szabvanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D.</span>&nbsp; <span class="chapter-title">Szabványok és jogszabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Ezen az oldalon</h2>
+   
+  <ul>
+  <li><a href="#sec-esemenyfa-alapok" id="toc-sec-esemenyfa-alapok" class="nav-link active" data-scroll-target="#sec-esemenyfa-alapok"><span class="header-section-number">11.1.</span> Az eseményfa</a>
+  <ul class="collapse">
+  <li><a href="#sec-esemenyfa-fuggoseg" id="toc-sec-esemenyfa-fuggoseg" class="nav-link" data-scroll-target="#sec-esemenyfa-fuggoseg"><span class="header-section-number">11.1.1.</span> Függőségek az ágak között</a></li>
+  </ul></li>
+  <li><a href="#sec-lopa" id="toc-sec-lopa" class="nav-link" data-scroll-target="#sec-lopa"><span class="header-section-number">11.2.</span> Rétegzett védelem elemzése (LOPA)</a>
+  <ul class="collapse">
+  <li><a href="#sec-ipl" id="toc-sec-ipl" class="nav-link" data-scroll-target="#sec-ipl"><span class="header-section-number">11.2.1.</span> Független védelmi rétegek</a></li>
+  <li><a href="#sec-lopa-korlatai" id="toc-sec-lopa-korlatai" class="nav-link" data-scroll-target="#sec-lopa-korlatai"><span class="header-section-number">11.2.2.</span> A LOPA erősségei és korlátai</a></li>
+  </ul></li>
+  <li><a href="#sec-csokornyakkendo" id="toc-sec-csokornyakkendo" class="nav-link" data-scroll-target="#sec-csokornyakkendo"><span class="header-section-number">11.3.</span> A csokornyakkendő-modell</a></li>
+  <li><a href="#sec-modellek-kapcsolata" id="toc-sec-modellek-kapcsolata" class="nav-link" data-scroll-target="#sec-modellek-kapcsolata"><span class="header-section-number">11.4.</span> A modellek kapcsolata és választása</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/11-esemenyfa.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/11-esemenyfa.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/08-megbizhatosag.html">III. rész – Kvantitatív megbízhatóság és biztonság</a></li><li class="breadcrumb-item"><a href="../fejezetek/11-esemenyfa.html"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-esemenyfa" class="quarto-section-identifier"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="../abrak/gen/terkep-11.svg" class="img-fluid" style="width:100.0%"></p>
+<p>A hibafa egyetlen nemkívánatos esemény okait bontja le. A biztonsági elemzés másik fele a <em>következményeké</em>: ha a nemkívánatos esemény bekövetkezett, milyen kimenetekhez vezethet, és ezeket mely védelmek akadályozzák meg vagy enyhítik? Erre a kérdésre az eseményfa felel, amely egy kezdő eseményből kiindulva, a védelmek sikerén vagy kudarcán elágazva írja le a lehetséges eseménysorozatokat. A folyamatiparban az eseményfa egyszerűsített, félkvantitatív változata, a rétegzett védelem elemzése (LOPA) lett a biztonsági funkciók integritási követelményének meghatározására a legelterjedtebb módszer. A csokornyakkendő-modell pedig a hibafa és az eseményfa logikáját egyetlen, szemléletes képbe foglalja. A fejezet végén azt is áttekintjük, hogyan kapcsolódnak egymáshoz az eddig megismert modellek.</p>
+<div class="doboz doboz-cel"><div class="doboz-cim">Tanulási eredmények</div><div class="doboz-tartalom">
+<p>A fejezet végére képes leszel</p>
+<ul>
+<li>egy kezdő eseményhez eseményfát szerkeszteni, és kiszámolni a kimenetek gyakoriságát;</li>
+<li>felismerni és kezelni az eseményfa ágai közötti függőségeket, és az eseményfát hibafákkal összekapcsolni;</li>
+<li>LOPA-elemzést végezni: azonosítani a független védelmi rétegeket, és meghatározni egy biztonsági funkció szükséges PFD-jét és SIL-jét;</li>
+<li>csokornyakkendő-diagramot készíteni a megelőző és a következménycsökkentő gátakkal és az eszkalációs tényezőkkel;</li>
+<li>kiválasztani egy elemzési kérdéshez a megfelelő modellt (blokkdiagram, hibafa, eseményfa, csokornyakkendő, Markov-modell).</li>
+</ul>
+</div></div>
+<section id="sec-esemenyfa-alapok" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="sec-esemenyfa-alapok"><span class="header-section-number">11.1.</span> Az eseményfa</h2>
+<p>Az eseményfa-elemzés (<em>event tree analysis</em>, ETA) <strong>induktív, előre haladó</strong> módszer: egy <strong>kezdő eseményből</strong> (<em>initiating event</em>) indul, és időrendben végigköveti, hogy az egymást követő biztonsági funkciók, gátak vagy feltételek sikere vagy kudarca milyen <strong>eseménysorozatokhoz</strong> és <strong>kimenetekhez</strong> vezet. A módszer a nukleáris ipar 1975-ös reaktorbiztonsági tanulmányában (WASH-1400) vált a valószínűségi biztonsági elemzés alappillérévé, ahol a kezdő eseményekből kiinduló eseményfák ágaihoz a biztonsági rendszerek hibafái kapcsolódtak <span class="citation" data-cites="nrc1975">(<a href="../irodalom.html#ref-nrc1975" role="doc-biblioref">U.S. Nuclear Regulatory Commission 1975</a>)</span>. Nemzetközi szabványa az IEC 62502 <span class="citation" data-cites="iec62502">(<a href="../irodalom.html#ref-iec62502" role="doc-biblioref">IEC 2010</a>)</span>.</p>
+<p>Az eseményfa szerkesztésének lépései <span class="citation" data-cites="iec62502 rausand2020">(<a href="../irodalom.html#ref-iec62502" role="doc-biblioref">IEC 2010</a>; <a href="../irodalom.html#ref-rausand2020" role="doc-biblioref">Rausand és mtsai. 2020</a>)</span>:</p>
+<ol type="1">
+<li><strong>A kezdő esemény meghatározása:</strong> egy olyan esemény, amely a védelmek közbelépése nélkül nemkívánatos következményhez vezetne (például hűtésvesztés, csőtörés, egy személy belépése a robot munkaterébe). A kezdő eseményeket a veszélyelemzés (HAZOP, FMEA) adja (<a href="05-veszelyazonositas.html" class="quarto-xref"><span>5</span></a>. fejezet); gyakoriságukat évenkénti előfordulásban adjuk meg.</li>
+<li><strong>A biztonsági funkciók és feltételek azonosítása:</strong> azok a gátak (automatikus védelmek, kezelői beavatkozás, passzív eszközök) és feltételek (például gyújtóforrás jelenléte, emberek jelenléte), amelyek befolyásolják a kimenetet. Ezek alkotják az eseményfa <strong>fejléceit</strong>, <em>időrendi sorrendben</em>.</li>
+<li><strong>A fa felépítése:</strong> minden fejlécnél két ág (siker és kudarc, vagy igen és nem); megállapodás szerint a felső ág a kedvező. Ha egy funkció kudarca után a további fejlécek már nem befolyásolják a kimenetet, az ág nem ágazik tovább.</li>
+<li><strong>A kimenetek leírása és besorolása:</strong> minden ág végén egy kimenet (például biztonságos leállás, termeléskiesés, kibocsátás, halálos sérülés).</li>
+<li><strong>Számszerűsítés:</strong> egy eseménysorozat gyakorisága a kezdő esemény gyakoriságának és az ágak <em>feltételes</em> valószínűségeinek szorzata,</li>
+</ol>
+<p><span id="eq-esemenyfa"><span class="math display">\[
+f_{\text{sorozat}} = f_{\mathrm{IE}} \cdot \prod_{k} P(\text{ág}_k \mid \text{az előző ágak}) .
+\tag{11.1}\]</span></span></p>
+<ol start="6" type="1">
+<li><strong>Értékelés:</strong> a kimenetek gyakoriságának összevetése a kockázati kritériumokkal (<a href="03-kockazatertekeles.html" class="quarto-xref"><span>3</span></a>. fejezet), az azonos kimenetek gyakoriságának összegzése, és a domináns sorozatok azonosítása.</li>
+</ol>
+<div class="doboz doboz-esetA"><div class="doboz-cim">ReaktorVéd: a hűtésvesztés eseményfája</div><div class="doboz-tartalom">
+<p>A kezdő esemény a hűtővíz kiesése, évi <span class="math inline">\(0{,}1\)</span> gyakorisággal (<a href="#fig-esemenyfa-reaktorved" class="quarto-xref"><span>11.1</span></a>. ábra). Az első fejléc egy <em>feltétel</em>: az esetek felében a reaktor nem az exoterm fázisban van, ilyenkor a hűtés kiesése nem veszélyes. A második fejléc a magashőmérséklet-riasztás és a kezelői beavatkozás (a kezelő leállítja az adagolást és elindítja a tartalék hűtővízszivattyút), amely tíz esetből egyszer nem sikerül. A harmadik a biztonsági funkció, amelynek igénykori meghibásodási valószínűsége a <a href="13-sil.html" class="quarto-xref"><span>13</span></a>. fejezet szerint <span class="math inline">\(1{,}37\cdot10^{-3}\)</span>. A hasadótárcsát (RD-101) ebben a változatban nem számítjuk be védelemként, mert a HAZOP szerint méretezése kétfázisú áramlásra nem igazolt (<a href="05-veszelyazonositas.html" class="quarto-xref"><span>5</span></a>. fejezet). Ha a biztonsági funkció is kudarcot vall, a reaktor felhasadhat; a következmény attól függ, tartózkodik-e kezelő a reaktorcsarnokban (az idő 25%-ában), és ha igen, a sérülés az esetek 90%-ában halálos.</p>
+<div id="fig-esemenyfa-reaktorved" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-esemenyfa-reaktorved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/esemenyfa-reaktorved.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-esemenyfa-reaktorved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.1. ábra.</span> A ReaktorVéd hűtésvesztési forgatókönyvének eseményfája. A felső ág mindig a kedvező kimenet; a reaktorfelhasadás gyakorisága a három utolsó kimenet összege.
+</figcaption>
+</figure>
+</div>
+<p>A reaktorfelhasadás gyakorisága <span class="math inline">\(0{,}1 \cdot 0{,}5 \cdot 0{,}1 \cdot 1{,}37\cdot10^{-3} = 6{,}8\cdot10^{-6}\)</span> évente, a halálos sérülésé <span class="math inline">\(6{,}8\cdot10^{-6} \cdot 0{,}25 \cdot 0{,}9 = 1{,}5\cdot10^{-6}\)</span> évente. Ezek az értékek szerepeltek a <a href="03-kockazatertekeles.html" class="quarto-xref"><span>3</span></a>. fejezet egyéni kockázati számításában (<a href="03-kockazatertekeles.html#tbl-irpa-pelda" class="quarto-xref"><span>3.1</span></a>. táblázat). Az eseményfa a gyakoribb, de kevésbé súlyos kimeneteket is megmutatja: az automatikus leállítás évi <span class="math inline">\(5\cdot10^{-3}\)</span> gyakorisága például a termelési veszteség és a biztonsági funkció igénygyakoriságának becsléséhez kell.</p>
+</div></div>
+<section id="sec-esemenyfa-fuggoseg" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="sec-esemenyfa-fuggoseg"><span class="header-section-number">11.1.1.</span> Függőségek az ágak között</h3>
+<p>Az <a href="#eq-esemenyfa" class="quarto-xref"><span>11.1</span></a>. egyenletben a valószínűségek <em>feltételesek</em>. Ha a fejlécek egymástól függetlenek, a feltételes valószínűség egyszerűen a funkció saját meghibásodási valószínűsége. A valóságban azonban a fejlécek gyakran közös támogató rendszerekre épülnek (tápellátás, műszerlevegő, hűtés, közös érzékelő vagy közös szoftver), és ilyenkor a függetlenségi feltevés súlyos alábecsléshez vezet.</p>
+<p>A helyes megoldás az, hogy minden fejléchez hibafát készítünk, és az eseménysorozat valószínűségét az <em>összekapcsolt</em> hibafák minimális vágataiból számoljuk (<a href="#fig-esemenyfa-hibafa-csatolas" class="quarto-xref"><span>11.2</span></a>. ábra). A nukleáris gyakorlatban ezt a megközelítést „kis eseményfa, nagy hibafa” néven ismerik: az eseményfa csak a fő funkciókat tartalmazza, a függőségeket pedig a hibafák közös alapeseményei hordozzák <span class="citation" data-cites="nrc1975 rausand2020">(<a href="../irodalom.html#ref-nrc1975" role="doc-biblioref">U.S. Nuclear Regulatory Commission 1975</a>; <a href="../irodalom.html#ref-rausand2020" role="doc-biblioref">Rausand és mtsai. 2020</a>)</span>. A másik lehetőség, a „nagy eseményfa, kis hibafa”, a támogató rendszereket külön fejlécekként veszi fel, és a további ágakat ezek állapotától függően számolja.</p>
+<div id="fig-esemenyfa-hibafa-csatolas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-esemenyfa-hibafa-csatolas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/esemenyfa-hibafa-csatolas.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-esemenyfa-hibafa-csatolas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.2. ábra.</span> Az eseményfa fejléceihez kapcsolt hibafák. Ha két fejléc közös támogató rendszerre épül, az eseménysorozat valószínűségét az összekapcsolt hibafákból kell számolni; a függetlenségi feltevés ebben a példában ötszörösen alábecsüli a kockázatot.
+</figcaption>
+</figure>
+</div>
+<p>A jelenség ugyanaz, amellyel a <a href="10-hibafa.html" class="quarto-xref"><span>10</span></a>. fejezetben a ReaktorVéd tápegységeinél találkoztunk: a redundancia csak annyit ér, amennyire a rétegek függetlenek. Ezért a rétegzett védelem elemzésének egyik legfontosabb követelménye a rétegek függetlenségének igazolása.</p>
+<div class="doboz doboz-esetC"><div class="doboz-cim">KoboCella: eseményfa gyakori igény mellett</div><div class="doboz-tartalom">
+<p>A kollaboratív robotcellában a kezdő esemény az, hogy a szerelő a robot gyors mozgása közben belép a közös munkatérbe. Ez műszakonként akár többször is megtörténik, ezért a kezdő esemény gyakorisága évente több száz vagy ezer is lehet. Az első fejléc a sebesség- és távolságfelügyelet (a lézerszkenner érzékeli a szerelőt, és a robot lelassít), a második az erő- és teljesítménykorlátozás (ha mégis ütközés történik, az erő az ISO/TS 15066 szerinti biomechanikai határérték alatt marad) <span class="citation" data-cites="isots15066">(<a href="../irodalom.html#ref-isots15066" role="doc-biblioref">ISO 2016</a>)</span>. A kimenetek: nincs érintkezés; érintkezés megengedett erővel; érintkezés nagy sebességgel (sérülés).</p>
+<p>Az eseményfa logikája ugyanaz, mint a ReaktorVédnél, de a számok természete más. Ha a kezdő esemény évente ezerszer fordul elő, egy <span class="math inline">\(10^{-3}\)</span>-as igénykori meghibásodási valószínűségű védelem évente egyszer hibázna. Ilyen gyakori igénynél a védelem <strong>nagy igénybevételű</strong> vagy <strong>folyamatos üzemmódban</strong> működik, és a mérvadó jellemző a veszélyes meghibásodás <em>gyakorisága</em> (PFH, óránként), nem az igénykori valószínűség (<a href="13-sil.html" class="quarto-xref"><span>13</span></a>. fejezet). A gépbiztonságban ezért a teljesítményszintet (PL) és a SIL-t is óránkénti meghibásodási gyakorisággal adják meg <span class="citation" data-cites="iso13849 iec62061">(<a href="../irodalom.html#ref-iso13849" role="doc-biblioref">ISO 2023</a>; <a href="../irodalom.html#ref-iec62061" role="doc-biblioref">IEC 2021</a>)</span>.</p>
+</div></div>
+</section>
+</section>
+<section id="sec-lopa" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-lopa"><span class="header-section-number">11.2.</span> Rétegzett védelem elemzése (LOPA)</h2>
+<p>A folyamatiparban a veszélyes forgatókönyveket több, egymástól független védelmi réteg óvja (<a href="#fig-vedelmi-retegek" class="quarto-xref"><span>11.3</span></a>. ábra). A legbelső réteg maga a folyamattervezés (az inherens biztonság), ezt követi az alapfolyamat-irányító rendszer (BPCS), a riasztások és a kezelői beavatkozás, a biztonsági műszeres rendszer (SIS), a fizikai védelmek (biztonsági szelep, hasadótárcsa), a kibocsátás utáni védelmek (gátak, felfogó medence), végül az üzemi és a lakossági vészhelyzeti reagálás <span class="citation" data-cites="iec61511 ccps2001">(<a href="../irodalom.html#ref-iec61511" role="doc-biblioref">IEC 2016</a>; <a href="../irodalom.html#ref-ccps2001" role="doc-biblioref">Center for Chemical Process Safety 2001</a>)</span>. A rétegek a megelőzés, a következménycsökkentés és a vészhelyzeti reagálás három csoportjába sorolhatók, ami az energia–gát modell (<a href="01-balesetek.html#sec-energia-gat" class="quarto-xref"><span>1.4.2</span></a>. szakasz) és a Reason-féle svájcisajt-modell (<a href="01-balesetek.html" class="quarto-xref"><span>1</span></a>. fejezet) mérnöki megfelelője.</p>
+<div id="fig-vedelmi-retegek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vedelmi-retegek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/vedelmi-retegek.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vedelmi-retegek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.3. ábra.</span> A folyamatipari létesítmények tipikus védelmi rétegei (az IEC 61511 és a CCPS nyomán). A LOPA csak azokat a rétegeket számítja be, amelyek a független védelmi réteg kritériumainak megfelelnek.
+</figcaption>
+</figure>
+</div>
+<p>A <strong>rétegzett védelem elemzése</strong> (<em>layer of protection analysis</em>, LOPA) a CCPS 2001-es kézikönyvével vált általánossá <span class="citation" data-cites="ccps2001">(<a href="../irodalom.html#ref-ccps2001" role="doc-biblioref">Center for Chemical Process Safety 2001</a>)</span>, és az IEC 61511-3 F melléklete a SIL-meghatározás egyik elfogadott módszereként ismerteti <span class="citation" data-cites="iec61511">(<a href="../irodalom.html#ref-iec61511" role="doc-biblioref">IEC 2016</a>)</span>. A LOPA lényegében egyetlen ágra szűkített, nagyságrendi becslésekkel dolgozó eseményfa: egy kezdő eseménytől egyetlen súlyos következményig követi a forgatókönyvet, és csak azt kérdezi, hogy a független védelmi rétegek együtt elegendő kockázatcsökkentést adnak-e. Félkvantitatív módszer: a számok nagyságrendi pontosságúak, de a következtetései ellenőrizhetők és következetesek, ami a kockázati mátrixokhoz képest nagy előny (<a href="03-kockazatertekeles.html#sec-kockazati-matrix" class="quarto-xref"><span>3.3</span></a>. szakasz).</p>
+<p>A LOPA lépéseit a <a href="#fig-lopa-lepesek" class="quarto-xref"><span>11.4</span></a>. ábra foglalja össze. A forgatókönyvet rendszerint a HAZOP adja. A tolerálható gyakoriságot a vállalat kockázati kritériumai határozzák meg a következmény súlyossága szerint. A kezdő esemény gyakoriságát és a védelmi rétegek PFD-jét a vállalati vagy iparági táblázatokból veszik (<a href="#tbl-lopa-ertekek" class="quarto-xref"><span>11.1</span></a>. táblázat). A <strong>feltételt teremtő tényezők</strong> (<em>enabling conditions</em>) annak a valószínűségét adják meg, hogy a rendszer a veszélyes állapotban van (például a reaktor exoterm fázisban), a <strong>feltételes módosítók</strong> (<em>conditional modifiers</em>) pedig a következmény bekövetkezésének feltételeit (gyújtás valószínűsége, emberek jelenléte, halálos kimenetel valószínűsége) <span class="citation" data-cites="ccps2015">(<a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">Center for Chemical Process Safety 2015</a>)</span>.</p>
+<div id="fig-lopa-lepesek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lopa-lepesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/lopa-lepesek.svg" class="img-fluid figure-img" style="width:88.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lopa-lepesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.4. ábra.</span> A LOPA lépései. Ha a független védelmi rétegek nem csökkentik elégségesen a forgatókönyv gyakoriságát, a hiányzó kockázatcsökkentést egy biztonsági funkciónak kell biztosítania, és ebből adódik a szükséges SIL.
+</figcaption>
+</figure>
+</div>
+<section id="sec-ipl" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="sec-ipl"><span class="header-section-number">11.2.1.</span> Független védelmi rétegek</h3>
+<p>A LOPA kulcsfogalma a <strong>független védelmi réteg</strong> (<em>independent protection layer</em>, IPL). Egy eszköz, rendszer vagy intézkedés csak akkor számít IPL-nek, ha négy feltételt teljesít <span class="citation" data-cites="ccps2001 ccps2015">(<a href="../irodalom.html#ref-ccps2001" role="doc-biblioref">Center for Chemical Process Safety 2001</a>, <a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">2015</a>)</span>:</p>
+<ul>
+<li><strong>hatásos:</strong> önmagában képes megakadályozni a vizsgált következményt, és elég gyorsan működik ahhoz, hogy a folyamat még a veszélyes állapot előtt megálljon;</li>
+<li><strong>független:</strong> működése nem függ a kezdő eseménytől és a forgatókönyvben beszámított többi IPL-től (nincs közös érzékelő, logika, beavatkozó, tápellátás vagy közös emberi hibaforrás);</li>
+<li><strong>megbízható:</strong> a beszámított PFD a tervezés, a tesztelés és a tapasztalat alapján igazolható;</li>
+<li><strong>auditálható:</strong> rendszeresen tesztelik és karbantartják, és ez dokumentált.</li>
+</ul>
+<p>A kezelői beavatkozás csak akkor IPL, ha a riasztás független a kezdő eseménytől, a kezelőnek elegendő ideje van (jellemzően legalább tíz perc) a felismerésre, a döntésre és a beavatkozásra, és a teendőt írásos utasítás rögzíti, amelyet rendszeresen gyakorolnak <span class="citation" data-cites="ccps2015">(<a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">Center for Chemical Process Safety 2015</a>)</span>. Az IEC 61511 azt is kiköti, hogy a BPCS-nek beszámított kockázatcsökkentés legfeljebb tízszeres lehet, ha a BPCS nincs a funkcionális biztonsági szabványok szerint tervezve <span class="citation" data-cites="iec61511">(<a href="../irodalom.html#ref-iec61511" role="doc-biblioref">IEC 2016</a>)</span>. A puszta eljárások, a képzés és a felügyelet önmagukban nem IPL-ek; fontosak, de hatásuk nem számszerűsíthető úgy, mint egy fizikai rétegé.</p>
+<div id="tbl-lopa-ertekek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lopa-ertekek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.1. táblázat.</span> Jellemző LOPA-értékek a CCPS-irodalom nyomán; a vállalatok saját, igazolt értékeket használnak <span class="citation" data-cites="ccps2001 ccps2015">(<a href="../irodalom.html#ref-ccps2001" role="doc-biblioref">Center for Chemical Process Safety 2001</a>, <a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">2015</a>)</span>
+</figcaption>
+<div aria-describedby="tbl-lopa-ertekek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Kezdő esemény</th>
+<th style="text-align: right;">Jellemző gyakoriság [1/év]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">BPCS szabályozókör meghibásodása</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hűtővíz kiesése</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">szivattyú tömítésének meghibásodása</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span>–<span class="math inline">\(10^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">kezelői hiba rutinfeladatnál (alkalmanként)</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span>–<span class="math inline">\(10^{-3}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nyomástartó edény katasztrofális meghibásodása</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-5}\)</span>–<span class="math inline">\(10^{-7}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Független védelmi réteg</strong></td>
+<td style="text-align: right;"><strong>Jellemző PFD</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">BPCS szabályozókör (ha nem a kezdő esemény része)</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">riasztás és kezelői beavatkozás (legalább 10 perc)</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">biztonsági szelep, hasadótárcsa (megfelelő méretezéssel)</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-2}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">felfogó gát, felfogó medence</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-2}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">biztonsági funkció (SIL 1 / SIL 2 / SIL 3)</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-1}\)</span> / <span class="math inline">\(10^{-2}\)</span> / <span class="math inline">\(10^{-3}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div class="doboz doboz-esetA"><div class="doboz-cim">ReaktorVéd: LOPA és SIL-kiosztás</div><div class="doboz-tartalom">
+<p>A <a href="03-kockazatertekeles.html" class="quarto-xref"><span>3</span></a>. fejezet becslését most a LOPA formájában rögzítjük (<a href="#tbl-lopa-reaktorved" class="quarto-xref"><span>11.2</span></a>. táblázat).</p>
+<div id="tbl-lopa-reaktorved" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lopa-reaktorved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.2. táblázat.</span> A ReaktorVéd hűtésvesztési forgatókönyvének LOPA-táblázata
+</figcaption>
+<div aria-describedby="tbl-lopa-reaktorved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">LOPA-elem</th>
+<th style="text-align: left;">Leírás</th>
+<th style="text-align: right;">Érték</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">következmény</td>
+<td style="text-align: left;">megfutó reakció, a reaktor felhasadása, halálos sérülés lehetősége</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">tolerálható gyakoriság</td>
+<td style="text-align: left;">vállalati kritérium halálos kimenetelű forgatókönyvre</td>
+<td style="text-align: right;"><span class="math inline">\(10^{-5}\)</span>/év</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">kezdő esemény</td>
+<td style="text-align: left;">a hűtővíz kiesése (szivattyúleállás, áramszünet, beragadt szelep)</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}1\)</span>/év</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">feltételt teremtő tényező</td>
+<td style="text-align: left;">a reaktor exoterm fázisban van</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}5\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">feltételes módosítók</td>
+<td style="text-align: left;">nem alkalmazzuk (vállalati szabály)</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">IPL 1</td>
+<td style="text-align: left;">TAH-103 riasztás és kezelői beavatkozás (a felfutás legalább 20 perc)</td>
+<td style="text-align: right;"><span class="math inline">\(0{,}1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">nem IPL</td>
+<td style="text-align: left;">TIC-103 hőmérséklet-szabályozás: a kezdő esemény egyik oka</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">nem IPL</td>
+<td style="text-align: left;">RD-101 hasadótárcsa: kétfázisú méretezése nem igazolt</td>
+<td style="text-align: right;">–</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">csökkentett gyakoriság SIF nélkül</td>
+<td style="text-align: left;"><span class="math inline">\(0{,}1 \cdot 0{,}5 \cdot 0{,}1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(5\cdot10^{-3}\)</span>/év</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>szükséges SIF</strong></td>
+<td style="text-align: left;"><span class="math inline">\(\text{PFD} \le 10^{-5}/(5\cdot10^{-3})\)</span>, <span class="math inline">\(\text{RRF} \ge 500\)</span></td>
+<td style="text-align: right;"><strong>SIL 2</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A TAH-103 riasztás ugyanannak a BPCS-nek a része, mint a TIC-103 szabályozás. Beszámítható, mert a forgatókönyv kezdő eseményei között a riasztás eszközei (a TT-103 távadó és a kijelzés) nem szerepelnek; a BPCS vezérlőjének meghibásodását a csapat külön forgatókönyvként vizsgálja. Ez a mérlegelés jellemző a LOPA-ra: a függetlenséget minden forgatókönyvnél újra kell igazolni.</p>
+<p>A táblázat egyben a biztonsági követelményspecifikáció kiindulópontja: a biztonsági funkciónak SIL 2 szinten, de a tartomány szigorúbb felében, <span class="math inline">\(\text{PFD} \le 2\cdot10^{-3}\)</span> értékkel kell működnie. A <a href="13-sil.html" class="quarto-xref"><span>13</span></a>. fejezet ellenőrzi, hogy a tervezett architektúra ezt teljesíti-e.</p>
+</div></div>
+<div class="doboz doboz-hiba"><div class="doboz-cim">A feltételes módosítók óvatos használata</div><div class="doboz-tartalom">
+<p>Ha a ReaktorVéd-forgatókönyvben a kezelő jelenlétét (0,25) és a halálos kimenetelt (0,9) is beszámítanánk, a csökkentett gyakoriság <span class="math inline">\(1{,}1\cdot10^{-3}\)</span>/év lenne, és a biztonsági funkcióra csak <span class="math inline">\(\text{PFD} \le 8{,}9\cdot10^{-3}\)</span> követelmény jutna. A SIL ugyan most is 2 maradna, de a követelmény négy és félszer enyhébb. A tartózkodási valószínűségek nehezen ellenőrizhetők és könnyen változnak (például egy indítás vagy egy karbantartás idején sokkal többen vannak a csarnokban), ezért sok vállalat nem engedi a feltételes módosítók használatát, vagy csak szigorú feltételekkel <span class="citation" data-cites="ccps2015">(<a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">Center for Chemical Process Safety 2015</a>)</span>. Ugyanígy tilos ugyanazt a hatást kétszer beszámítani: ha a tolerálható gyakoriság már egy halálos kimenetelre vonatkozik, a halálos kimenetel valószínűségét nem szabad ismét szorzóként alkalmazni, ha pedig a forgatókönyvre, akkor éppen fordítva.</p>
+</div></div>
+<div class="doboz doboz-kitekintes"><div class="doboz-cim">Buncefield LOPA-szemmel</div><div class="doboz-tartalom">
+<p>Az <a href="01-balesetek.html" class="quarto-xref"><span>1</span></a>. fejezetben bemutatott 2005-ös Buncefield-balesetben egy benzintartály túltöltését két, egymástól függetlennek tekintett réteg sem akadályozta meg. A tartály automatikus szintmérője az éjszaka folyamán beragadt (a vizsgálat szerint korábban is többször előfordult ilyen), a túltöltés elleni független szintkapcsoló pedig azért nem működött, mert a próbakarját működő helyzetben rögzítő lakatot nem szerelték fel; ennek szükségességét a gyártó nem közölte egyértelműen sem a telepítővel és a karbantartóval, sem az üzemeltetővel <span class="citation" data-cites="buncefield2008">(<a href="../irodalom.html#ref-buncefield2008" role="doc-biblioref">Buncefield Major Incident Investigation Board 2008</a>)</span>.</p>
+<p>LOPA-szemmel mindkét hiba <em>rejtett</em> volt, és mindkettő az auditálhatóság követelményét sértette. A szintmérő ismétlődő beragadása nem vezetett a hiba okának feltárásához, a szintkapcsoló működésképtelenségét pedig éppen a tesztelési szerkezet hiányos ismerete okozta. A tanulság: egy réteg csak akkor ér annyit, amennyit beszámítunk, ha a tesztelése valóban feltárja a rejtett hibáit, és a karbantartás nem teremt közös hibaforrást. A vizsgálóbizottság ajánlásai nyomán a tárolótartályok túltöltés elleni védelmét a funkcionális biztonsági szabványok szerint kell tervezni és igazolni <span class="citation" data-cites="buncefield2008">(<a href="../irodalom.html#ref-buncefield2008" role="doc-biblioref">Buncefield Major Incident Investigation Board 2008</a>)</span>.</p>
+</div></div>
+</section>
+<section id="sec-lopa-korlatai" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="sec-lopa-korlatai"><span class="header-section-number">11.2.2.</span> A LOPA erősségei és korlátai</h3>
+<p>A LOPA egyszerű, gyors, és a HAZOP eredményeire közvetlenül építhető; következetesebb, mint a kockázati gráf vagy a kalibrálatlan kockázati mátrix; a független védelmi rétegek kritériumai pedig rákényszerítik a csapatot, hogy minden beszámított védelmet kritikusan vizsgáljon meg. Korlátai abból fakadnak, hogy egyszerűsítés: forgatókönyvenként egyetlen kezdő eseményt és egyetlen következményt vizsgál; a táblázatos értékek nagyságrendi pontosságúak; a rétegek közötti finomabb függőségeket és a közös okú meghibásodásokat nem modellezi; és ha ugyanaz a védelem sok forgatókönyvben szerepel, a teljes kockázat összegzése külön feladat. Ha a LOPA határesetet ad, vagy a forgatókönyv bonyolult, részletes eseményfa- és hibafa-elemzés szükséges <span class="citation" data-cites="ccps2001 ccps2015">(<a href="../irodalom.html#ref-ccps2001" role="doc-biblioref">Center for Chemical Process Safety 2001</a>, <a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">2015</a>)</span>.</p>
+</section>
+</section>
+<section id="sec-csokornyakkendo" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="sec-csokornyakkendo"><span class="header-section-number">11.3.</span> A csokornyakkendő-modell</h2>
+<p>A <strong>csokornyakkendő-diagram</strong> (<em>bow-tie</em>) egyetlen ábrán mutatja meg egy nemkívánatos esemény okait, következményeit és az ezek közé épített gátakat (<a href="#fig-csokornyakkendo-reaktorved" class="quarto-xref"><span>11.5</span></a>. ábra). A módszer a vegyiparban jelent meg az 1970-es évek végén, és az 1990-es évektől az olaj- és gázipar, majd a légi közlekedés és az egészségügy is átvette <span class="citation" data-cites="ccps2018">(<a href="../irodalom.html#ref-ccps2018" role="doc-biblioref">Center for Chemical Process Safety és Energy Institute 2018</a>)</span>. A diagram középpontjában a <strong>csúcsesemény</strong> áll: az a pillanat, amikor a veszély feletti uralom elvész (például „megfutó reakció”, „a jármű elhagyja a sávját”). Fölötte a <strong>veszély</strong>, a kár forrása (<a href="02-fogalmak.html" class="quarto-xref"><span>2</span></a>. fejezet). Bal oldalon az <strong>okok</strong> (fenyegetések), jobb oldalon a <strong>következmények</strong> láthatók. Az okok és a csúcsesemény közé a <strong>megelőző gátak</strong>, a csúcsesemény és a következmények közé a <strong>következménycsökkentő gátak</strong> kerülnek. Az <strong>eszkalációs tényezők</strong> (<em>escalation factors</em>) azok a körülmények, amelyek egy gátat gyengítenek vagy hatástalanná tesznek; ezek ellen további intézkedések védenek.</p>
+<div id="fig-csokornyakkendo-reaktorved" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-csokornyakkendo-reaktorved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/csokornyakkendo-reaktorved.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-csokornyakkendo-reaktorved-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.5. ábra.</span> A ReaktorVéd megfutó reakciójának csokornyakkendő-diagramja. A biztonsági funkció három okkal szemben is gát, ezért közös okú meghibásodása különösen súlyos; az eszkalációs tényezők a gátak gyengülésének lehetséges okait mutatják.
+</figcaption>
+</figure>
+</div>
+<p>A diagram bal oldala logikailag egy hibafa, amelynek csúcsa alatt VAGY-kapu áll (bármelyik ok elég), és minden ok alatt ÉS-kapu (az oknak és az összes gátjának kudarca együtt szükséges). A jobb oldal logikailag egy eseményfa, amelynek fejlécei a következménycsökkentő gátak. A csokornyakkendő tehát nem új matematikai modell, hanem a két meglévő szemléletes, <em>kommunikációs</em> összekapcsolása. Ebben rejlik az ereje és a korlátja is: a vezetők, a kezelők és a karbantartók számára érthető, megmutatja, melyik gát melyik veszély ellen véd, és mire kell a karbantartásnak, a képzésnek és az ellenőrzésnek figyelnie. A számszerű kockázatot viszont csak akkor adja meg, ha a két oldalt valódi hibafává és eseményfává alakítjuk.</p>
+<p>A jó csokornyakkendő-diagram néhány szabálya <span class="citation" data-cites="ccps2018">(<a href="../irodalom.html#ref-ccps2018" role="doc-biblioref">Center for Chemical Process Safety és Energy Institute 2018</a>)</span>:</p>
+<ul>
+<li>A <strong>gát</strong> teljes, önállóan hatásos védelem. Egy aktív gát három elemből áll: érzékel, dönt és beavatkozik (például távadó, logika és szelep); ha ezek bármelyike hiányzik, nem gát, hanem egy gát része.</li>
+<li>A <strong>tevékenységek</strong> (képzés, karbantartás, eljárások) nem gátak; ezek a gátak fenntartását szolgálják, és az eszkalációs tényezők kezeléseként jelennek meg.</li>
+<li>Minden oknak legyen legalább egy, de lehetőleg több független gátja, és a gátak legyenek függetlenek az októl és egymástól.</li>
+<li>Ha ugyanaz a gát több ok ellen is véd (a ReaktorVéd biztonsági funkciója három ok ellen), annak kudarca több utat is megnyit; az ilyen gátak különös figyelmet érdemelnek.</li>
+</ul>
+<p>A csokornyakkendő-diagram a <strong>gátak állapotának nyomon követésére</strong> is alkalmas. Ha minden gáthoz teljesítménymutatót rendelünk (tesztelési lefedettség, elmaradt karbantartások, kiiktatások ideje), a diagram a működő üzem kockázatának élő térképévé válik. Ezt a gondolatot a biztonsági érvelés (<a href="17-biztonsagi-erveles.html" class="quarto-xref"><span>17</span></a>. fejezet) általánosítja.</p>
+</section>
+<section id="sec-modellek-kapcsolata" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="sec-modellek-kapcsolata"><span class="header-section-number">11.4.</span> A modellek kapcsolata és választása</h2>
+<p>Az eddigi fejezetek öt logikai modellt mutattak be. Ezek nem versenytársai, hanem különböző nézőpontjai ugyanannak a rendszernek (<a href="#tbl-modellek" class="quarto-xref"><span>11.3</span></a>. táblázat).</p>
+<div id="tbl-modellek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modellek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">11.3. táblázat.</span> Az elemzési modellek összevetése
+</figcaption>
+<div aria-describedby="tbl-modellek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modell</th>
+<th style="text-align: left;">Irány</th>
+<th style="text-align: left;">Fő kérdés</th>
+<th style="text-align: left;">Erőssége</th>
+<th style="text-align: left;">Korlátja</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">megbízhatósági blokkdiagram</td>
+<td style="text-align: left;">a működés útjai</td>
+<td style="text-align: left;">mikor működik a funkció?</td>
+<td style="text-align: left;">szemléletes, gyors</td>
+<td style="text-align: left;">függetlenség, statikus</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">hibafa</td>
+<td style="text-align: left;">deduktív, okok felé</td>
+<td style="text-align: left;">mi okozza a csúcseseményt?</td>
+<td style="text-align: left;">kombinációk, közös okok</td>
+<td style="text-align: left;">egy csúcsesemény, statikus</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">eseményfa</td>
+<td style="text-align: left;">induktív, következmények felé</td>
+<td style="text-align: left;">mi lesz a kezdő esemény után?</td>
+<td style="text-align: left;">időrend, kimenetek</td>
+<td style="text-align: left;">ágak közti függőségek</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">csokornyakkendő</td>
+<td style="text-align: left;">okok és következmények</td>
+<td style="text-align: left;">mely gátak védenek?</td>
+<td style="text-align: left;">kommunikáció, gátkezelés</td>
+<td style="text-align: left;">önmagában nem kvantitatív</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Markov-modell</td>
+<td style="text-align: left;">állapotok és átmenetek</td>
+<td style="text-align: left;">hogyan változik a rendszer időben?</td>
+<td style="text-align: left;">javítás, sorrend, tesztelés</td>
+<td style="text-align: left;">állapotrobbanás</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A modellek egymásba alakíthatók. A blokkdiagram soros kapcsolata a hibafában VAGY-kapu, a párhuzamos kapcsolata ÉS-kapu (a meghibásodások szintjén), a hibafa minimális útjai pedig a blokkdiagram útjai (<a href="10-hibafa.html#sec-sikerfa" class="quarto-xref"><span>10.8</span></a>. szakasz). Az eseményfa minden eseménysorozata egy hibafa csúcseseményeként írható fel: a kezdő esemény és a kudarcot vallott fejlécek hibafáinak ÉS-kapcsolata. A csokornyakkendő bal oldala hibafa, jobb oldala eseményfa. A sorrendfüggő, javítható vagy időben változó viselkedés ott kezdődik, ahol a statikus logikai modellek véget érnek; ezt a <a href="12-markov.html" class="quarto-xref"><span>12</span></a>. fejezet Markov-modelljei írják le.</p>
+<p>A gyakorlati választás a kérdéstől függ. A tervezés korai szakaszában, a koncepciók összevetésére a blokkdiagram a leggyorsabb. Egy súlyos csúcsesemény okainak mélyreható feltárására és a biztonsági funkciók igazolására a hibafa a megfelelő. A forgatókönyvek kimeneteinek és gyakoriságainak meghatározására az eseményfa, a SIL-kiosztásra a LOPA, a vezetőkkel és a kezelőkkel való kommunikációra és a gátak üzemeltetés közbeni követésére a csokornyakkendő. A teljes kép sokszor csak a modellek együttes használatával áll össze.</p>
+<div class="doboz doboz-labor"><div class="doboz-cim">Gyakorlat</div><div class="doboz-tartalom">
+<p>A gyakorlati útmutató 9. laborjában egy böngészős eseményfa- és LOPA-alkalmazással elemezheted a ReaktorVéd forgatókönyveit: a kezdő esemény, a feltételek és a független védelmi rétegek változtatásával azonnal látod a kimenetek gyakoriságát és a biztonsági funkció szükséges SIL-jét. Az alkalmazás figyelmeztet, ha egy védelmet a függetlenségi kritériumok sérülése miatt nem lehet beszámítani.</p>
+</div></div>
+<div class="doboz doboz-osszefoglalo"><div class="doboz-cim">Összefoglalás</div><div class="doboz-tartalom">
+<ul>
+<li>Az eseményfa induktív módszer: egy kezdő eseménytől, a védelmek sikerén és kudarcán elágazva, időrendben követi az eseménysorozatokat; egy sorozat gyakorisága a kezdő esemény gyakoriságának és a feltételes valószínűségeknek a szorzata.</li>
+<li>Az ágak közötti függőségeket (közös támogató rendszerek) a fejlécekhez kapcsolt hibafákkal kell kezelni; a függetlenségi feltevés nagyságrendi alábecsléshez vezethet.</li>
+<li>A LOPA egyetlen ágra szűkített, nagyságrendi eseményfa; a független védelmi rétegek (hatásos, független, megbízható, auditálható) kockázatcsökkentését veti össze a tolerálható gyakorisággal, és ebből adja a biztonsági funkció szükséges SIL-jét.</li>
+<li>A feltételes módosítókat óvatosan kell használni, és egyetlen hatás sem számítható be kétszer.</li>
+<li>A csokornyakkendő-diagram egy nemkívánatos esemény okait, következményeit, megelőző és következménycsökkentő gátait, valamint az eszkalációs tényezőket mutatja; bal oldala hibafa, jobb oldala eseményfa.</li>
+<li>A blokkdiagram, a hibafa, az eseményfa, a csokornyakkendő és a Markov-modell ugyanannak a rendszernek különböző nézetei, és egymásba alakíthatók.</li>
+</ul>
+</div></div>
+<div class="doboz doboz-onell"><div class="doboz-cim">Önellenőrzés</div><div class="doboz-tartalom">
+<ol type="1">
+<li>Egy éghető folyadék szivárgásának gyakorisága évi <span class="math inline">\(10^{-2}\)</span>. Azonnali gyújtás valószínűsége 0,1; késleltetett gyújtásé (ha nincs azonnali) 0,3. Rajzold fel az eseményfát, és számold ki a jet tűz (azonnali gyújtás), a gőzfelhő-robbanás (késleltetett gyújtás) és a gyújtás nélküli kibocsátás gyakoriságát!</li>
+<li>Miért nem számítható be független védelmi rétegként a BPCS szabályozókör, ha a kezdő esemény éppen ennek a körnek a meghibásodása?</li>
+<li>Tegyük fel, hogy a ReaktorVéd hasadótárcsájának kétfázisú méretezését igazolták, és a tárcsa <span class="math inline">\(\text{PFD} = 10^{-2}\)</span> független védelmi rétegként beszámítható. Mekkora PFD-t kell ekkor teljesítenie a biztonsági funkciónak? Szükség van-e egyáltalán SIL-besorolású funkcióra?</li>
+<li>Mi a különbség a gát és a tevékenység között a csokornyakkendő-diagramon? Hova kerül a „kezelők képzése”?</li>
+<li>Két fejléc közös tápellátásra épül. A tápellátás kiesésének valószínűsége <span class="math inline">\(10^{-3}\)</span>, a fejlécek egyéb okú meghibásodásáé <span class="math inline">\(10^{-2}\)</span> és <span class="math inline">\(10^{-2}\)</span>. Mekkora a két fejléc együttes kudarcának valószínűsége? Mekkora lenne a függetlenségi feltevéssel?</li>
+</ol>
+<details class="megoldas"><summary>Megoldás</summary>
+<ol type="1">
+<li>Jet tűz: <span class="math inline">\(10^{-2}\cdot 0{,}1 = 10^{-3}\)</span>/év. Késleltetett gyújtás: <span class="math inline">\(10^{-2}\cdot 0{,}9 \cdot 0{,}3 = 2{,}7\cdot10^{-3}\)</span>/év. Gyújtás nélküli kibocsátás: <span class="math inline">\(10^{-2}\cdot 0{,}9 \cdot 0{,}7 = 6{,}3\cdot10^{-3}\)</span>/év. Ellenőrzés: a három összege <span class="math inline">\(10^{-2}\)</span>.</li>
+<li>Mert nem független a kezdő eseménytől: ha a szabályozókör meghibásodott, ugyanaz a kör nem védhet a meghibásodása következményei ellen. Csak egy másik, független érzékelővel, logikával és beavatkozóval rendelkező kör lehet IPL.</li>
+<li>A csökkentett gyakoriság SIF nélkül <span class="math inline">\(5\cdot10^{-3}\cdot 10^{-2} = 5\cdot10^{-5}\)</span>/év, a szükséges <span class="math inline">\(\text{PFD} \le 10^{-5}/(5\cdot10^{-5}) = 0{,}2\)</span>, <span class="math inline">\(\text{RRF} \ge 5\)</span>. Ez a SIL 1 tartományánál (<span class="math inline">\(\text{PFD} &lt; 10^{-1}\)</span>) is enyhébb, így SIL-besorolású funkció nem feltétlenül szükséges; a kockázatcsökkentés azonban ekkor a hasadótárcsán és a lefúvató rendszeren múlik, amelynek méretezését, karbantartását és tesztelését szigorúan kell kezelni. A döntésnél azt is mérlegelni kell, hogy a hasadótárcsa a mérgező anyagot a lefúvató rendszerbe engedi, tehát a következmény más, de nem feltétlenül elhanyagolható.</li>
+<li>A gát önállóan hatásos védelem (érzékel, dönt, beavatkozik), a tevékenység a gát fenntartását szolgálja, de önmagában nem állítja meg az eseménysort. A kezelők képzése tevékenység: az eszkalációs tényezők kezelései között jelenik meg (például a „riasztásáradat” eszkalációs tényező kezeléseként a kezelői gát mellett).</li>
+<li>Közös táppal: <span class="math inline">\(P \approx 10^{-3} + 10^{-2}\cdot10^{-2} = 1{,}1\cdot10^{-3}\)</span>. Függetlenséggel: <span class="math inline">\((1{,}1\cdot10^{-2})^2 \approx 1{,}2\cdot10^{-4}\)</span>, ami majdnem egy nagyságrenddel kisebb.</li>
+</ol>
+</details>
+</div></div>
+<div class="doboz doboz-forras"><div class="doboz-cim">Továbbolvasás</div><div class="doboz-tartalom">
+<ul>
+<li>Center for Chemical Process Safety (2001): <em>Layer of Protection Analysis: Simplified Process Risk Assessment.</em> AIChE – a LOPA alapműve <span class="citation" data-cites="ccps2001">(<a href="../irodalom.html#ref-ccps2001" role="doc-biblioref">Center for Chemical Process Safety 2001</a>)</span>.</li>
+<li>Center for Chemical Process Safety (2015): <em>Guidelines for Initiating Events and Independent Protection Layers in Layer of Protection Analysis.</em> AIChE–Wiley <span class="citation" data-cites="ccps2015">(<a href="../irodalom.html#ref-ccps2015" role="doc-biblioref">Center for Chemical Process Safety 2015</a>)</span>.</li>
+<li>CCPS – Energy Institute (2018): <em>Bow Ties in Risk Management: A Concept Book for Process Safety.</em> AIChE–Wiley <span class="citation" data-cites="ccps2018">(<a href="../irodalom.html#ref-ccps2018" role="doc-biblioref">Center for Chemical Process Safety és Energy Institute 2018</a>)</span>.</li>
+<li>IEC 62502:2010 – az eseményfa-elemzés szabványa <span class="citation" data-cites="iec62502">(<a href="../irodalom.html#ref-iec62502" role="doc-biblioref">IEC 2010</a>)</span>; IEC 61511-3:2016 – a SIL-meghatározás módszerei, köztük a LOPA <span class="citation" data-cites="iec61511">(<a href="../irodalom.html#ref-iec61511" role="doc-biblioref">IEC 2016</a>)</span>.</li>
+<li>Rausand, M. (2020): <em>System Reliability Theory</em>, 4. fejezet – eseményfák és a modellek kapcsolata <span class="citation" data-cites="rausand2020">(<a href="../irodalom.html#ref-rausand2020" role="doc-biblioref">Rausand és mtsai. 2020</a>)</span>.</li>
+</ul>
+</div></div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-buncefield2008" class="csl-entry" role="listitem">
+Buncefield Major Incident Investigation Board. 2008. <em>The <span>Buncefield</span> Incident 11 December 2005: The Final Report of the Major Incident Investigation Board</em>. HSE Books.
+</div>
+<div id="ref-ccps2001" class="csl-entry" role="listitem">
+Center for Chemical Process Safety. 2001. <em>Layer of Protection Analysis: Simplified Process Risk Assessment</em>. American Institute of Chemical Engineers.
+</div>
+<div id="ref-ccps2015" class="csl-entry" role="listitem">
+Center for Chemical Process Safety. 2015. <em>Guidelines for Initiating Events and Independent Protection Layers in Layer of Protection Analysis</em>. American Institute of Chemical Engineers – Wiley.
+</div>
+<div id="ref-ccps2018" class="csl-entry" role="listitem">
+Center for Chemical Process Safety, és Energy Institute. 2018. <em>Bow Ties in Risk Management: A Concept Book for Process Safety</em>. American Institute of Chemical Engineers – Wiley.
+</div>
+<div id="ref-iec62502" class="csl-entry" role="listitem">
+IEC. 2010. <em><span>IEC</span> 62502: Analysis Techniques for Dependability – Event Tree Analysis (<span>ETA</span>)</em>.
+</div>
+<div id="ref-iec61511" class="csl-entry" role="listitem">
+IEC. 2016. <em><span>IEC</span> 61511-1: Functional Safety – Safety Instrumented Systems for the Process Industry Sector – Part 1: Framework, Definitions, System, Hardware and Application Programming Requirements</em>. 2. kiad.
+</div>
+<div id="ref-iec62061" class="csl-entry" role="listitem">
+IEC. 2021. <em><span>IEC</span> 62061: Safety of Machinery – Functional Safety of Safety-Related Control Systems</em>. 2. kiad.
+</div>
+<div id="ref-isots15066" class="csl-entry" role="listitem">
+ISO. 2016. <em><span>ISO/TS</span> 15066: Robots and Robotic Devices – Collaborative Robots</em>.
+</div>
+<div id="ref-iso13849" class="csl-entry" role="listitem">
+ISO. 2023. <em><span>ISO</span> 13849-1: Safety of Machinery – Safety-Related Parts of Control Systems – Part 1: General Principles for Design</em>. 4. kiad.
+</div>
+<div id="ref-rausand2020" class="csl-entry" role="listitem">
+Rausand, Marvin, Anne Barros, és Arnljot Høyland. 2020. <em>System Reliability Theory: Models, Statistical Methods, and Applications</em>. 3. kiad. Wiley. <a href="https://doi.org/10.1002/9781119373940">https://doi.org/10.1002/9781119373940</a>.
+</div>
+<div id="ref-nrc1975" class="csl-entry" role="listitem">
+U.S. Nuclear Regulatory Commission. 1975. <em>Reactor Safety Study: An Assessment of Accident Risks in <span>U.S.</span> Commercial Nuclear Power Plants</em>. WASH-1400 (NUREG-75/014). U.S. Nuclear Regulatory Commission.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/biztonsagkritikus-rendszerek\/kezikonyv\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../fejezetek/10-hibafa.html" class="pagination-link" aria-label="Hibafa-elemzés">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10.</span>&nbsp; <span class="chapter-title">Hibafa-elemzés</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../fejezetek/12-markov.html" class="pagination-link" aria-label="Markov-modellek és rendelkezésre állás">
+        <span class="nav-page-text"><span class="chapter-number">12.</span>&nbsp; <span class="chapter-title">Markov-modellek és rendelkezésre állás</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Abonyi János · Pannon Egyetem · CC BY-NC-SA 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/11-esemenyfa.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/11-esemenyfa.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/">Gyakorlati útmutató</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

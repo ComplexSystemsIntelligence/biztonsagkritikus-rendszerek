@@ -1,0 +1,620 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Biztonságkritikus rendszerek – gyakorlati útmutató",
+    "section": "",
+    "text": "Bevezetés\nEz a gyakorlati útmutató a Biztonságkritikus rendszerek kézikönyv párja. A kézikönyv a módszerek elméletét és indoklását adja, az útmutató pedig azt, hogy a módszereket a saját kezeddel, valós léptékű példákon alkalmazd. A tizenkét gyakorlat a kézikönyv fejezeteit követi, és ugyanazt a három futó esetet használja: a ReaktorVéd exoterm reaktor védelmi rendszerét, a VészFék vészfékező asszisztenst és a KoboCella kollaboratív robotcellát.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Bevezetés"
+    ]
+  },
+  {
+    "objectID": "index.html#mit-kínál-az-útmutató",
+    "href": "index.html#mit-kínál-az-útmutató",
+    "title": "Biztonságkritikus rendszerek – gyakorlati útmutató",
+    "section": "Mit kínál az útmutató?",
+    "text": "Mit kínál az útmutató?\nBöngészős alkalmazások. Kilenc gyakorlathoz önálló, telepítés nélkül futó alkalmazás tartozik (kockázati mátrix, FMEA-munkalap, STPA-munkalap, élettartam-eloszlások, blokkdiagram, hibafa-elemző, LOPA és eseményfa, Markov-szerkesztő, PFD- és SIL-kalkulátor). Az alkalmazások az útmutató oldalaiba ágyazva és külön lapon is megnyithatók, internetkapcsolat nélkül is működnek, és a munkádat a böngésző helyi tárolójában megőrzik (ha a böngésző ezt engedi). Az eredmények CSV- vagy Markdown-fájlként letölthetők.\nColab-notebookok. Hét gyakorlathoz Python-notebook tartozik, amely a Google Colab felületén egy kattintással megnyílik, és a kézikönyv számpéldáit reprodukálja: a megbízhatósági becslésektől a hibafa-elemzésen és a Markov-modelleken át a SIL-igazolás Monte Carlo-bizonytalanságáig. A notebookok kódja szabadon módosítható; a feladatcellák a továbbgondolást segítik.\nMintapromptok. Minden gyakorlat ad mintapromptokat a nagy nyelvi modellek felelős használatához: kritikus olvasótársként, ötletgyűjtő partnerként vagy a saját számításaid ellenőrzőjeként. A promptok mindig kérik, hogy a modell jelölje a bizonytalanságait, és ne találjon ki adatokat vagy hivatkozásokat.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Bevezetés"
+    ]
+  },
+  {
+    "objectID": "index.html#tanulási-eredmények",
+    "href": "index.html#tanulási-eredmények",
+    "title": "Biztonságkritikus rendszerek – gyakorlati útmutató",
+    "section": "Tanulási eredmények",
+    "text": "Tanulási eredmények\nAz útmutató teljes feldolgozása után képes leszel\n\negy balesetvizsgálati jelentést a lineáris, a rétegmodell alapú és a rendszerelméleti balesetmodell szemléletével elemezni, és a tanulságokat tervezési követelményekké alakítani;\nveszélyazonosítást végezni HAZOP-, FMEA- és STPA-módszerrel, és a módszerek eredményeit összevetni;\nkalibrált kockázati mátrixot tervezni, felismerni a korlátait, és egyéni és társadalmi kockázatot számolni;\nélettartam-adatokból megbízhatósági jellemzőket becsülni, és a becslés bizonytalanságát számszerűsíteni;\nblokkdiagramot, hibafát, eseményfát és Markov-modellt felállítani és kiértékelni, és tudni, melyik kérdéshez melyik modell illik;\nLOPA-val meghatározni egy biztonsági funkció integritási követelményét, és a tervezett funkcióról PFD-számítással, architekturális korlátokkal és érzékenységvizsgálattal igazolni, hogy teljesíti;\negy választott rendszer teljes biztonsági elemzését elkészíteni, és az eredményeket biztonsági érvelésbe rendezni;\na nagy nyelvi modelleket a biztonsági elemzés támogatására felelősen, a kimenetek ellenőrzésével használni.\n\n\n\n\ntáblázat 1: A gyakorlatok áttekintése\n\n\n\n\n\n\n\n\n\n\n\n\nGyakorlat\nKézikönyv\nAlkalmazás\nNotebook\nFő kompetencia\n\n\n\n\n1. balesetelemzés\n1., 7. fejezet\n–\n–\nbaleseti okok rendszerszintű elemzése\n\n\n2. kockázati mátrix, IRPA, F–N\n3. fejezet\nigen\nigen\nkockázatértékelés és -elfogadhatóság\n\n\n3. HAZOP\n5. fejezet\n–\n–\nszisztematikus veszélyazonosítás\n\n\n4. FMEA, FMEDA\n6. fejezet\nigen\nigen\nmeghibásodási módok és diagnosztika\n\n\n5. STPA\n7. fejezet\nigen\n–\nirányítási hibák feltárása\n\n\n6. élettartam-eloszlások\n8. fejezet\nigen\nigen\nmegbízhatósági becslés adatokból\n\n\n7. blokkdiagramok\n9. fejezet\nigen\nigen\nrendszermegbízhatóság\n\n\n8. hibafa\n10. fejezet\nigen\nigen\ndeduktív elemzés, fontosság\n\n\n9. LOPA, eseményfa\n11. fejezet\nigen\n–\nintegritási követelmény meghatározása\n\n\n10. Markov-modellek\n12. fejezet\nigen\nigen\njavítható és tesztelt rendszerek\n\n\n11. PFD és SIL\n13. fejezet\nigen\nigen\na biztonsági integritás igazolása\n\n\n12. projektfeladat\n14–18. fejezet\n–\n–\nteljes elemzés és biztonsági érvelés",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Bevezetés"
+    ]
+  },
+  {
+    "objectID": "index.html#hogyan-dolgozz-a-nagy-nyelvi-modellekkel",
+    "href": "index.html#hogyan-dolgozz-a-nagy-nyelvi-modellekkel",
+    "title": "Biztonságkritikus rendszerek – gyakorlati útmutató",
+    "section": "Hogyan dolgozz a nagy nyelvi modellekkel?",
+    "text": "Hogyan dolgozz a nagy nyelvi modellekkel?\nA nagy nyelvi modellek hasznos segítők lehetnek a biztonsági elemzésben: ötleteket adnak a veszélyazonosításhoz, összefoglalnak hosszú jelentéseket, magyaráznak, kódot írnak és ellenőriznek. A kézikönyv 18. fejezete azonban arra is figyelmeztet, hogy a javaslataik egy része téves vagy irreleváns, és a magabiztos megfogalmazás könnyen automatizálási torzításhoz vezet. Néhány elv, amelyet minden gyakorlatban érdemes követni:\n\nElőbb te gondolkodj. Készítsd el a saját elemzésed első változatát, és csak utána kérd a modell véleményét. Így a modell kiegészít, nem helyettesít.\nAdj kontextust, és kérj bizonytalanságjelölést. Írd le a rendszert, a feltevéseket és a célt; kérd, hogy a modell jelölje a bizonytalan állításait, és ne találjon ki számokat vagy hivatkozásokat.\nEllenőrizz mindent. Különösen a számokat, a szabványpontokat, a jogi állításokat és a hivatkozásokat. A modell kimenete csak akkor kerülhet az elemzésbe, ha egy szakértő ellenőrizte.\nDokumentáld a modell szerepét. A jegyzőkönyvben vagy a biztonsági érvelésben rögzítsd, mire használtad a modellt, és ki ellenőrizte a kimenetét.\nVigyázz a bizalmas adatokkal. Valós tervadatokat csak a munkahelyed adatvédelmi szabályainak megfelelő eszközzel ossz meg.\n\nÁltalános keretprompt\n„Biztonságkritikus rendszerek elemzésében segítesz. A feladat: [a feladat rövid leírása]. A rendszer: [a rendszer leírása, határai, üzemállapotai]. Az eddigi elemzésem: [saját eredmény]. Kérlek, (1) mutass rá a hiányosságokra és a téves feltevésekre, (2) javasolj kiegészítéseket, (3) minden állításodnál jelöld, mennyire vagy biztos benne, (4) ne találj ki számadatot, szabványpontot vagy hivatkozást; ha valamit nem tudsz, mondd meg.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Bevezetés"
+    ]
+  },
+  {
+    "objectID": "index.html#technikai-tudnivalók",
+    "href": "index.html#technikai-tudnivalók",
+    "title": "Biztonságkritikus rendszerek – gyakorlati útmutató",
+    "section": "Technikai tudnivalók",
+    "text": "Technikai tudnivalók\nAz alkalmazások modern böngészőben (Chrome, Firefox, Edge, Safari) futnak. A notebookok megnyitásához Google-fiók kell; a Colab ingyenes változata minden számításhoz elegendő. A notebookok helyi Jupyter-környezetben is futtathatók (NumPy, SciPy, Matplotlib és pandas szükséges). Az útmutató, az alkalmazások és a notebookok forrása a könyv GitHub-tárolójában található. A szöveg CC BY-NC-SA 4.0, a kód MIT licenc alatt használható.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Bevezetés"
+    ]
+  },
+  {
+    "objectID": "laborok/01-balesetelemzes.html",
+    "href": "laborok/01-balesetelemzes.html",
+    "title": "1  Balesetelemzés három szemüvegen át",
+    "section": "",
+    "text": "1.1 Választható jelentések\nHáttér: a kézikönyv 1. fejezete (balesetmodellek) és 7. fejezete (STAMP és STPA).\nVálassz egyet az alábbi, nyilvánosan elérhető vizsgálati jelentések közül (vagy egy hasonló terjedelmű másikat, a gyakorlatvezetővel egyeztetve):",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balesetelemzés három szemüvegen át</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/01-balesetelemzes.html#választható-jelentések",
+    "href": "laborok/01-balesetelemzes.html#választható-jelentések",
+    "title": "1  Balesetelemzés három szemüvegen át",
+    "section": "",
+    "text": "a texasi finomító 2005-ös robbanásáról szóló CSB-jelentés (U.S. Chemical Safety and Hazard Investigation Board 2007);\na Buncefield-olajtároló 2005-ös robbanásáról szóló vizsgálóbizottsági zárójelentés (Buncefield Major Incident Investigation Board 2008);\naz Air France 447 2009-es katasztrófájáról szóló BEA-zárójelentés (Bureau d’Enquêtes et d’Analyses 2012);\naz Uber automatizált tesztjárművének 2018-as tempei balesetéről szóló NTSB-jelentés (National Transportation Safety Board 2019);\naz Ariane 5 501-es repüléséről szóló vizsgálóbizottsági jelentés (Lions 1996).",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balesetelemzés három szemüvegen át</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/01-balesetelemzes.html#feladatok",
+    "href": "laborok/01-balesetelemzes.html#feladatok",
+    "title": "1  Balesetelemzés három szemüvegen át",
+    "section": "1.2 Feladatok",
+    "text": "1.2 Feladatok\n\nEseménysor. Készíts időrendi táblázatot a baleset közvetlen előzményeiről (legalább tíz esemény): időpont, esemény, szereplő, forrás (a jelentés oldalszáma).\nSajtszelet-modell. Gyűjtsd össze a frontvonalbeli aktív hibákat és a látens feltételeket (tervezési, karbantartási, szervezeti, szabályozói). Rendezd őket rétegekbe, és jelöld, melyik „lyuk” mióta állt fenn.\nIrányítási struktúra. Rajzold fel a releváns irányítási struktúrát legalább négy szinten (például üzemeltetői kezelő, műszakvezető, üzemvezetés, vállalati vezetés, hatóság). Minden szinten add meg az irányítási műveleteket és a visszacsatolásokat.\nNem biztonságos irányítás. Legalább három szinten azonosíts egy-egy nem biztonságos irányítási műveletet, és magyarázd meg, miért volt a döntéshozó folyamatmodellje hibás (milyen információ hiányzott, torzult vagy késett).\nÖsszevetés. Egy rövid bekezdésben hasonlítsd össze a két magyarázatot: mit tesz láthatóvá a STAMP, amit a sajtszelet-modell nem, és fordítva?\nKövetelmények. Fogalmazz meg legalább öt tanulságot ellenőrizhető követelményként („A …-nak … kell …, amit … igazol”). Legalább egy szervezeti, egy emberi tényezői és egy műszaki követelmény legyen köztük.\n\nA modell mint kritikus olvasótárs\n„Egy balesetvizsgálati jelentést elemzek: [a jelentés címe]. Az eseménysor általam készített összefoglalóját alább másolom. Kérlek, (1) jelöld, mely állításaim nem következnek egyértelműen a jelentésből, (2) kérdezz rá, hol hiányzik forrás, (3) javasolj további látens feltételeket, de mindegyiknél add meg, a jelentés melyik részéből következtetsz rá; ha nem tudod, írd, hogy ez feltételezés. Ne találj ki idézetet vagy oldalszámot.”\n„Az alábbi irányítási struktúrát rajzoltam fel a balesethez: […]. Milyen visszacsatolások hiányoznak belőle? Melyik szinten látsz olyan irányítási műveletet, amelynek nincs megfelelő visszacsatolása?”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balesetelemzés három szemüvegen át</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/01-balesetelemzes.html#ellenőrző-szempontok",
+    "href": "laborok/01-balesetelemzes.html#ellenőrző-szempontok",
+    "title": "1  Balesetelemzés három szemüvegen át",
+    "section": "1.3 Ellenőrző szempontok",
+    "text": "1.3 Ellenőrző szempontok\nEgy jó megoldásban az eseménysor minden eleme forrásra visszakereshető; a látens feltételek nem csak a frontvonalat érintik; az irányítási struktúra visszacsatolásokat is tartalmaz; a nem biztonságos irányítási műveletek kontextussal együtt vannak megfogalmazva; és a követelmények ellenőrizhetők, nem általános jókívánságok („legyen jobb a biztonsági kultúra”).\n\n\n\n\nBuncefield Major Incident Investigation Board. 2008. The Buncefield Incident 11 December 2005: The Final Report of the Major Incident Investigation Board. HSE Books.\n\n\nBureau d’Enquêtes et d’Analyses. 2012. Final Report on the Accident on 1st June 2009 to the Airbus A330-203 Registered F-GZCP Operated by Air France Flight AF 447 Rio de Janeiro–Paris. BEA.\n\n\nLions, Jacques-Louis. 1996. ARIANE 5 Flight 501 Failure: Report by the Inquiry Board. European Space Agency.\n\n\nNational Transportation Safety Board. 2019. Collision Between Vehicle Controlled by Developmental Automated Driving System and Pedestrian, Tempe, Arizona, March 18, 2018. NTSB/HAR-19/03. NTSB.\n\n\nU.S. Chemical Safety and Hazard Investigation Board. 2007. Investigation Report: Refinery Explosion and Fire, BP Texas City, Texas, March 23, 2005. 2005-04-I-TX. CSB.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Balesetelemzés három szemüvegen át</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/02-kockazati-matrix.html",
+    "href": "laborok/02-kockazati-matrix.html",
+    "title": "2  Kockázati mátrix, egyéni és társadalmi kockázat",
+    "section": "",
+    "text": "2.1 Alkalmazás: kockázati mátrix tervező\nHáttér: a kézikönyv 3. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Kockázati mátrix, egyéni és társadalmi kockázat</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/02-kockazati-matrix.html#feladatok-az-alkalmazással",
+    "href": "laborok/02-kockazati-matrix.html#feladatok-az-alkalmazással",
+    "title": "2  Kockázati mátrix, egyéni és társadalmi kockázat",
+    "section": "2.2 Feladatok az alkalmazással",
+    "text": "2.2 Feladatok az alkalmazással\n\nKalibrálás. Töltsd be a ReaktorVéd példát. Nézd meg, melyik cellába kerül a reaktorfelhasadás a biztonsági funkcióval és anélkül. Mennyit változik a kvantitatív kockázat, és mennyit a mátrix színe?\nRangsorhiba. Töltsd be a „Cox rangsorhibája” példát. Magyarázd meg, miért kap az A forgatókönyv magasabb színt, mint a nyolcszor nagyobb kockázatú B. Keress egy olyan színezési szabályt, amely ezt megszünteti; okoz-e ez máshol új ellentmondást?\nTartományösszevonás. Keress két saját forgatókönyvet, amelyek ugyanabba a cellába esnek, de kockázatuk legalább százszorosan eltér. Mi a következménye ennek a döntéshozatalban?\nTervezés. Javasolj a ReaktorVéd üzemre egy 5×5-ös mátrixot a vállalati kritériumokkal összhangban (a halálos kimenetelű forgatókönyv tolerálható gyakorisága \\(10^{-5}\\)/év). Indokold a kategóriahatárokat.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Kockázati mátrix, egyéni és társadalmi kockázat</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/02-kockazati-matrix.html#notebook-egyéni-kockázat-és-fn-görbe",
+    "href": "laborok/02-kockazati-matrix.html#notebook-egyéni-kockázat-és-fn-görbe",
+    "title": "2  Kockázati mátrix, egyéni és társadalmi kockázat",
+    "section": "2.3 Notebook: egyéni kockázat és F–N görbe",
+    "text": "2.3 Notebook: egyéni kockázat és F–N görbe\nMegnyitás a Google Colabban · a notebook letöltése\nA notebook a kézikönyv IRPA-példáját reprodukálja (egy kezelő egyéni kockázata \\(4{,}3\\cdot10^{-6}\\)/év), és egy kis létesítmény F–N görbéjét veti össze kockázatkerülő kritériumvonallal. Oldd meg a notebook három feladatát.\nMintapromptok\n„Egy 5×5-ös kockázati mátrixot terveztem az alábbi kategóriahatárokkal: […]. Mutass rá, hol okozhat a mátrix rangsorhibát, és javasolj olyan forgatókönyvpárt, amely ezt szemlélteti! Számolj a gyakoriság és a következmény szorzatával, és ellenőrizd a számaidat.”\n„Magyarázd el egy vezetőnek közérthetően, miért nem szabad a kockázati mátrix színeit összeadni vagy átlagolni több forgatókönyvre! Maximum öt mondatban.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Kockázati mátrix, egyéni és társadalmi kockázat</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/02-kockazati-matrix.html#ellenőrző-szempontok",
+    "href": "laborok/02-kockazati-matrix.html#ellenőrző-szempontok",
+    "title": "2  Kockázati mátrix, egyéni és társadalmi kockázat",
+    "section": "2.4 Ellenőrző szempontok",
+    "text": "2.4 Ellenőrző szempontok\nA jó megoldás számszerű kategóriahatárokat használ, a rangsorhibákat konkrét számokkal mutatja ki, és megkülönbözteti a mátrix szerepét (gyors szűrés, kommunikáció) a kvantitatív döntéstámogatástól.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Kockázati mátrix, egyéni és társadalmi kockázat</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/03-hazop.html",
+    "href": "laborok/03-hazop.html",
+    "title": "3  HAZOP a ReaktorVéd adagolókörére",
+    "section": "",
+    "text": "3.1 A csomópont\nHáttér: a kézikönyv 5. fejezete (a ReaktorVéd folyamatábrája és a hűtőkör HAZOP-részlete).\n2. csomópont: a B reaktáns adagolása a tárolótartálytól a P-101 szivattyún és a két sorba kötött gyorszáró szelepen (XV-101, XV-102) át a reaktorig, a FIC-102 áramlásszabályozóval. Tervezési szándék: a B reaktáns 0,8–1,0 m³/h áramlással, 20–30 °C-on, a reakcióhőmérséklet (70 ± 3 °C) elérése után, legfeljebb a recept szerinti összmennyiségig kerüljön a reaktorba.\nA kézikönyv egyszerűsített folyamatábrájához képest a gyakorlathoz két elemet feltételezünk: az adagolást a FIC-102 áramlásszabályozó (FT-102 áramlásmérő, FV-102 szabályozószelep) tartja az alapjelen, és az FAH-102 nagyáramlás-riasztás a kezelőt figyelmezteti. A vezeték visszacsapó szelepet nem tartalmaz.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HAZOP a ReaktorVéd adagolókörére</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/03-hazop.html#feladatok",
+    "href": "laborok/03-hazop.html#feladatok",
+    "title": "3  HAZOP a ReaktorVéd adagolókörére",
+    "section": "3.2 Feladatok",
+    "text": "3.2 Feladatok\n\nKészíts HAZOP-jegyzőkönyvet a csomópontra az alábbi oszlopokkal: vezérszó és paraméter, eltérés, okok, következmények (a védelmek figyelmen kívül hagyásával), meglévő védelmek, javaslat, felelős. Legalább a következő kombinációkat vizsgáld: NINCS / TÖBB / KEVESEBB / FORDÍTOTT áramlás; TÖBB / KEVESEBB hőmérséklet; MÁS MINT összetétel; KORÁN / KÉSŐN (az adagolás időzítése); TÖBB mennyiség.\nJelöld meg azokat a forgatókönyveket, amelyek súlyos következményhez (megfutó reakció, mérgező kibocsátás) vezethetnek. Ezek kerülnek a 9. gyakorlat LOPA-elemzésébe.\nVizsgáld meg, hogy a meglévő védelmek közül melyik független a kezdő eseménytől. Például: véd-e a FIC-102 szabályozó a saját meghibásodása ellen?\nFogalmazz meg legalább három javaslatot, amelyek közül legalább egy inherens megoldás legyen (a kézikönyv 14. fejezete).\n\n\n\n\ntáblázat 3.1: Minta a jegyzőkönyv egy sorára\n\n\n\n\n\n\n\n\n\n\n\n\n\nVezérszó + paraméter\nEltérés\nOkok\nKövetkezmények\nVédelmek\nJavaslat\n\n\n\n\nTÖBB áramlás\na B adagolása a tervezettnél gyorsabb\nFIC-102 hibája; a szabályozószelep nyitva ragad; kezelői beállítási hiba\na B felhalmozódik, a hőfejlődés meghaladja a hűtés kapacitását, megfutó reakció\nFAH-102 riasztás; SIF (TT-101/102 → XV-101/102)\naz adagolás fizikai korlátozása szűkítőperemmel; LOPA\n\n\n\n\n\n\nMintaprompt a vezérszavas ötletgyűjtéshez\n„Egy félszakaszos reaktor B reaktáns adagolókörének HAZOP-vizsgálatát végezzük. A tervezési szándék: [lásd fent]. Az elemek: tárolótartály, P-101 szivattyú, FIC-102 áramlásszabályozó (FT-102, FV-102), FAH-102 riasztás, XV-101 és XV-102 gyorszáró szelep, visszacsapó szelep nincs. Vedd sorra a KORÁN, KÉSŐN és FORDÍTOTT vezérszót az adagolásra! Minden eltérésnél sorolj fel okokat (berendezés, ember, közmű, külső hatás) és következményeket a védelmek figyelmen kívül hagyásával. Jelöld, ha egy állításod bizonytalan, és ne adj meg konkrét számértéket.”\n\nÖnellenőrzés\nEllenőrizd a jegyzőkönyvedet: szerepel-e benne a következő négy, gyakran kimaradó forgatókönyv?\nMegoldás\n\nKORÁN: az adagolás a reakcióhőmérséklet elérése előtt indul, a B nem reagál, felhalmozódik, majd egyszerre reagál el (a kézikönyv hűtőkörös HAZOP-jának harmadik sorához hasonló „rejtett” veszély). (2) FORDÍTOTT áramlás: a szivattyú leállásakor a reaktor tartalma visszaáramolhat a B tárolótartályba, ahol nem kívánt reakció indulhat; visszacsapó szelep vagy reteszelés kell. (3) MÁS MINT összetétel: rossz anyag vagy szennyezett B kerül a reaktorba (címkézés, mintavétel, betöltési eljárás). (4) TÖBB mennyiség: a teljes adagolt mennyiség meghaladja a receptet, mert a mennyiségmérés hibás vagy a szakaszt kétszer indítják; adagoltmennyiség-felügyelet és szakaszos reteszelés kell.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HAZOP a ReaktorVéd adagolókörére</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/03-hazop.html#ellenőrző-szempontok",
+    "href": "laborok/03-hazop.html#ellenőrző-szempontok",
+    "title": "3  HAZOP a ReaktorVéd adagolókörére",
+    "section": "3.3 Ellenőrző szempontok",
+    "text": "3.3 Ellenőrző szempontok\nA jó jegyzőkönyvben a tervezési szándék számszerű, az okok konkrét eszközökhöz vagy tevékenységekhez kötődnek, a következmények a védelmek nélkül értendők, a védelmeknél a függetlenség is szerepel, és a javaslatok között az inherens megoldások is megjelennek.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>HAZOP a ReaktorVéd adagolókörére</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/04-fmea.html",
+    "href": "laborok/04-fmea.html",
+    "title": "4  FMEA és FMEDA",
+    "section": "",
+    "text": "4.1 Alkalmazás: FMEA-munkalap\nHáttér: a kézikönyv 6. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>FMEA és FMEDA</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/04-fmea.html#feladatok-az-alkalmazással",
+    "href": "laborok/04-fmea.html#feladatok-az-alkalmazással",
+    "title": "4  FMEA és FMEDA",
+    "section": "4.2 Feladatok az alkalmazással",
+    "text": "4.2 Feladatok az alkalmazással\n\nTöltsd be a VészFék radarérzékelő példáját. Keresd meg azokat a sorpárokat, ahol az RPN és a cselekvési prioritás sorrendje ellentmond egymásnak, és magyarázd meg az okát.\nKészíts saját FMEA-t a VészFék kamerájára vagy a KoboCella lézerszkennerére legalább nyolc meghibásodási móddal. Minden módnál add meg a megelőző és az észlelő intézkedést.\nVálassz ki két magas prioritású sort, és javasolj intézkedéseket először a súlyosság, majd az előfordulás, végül az észlelés csökkentésére. Hogyan változik az RPN és a prioritás?\nFigyeld meg az RPN-értékek eloszlását az alkalmazás alján: miért félrevezető az „RPN &gt; 100” típusú küszöb?",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>FMEA és FMEDA</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/04-fmea.html#notebook-fmeda",
+    "href": "laborok/04-fmea.html#notebook-fmeda",
+    "title": "4  FMEA és FMEDA",
+    "section": "4.3 Notebook: FMEDA",
+    "text": "4.3 Notebook: FMEDA\nMegnyitás a Google Colabban · a notebook letöltése\nA notebook a TT-101 távadó FMEDA-ját számolja végig (DC = 60%, SFF = 73,3%), majd megmutatja a két távadó eltérésfigyelésének és egy jobb A/D-ellenőrzésnek a hatását.\nMintapromptok\n„Egy autóipari radarérzékelő tervezési FMEA-ját készítem. Az alábbi meghibásodási módokat azonosítottam: […]. Milyen fontos meghibásodási módok hiányozhatnak a listámból (környezeti hatások, öregedés, szoftver, interfészek)? Mindegyiknél add meg, mi alapján gondolod, és jelöld, ha bizonytalan vagy.”\n„Magyarázd el, miért lehet egy alacsony RPN-ű, de 10-es súlyosságú meghibásodási mód fontosabb, mint egy 300-as RPN-ű, 4-es súlyosságú! Hivatkozz az AIAG–VDA módszertan elveire, de konkrét táblázatértéket ne idézz fejből.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>FMEA és FMEDA</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/04-fmea.html#ellenőrző-szempontok",
+    "href": "laborok/04-fmea.html#ellenőrző-szempontok",
+    "title": "4  FMEA és FMEDA",
+    "section": "4.4 Ellenőrző szempontok",
+    "text": "4.4 Ellenőrző szempontok\nA jó FMEA-ban a hatás és az ok egyértelműen elkülönül, a súlyosság a hatáshoz, az előfordulás az okhoz, az észlelés az intézkedéshez kötődik; a prioritásoknál a súlyosság az elsődleges; az FMEDA-nál pedig minden veszélyes módhoz konkrét diagnosztika és lefedettség tartozik.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>FMEA és FMEDA</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/05-stpa.html",
+    "href": "laborok/05-stpa.html",
+    "title": "5  STPA-munkalap",
+    "section": "",
+    "text": "5.1 Alkalmazás: STPA-munkalap\nHáttér: a kézikönyv 7. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>STPA-munkalap</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/05-stpa.html#feladatok",
+    "href": "laborok/05-stpa.html#feladatok",
+    "title": "5  STPA-munkalap",
+    "section": "5.2 Feladatok",
+    "text": "5.2 Feladatok\nVálaszd a VészFék vagy a KoboCella esetet (a példák betölthetők), és egészítsd ki az elemzést:\n\nLegalább két veszteség és három rendszerszintű veszély, mindegyik veszélynél a kapcsolódó veszteségekkel.\nAz irányítási struktúra legalább két szinten (például a vezető vagy a szerelő mint irányító is szerepeljen).\nMinden irányítási műveletre mind a négy UCA-típus vizsgálata; ahol egy típus nem értelmezhető, indokold.\nMinden UCA-hoz legalább két okozati forgatókönyv (F1, F2…) a négy jellegzetes csoportból (hibás folyamatmodell, hiányos vagy késő visszacsatolás, a művelet nem hajtódik végre, külső zavar), és legalább egy követelmény (K1…).\nAz alkalmazás „Ellenőrzés” része jelzi a hiányosságokat; a végén töltsd le a munkalapot Markdown-fájlként.\n\nMintapromptok\n„STPA-elemzést végzek egy kollaboratív robotcellára. Az irányítási struktúra: […]. Az irányítási műveletek: sebességcsökkentés, biztonságos megállás, újraindítás. Mind a négy UCA-típusra javasolj eseteket kontextussal! Utána kérdezz rá azokra a visszacsatolásokra, amelyek a javasolt UCA-k megelőzéséhez hiányoznak a struktúrámból.”\n„Az alábbi UCA-hoz írtam két okozati forgatókönyvet: […]. A négy jellegzetes forgatókönyvcsoport közül melyik hiányzik? Javasolj egyet abból a csoportból, és fogalmazz meg hozzá egy ellenőrizhető követelményt!”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>STPA-munkalap</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/05-stpa.html#ellenőrző-szempontok",
+    "href": "laborok/05-stpa.html#ellenőrző-szempontok",
+    "title": "5  STPA-munkalap",
+    "section": "5.3 Ellenőrző szempontok",
+    "text": "5.3 Ellenőrző szempontok\nA jó elemzésben a veszélyek rendszerállapotok (nem meghibásodások), az UCA-k kontextussal együtt szerepelnek, a forgatókönyvek az irányító folyamatmodelljének hibáit is vizsgálják, és a követelmények a forgatókönyvekből vezethetők le, nem általánosak.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Veszélyazonosítás és kockázat",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>STPA-munkalap</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/06-megbizhatosag.html",
+    "href": "laborok/06-megbizhatosag.html",
+    "title": "6  Élettartam-eloszlások és megbízhatósági becslés",
+    "section": "",
+    "text": "6.1 Alkalmazás: élettartam-eloszlások\nHáttér: a kézikönyv 8. fejezete és az A függelék.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Élettartam-eloszlások és megbízhatósági becslés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/06-megbizhatosag.html#feladatok-az-alkalmazással",
+    "href": "laborok/06-megbizhatosag.html#feladatok-az-alkalmazással",
+    "title": "6  Élettartam-eloszlások és megbízhatósági becslés",
+    "section": "6.2 Feladatok az alkalmazással",
+    "text": "6.2 Feladatok az alkalmazással\n\nÁllítsd a Weibull-eloszlás alakparaméterét 0,5-re, 1-re és 3,5-re. Hogyan változik a meghibásodási ráta és a B10-élettartam? Melyik esetben értelmes a megelőző csere?\nExponenciális eloszlásnál ellenőrizd, hogy \\(R(\\text{MTTF}) = e^{-1} \\approx 0{,}368\\) bármely \\(\\lambda\\)-ra. Mi ennek a gyakorlati jelentése?\nA kádgörbe nézetben változtasd a korai szakasz paramétereit (β₁, η₁). Mennyi idő után csökken az összesített ráta a hasznos élettartam szintjére? Ebből becsüld meg, mennyi ideig érdemes beégetni (burn-in) az eszközöket, és mi szól a beégetés ellen (költség, élettartam-fogyasztás).",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Élettartam-eloszlások és megbízhatósági becslés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/06-megbizhatosag.html#notebook-terepi-becslés-és-weibull-elemzés",
+    "href": "laborok/06-megbizhatosag.html#notebook-terepi-becslés-és-weibull-elemzés",
+    "title": "6  Élettartam-eloszlások és megbízhatósági becslés",
+    "section": "6.3 Notebook: terepi becslés és Weibull-elemzés",
+    "text": "6.3 Notebook: terepi becslés és Weibull-elemzés\nMegnyitás a Google Colabban · a notebook letöltése\nA notebook a kézikönyv két esetét számolja végig: a távadók terepi adataiból \\(\\hat\\lambda = 3{,}42\\cdot10^{-7}\\)/h és a 70%-os felső korlát \\(5{,}44\\cdot10^{-7}\\)/h; a KoboCella csapágyaira \\(\\hat\\beta = 2{,}73\\), \\(\\hat\\eta = 10\\,170\\) h (rangregresszióval \\(3{,}19\\) és \\(9460\\) h), majd bootstrap-intervallumot ad: \\(\\beta\\) 90%-os intervalluma 1,83–4,87.\nMintaprompt\n„Weibull-elemzést végeztem 12 csapágy adatán, amelyek közül három cenzúrázott. A ML-becslés β = 2,73, η = 10 170 h, a rangregresszió β = 3,19, η = 9460 h. Magyarázd el, miért térhet el a két módszer eredménye, és melyiket mikor érdemes előnyben részesíteni! Hivatkozz megbízható forrásra, ha tudsz, és jelöld, ha bizonytalan vagy.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Élettartam-eloszlások és megbízhatósági becslés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/06-megbizhatosag.html#ellenőrző-szempontok",
+    "href": "laborok/06-megbizhatosag.html#ellenőrző-szempontok",
+    "title": "6  Élettartam-eloszlások és megbízhatósági becslés",
+    "section": "6.4 Ellenőrző szempontok",
+    "text": "6.4 Ellenőrző szempontok\nA jó megoldás megkülönbözteti a pontbecslést és a konfidenciakorlátot, helyesen kezeli a cenzúrázott adatokat, és a karbantartási következtetést (csere vagy nem) az alakparaméterre és a bizonytalanságra alapozza.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Élettartam-eloszlások és megbízhatósági becslés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/07-rbd.html",
+    "href": "laborok/07-rbd.html",
+    "title": "7  Megbízhatósági blokkdiagramok",
+    "section": "",
+    "text": "7.1 Alkalmazás: blokkdiagram\nHáttér: a kézikönyv 9. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Megbízhatósági blokkdiagramok</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/07-rbd.html#feladatok-az-alkalmazással",
+    "href": "laborok/07-rbd.html#feladatok-az-alkalmazással",
+    "title": "7  Megbízhatósági blokkdiagramok",
+    "section": "7.2 Feladatok az alkalmazással",
+    "text": "7.2 Feladatok az alkalmazással\n\nHasonlítsd össze az 1oo2, a 2oo3 és az 1oo1 struktúra megbízhatóságát az idő függvényében azonos elemekkel. Ellenőrizd, hogy a 2oo3 MTTF-je \\(5/(6\\lambda)\\), azaz kisebb, mint egyetlen elemé!\nTöltsd be a hídkapcsolást, és ellenőrizd, hogy \\(t_0 = 1053{,}6\\) óránál (ahol egy elem megbízhatósága 0,9) a rendszeré 0,97848. Melyik elem Birnbaum-fontossága a legnagyobb, és miért?\nPróbáld meg a hídkapcsolást kifejezéssel leírni úgy, hogy az E elem kétszer szerepel. Miért ad hibás eredményt? (Az alkalmazás figyelmeztet.)\nA ReaktorVéd példában melyik alrendszer javítása növeli leginkább a rendszer megbízhatóságát?",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Megbízhatósági blokkdiagramok</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/07-rbd.html#notebook-hídkapcsolás-monte-carlo-közös-ok",
+    "href": "laborok/07-rbd.html#notebook-hídkapcsolás-monte-carlo-közös-ok",
+    "title": "7  Megbízhatósági blokkdiagramok",
+    "section": "7.3 Notebook: hídkapcsolás, Monte Carlo, közös ok",
+    "text": "7.3 Notebook: hídkapcsolás, Monte Carlo, közös ok\nMegnyitás a Google Colabban · a notebook letöltése\nMintaprompt\n„Egy 2oo3 szavazású érzékelőrendszer megbízhatóságát számoltam binomiális képlettel: […]. Ellenőrizd a levezetést, és magyarázd el, miért lehet a 2oo3 hosszú távon rosszabb, mint egyetlen érzékelő! Ne a végeredményt add meg, hanem a gondolatmenet hibáit jelöld.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Megbízhatósági blokkdiagramok</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/07-rbd.html#ellenőrző-szempontok",
+    "href": "laborok/07-rbd.html#ellenőrző-szempontok",
+    "title": "7  Megbízhatósági blokkdiagramok",
+    "section": "7.4 Ellenőrző szempontok",
+    "text": "7.4 Ellenőrző szempontok\nA jó megoldás tudatosan kezeli a függetlenségi feltevést, a többször előforduló elemeket minimális utakkal vagy dekompozícióval számolja, és a redundancia értékét a közös okú meghibásodás figyelembevételével ítéli meg.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Megbízhatósági blokkdiagramok</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/08-hibafa.html",
+    "href": "laborok/08-hibafa.html",
+    "title": "8  Hibafa-elemzés",
+    "section": "",
+    "text": "8.1 Alkalmazás: hibafa-elemző\nHáttér: a kézikönyv 10. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Hibafa-elemzés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/08-hibafa.html#feladatok-az-alkalmazással",
+    "href": "laborok/08-hibafa.html#feladatok-az-alkalmazással",
+    "title": "8  Hibafa-elemzés",
+    "section": "8.2 Feladatok az alkalmazással",
+    "text": "8.2 Feladatok az alkalmazással\n\nTöltsd be a ReaktorVéd energiával működtetett változatát. Ellenőrizd a minimális vágatokat és a csúcsesemény valószínűségét (\\(2{,}17\\cdot10^{-3}\\)). Melyek az egypontos hibák?\nKapcsold ki a HEN házeseményt (energiamentesítéssel működtetett, hibabiztos kialakítás). Hogyan változnak a vágatok és a valószínűség (\\(1{,}73\\cdot10^{-4}\\))?\nTöltsd be a közös okú meghibásodást is tartalmazó változatot. Ellenőrizd az \\(1{,}335\\cdot10^{-3}\\) értéket, és értelmezd a Fussell–Vesely-fontosságokat. Mi a következő legfontosabb tervezési lépés?\nÍrd be a kézikönyv MOCUS-példáját, és ellenőrizd kézzel a vágatokat és a pontos értéket (0,00217).\nÉpíts saját hibafát a VészFék „indokolatlan erős fékezés” csúcseseményére legalább hat alapeseménnyel!",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Hibafa-elemzés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/08-hibafa.html#notebook-mocus-bdd-fontosság-monte-carlo",
+    "href": "laborok/08-hibafa.html#notebook-mocus-bdd-fontosság-monte-carlo",
+    "title": "8  Hibafa-elemzés",
+    "section": "8.3 Notebook: MOCUS, BDD, fontosság, Monte Carlo",
+    "text": "8.3 Notebook: MOCUS, BDD, fontosság, Monte Carlo\nMegnyitás a Google Colabban · a notebook letöltése\nMintapromptok\n„Az alábbi hibafát írtam fel a »[csúcsesemény]« eseményre: […]. Ellenőrizd a NUREG-0492 szerkesztési szabályai alapján (hibaként megfogalmazott események, teljes kapuk, nincs kapu–kapu kapcsolat)! Sorold fel a szabálysértéseket, de ne írd át helyettem a fát.”\n„Az energiával működtetett változat fontossági mértékei: […]. Magyarázd el közérthetően egy üzemvezetőnek, mit jelent a 460-as kockázatnövelési érték a tápegységekre, és milyen üzemeltetési szabály következik belőle!”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Hibafa-elemzés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/08-hibafa.html#ellenőrző-szempontok",
+    "href": "laborok/08-hibafa.html#ellenőrző-szempontok",
+    "title": "8  Hibafa-elemzés",
+    "section": "8.4 Ellenőrző szempontok",
+    "text": "8.4 Ellenőrző szempontok\nA jó megoldásban a csúcsesemény pontosan megfogalmazott, az ismétlődő események következetesen azonos névvel szerepelnek, a vágatok minimálisak, a valószínűség mellett a fontossági mértékek értelmezése is megjelenik, és a tervezési javaslat a domináns vágatokra irányul.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Hibafa-elemzés</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/09-lopa.html",
+    "href": "laborok/09-lopa.html",
+    "title": "9  LOPA és eseményfa",
+    "section": "",
+    "text": "9.1 Alkalmazás: LOPA és eseményfa\nHáttér: a kézikönyv 11. fejezete; a forgatókönyvek a 3. gyakorlat HAZOP-jegyzőkönyvéből származnak.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>LOPA és eseményfa</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/09-lopa.html#feladatok-az-alkalmazással",
+    "href": "laborok/09-lopa.html#feladatok-az-alkalmazással",
+    "title": "9  LOPA és eseményfa",
+    "section": "9.2 Feladatok az alkalmazással",
+    "text": "9.2 Feladatok az alkalmazással\n\nTöltsd be a ReaktorVéd példát, és ellenőrizd az eredményt (RRF ≥ 500, SIL 2). Miért nem számítható be a TIC-103 és az RD-101?\nTegyük fel, hogy a hasadótárcsa kétfázisú méretezését igazolták. Jelöld be mind a négy kritériumot: hogyan változik a SIL-követelmény? Milyen új kérdéseket vet fel ez a döntés?\nKapcsold be a feltételes módosítókat. Mennyivel enyhül a követelmény? Miért tiltja ezt sok vállalat?\nTöltsd be a benzintartály-példát. Melyik réteg sérti a függetlenség, melyik az auditálhatóság és melyik a hatásosság követelményét? Kapcsold össze a kézikönyv Buncefield-elemzésével: melyik réteg hibája játszott ott szerepet?\nVégezd el a LOPA-t a saját HAZOP-jegyzőkönyved két súlyos forgatókönyvére.\n\nMintapromptok\n„LOPA-t végzek az alábbi forgatókönyvre: […]. A független védelmi rétegként beszámított védelmek: […]. Vizsgáld meg mindegyiket a négy IPL-kritérium (hatásos, független, megbízható, auditálható) szerint, és kérdezz rá azokra az információkra, amelyek a döntéshez hiányoznak! A CCPS-irodalom tipikus értékeit csak tájékoztatásul említsd, és jelöld, ha bizonytalan vagy.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>LOPA és eseményfa</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/09-lopa.html#ellenőrző-szempontok",
+    "href": "laborok/09-lopa.html#ellenőrző-szempontok",
+    "title": "9  LOPA és eseményfa",
+    "section": "9.3 Ellenőrző szempontok",
+    "text": "9.3 Ellenőrző szempontok\nA jó LOPA-ban a kezdő esemény gyakorisága és a rétegek PFD-je forráshoz kötött, minden beszámított réteg függetlensége indokolt, a feltételes módosítók használata a vállalati szabállyal összhangban van, és a szükséges SIL mellett a nem beszámított védelmek sorsáról is döntés születik.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>LOPA és eseményfa</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/10-markov.html",
+    "href": "laborok/10-markov.html",
+    "title": "10  Markov-modellek és rendelkezésre állás",
+    "section": "",
+    "text": "10.1 Alkalmazás: Markov-szerkesztő\nHáttér: a kézikönyv 12. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Markov-modellek és rendelkezésre állás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/10-markov.html#feladatok-az-alkalmazással",
+    "href": "laborok/10-markov.html#feladatok-az-alkalmazással",
+    "title": "10  Markov-modellek és rendelkezésre állás",
+    "section": "10.2 Feladatok az alkalmazással",
+    "text": "10.2 Feladatok az alkalmazással\n\nTöltsd be a javítható elem szemléltető változatát, és figyeld meg, hogyan közelít a rendelkezésre állás a tartós értékhez. Mitől függ az időállandó?\nAz 1oo2 példában ellenőrizd a kézikönyv értékeit (\\(U = 4{,}1\\cdot10^{-5}\\), MTTF \\(= 1{,}94\\cdot10^5\\) h). Állítsd a közös okú átmenetet nullára: mennyivel nő az MTTF?\nModellezz két javítócsapatot: a „rendszerhiba → egy jó” átmenet rátáját állítsd \\(2\\mu = 0{,}25\\)/h-ra. Mi változik és mi nem? Miért hat ez a módosítás jóval kevésbé, mint a közös okú átmenet csökkentése?\nA hideg tartalék példájában az A elem \\(\\lambda = 10^{-4}\\)/h rátája két átmenetre oszlik: sikeres átkapcsolás \\((1-p)\\lambda\\) és sikertelen indulás \\(p\\lambda\\) (a példában \\(p = 0{,}02\\)). Változtasd \\(p\\)-t, és keresd meg, mekkora indulási hiba mellett lesz a hideg tartalék MTTF-je kisebb, mint a meleg tartaléké (\\(1{,}5/\\lambda\\))! Hogyan módosítja az eredményt a tartalék rejtett meghibásodása (a „B rejtett hiba” állapot)?",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Markov-modellek és rendelkezésre állás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/10-markov.html#notebook-markov-modellek-és-többfázisú-pfd",
+    "href": "laborok/10-markov.html#notebook-markov-modellek-és-többfázisú-pfd",
+    "title": "10  Markov-modellek és rendelkezésre állás",
+    "section": "10.3 Notebook: Markov-modellek és többfázisú PFD",
+    "text": "10.3 Notebook: Markov-modellek és többfázisú PFD\nMegnyitás a Google Colabban · a notebook letöltése\nMintaprompt\n„Egy 2oo3 szavazású, javítható rendszer Markov-modelljét írtam fel: [állapotok és átmenetek]. Ellenőrizd, hogy az intenzitásmátrix sorösszegei nullák-e, hogy minden fizikailag lehetséges átmenetet felvettem-e, és hogy a közös okú meghibásodást helyesen modelleztem-e! A megoldást ne számold ki.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Markov-modellek és rendelkezésre állás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/10-markov.html#ellenőrző-szempontok",
+    "href": "laborok/10-markov.html#ellenőrző-szempontok",
+    "title": "10  Markov-modellek és rendelkezésre állás",
+    "section": "10.4 Ellenőrző szempontok",
+    "text": "10.4 Ellenőrző szempontok\nA jó modellben minden állapot fizikai jelentése egyértelmű, az átmenetek rátái forráshoz kötöttek, a kérdéstípus (tranziens, tartós, elnyelő állapotos) helyesen választott, és az eredmény értelmezése a modell feltevéseinek (exponenciális tartózkodási idő) korlátait is figyelembe veszi.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Markov-modellek és rendelkezésre állás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/11-sil.html",
+    "href": "laborok/11-sil.html",
+    "title": "11  PFD és SIL-igazolás",
+    "section": "",
+    "text": "11.1 Alkalmazás: PFD- és SIL-kalkulátor\nHáttér: a kézikönyv 13. fejezete.\nAz alkalmazás megnyitása külön lapon",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>PFD és SIL-igazolás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/11-sil.html#feladatok-az-alkalmazással",
+    "href": "laborok/11-sil.html#feladatok-az-alkalmazással",
+    "title": "11  PFD és SIL-igazolás",
+    "section": "11.2 Feladatok az alkalmazással",
+    "text": "11.2 Feladatok az alkalmazással\n\nTöltsd be a ReaktorVéd példát, és ellenőrizd a kézikönyv értékeit (PFD = \\(1{,}37\\cdot10^{-3}\\), RRF = 731, STR = 0,133/év).\nÁllítsd a szelepek próbalefedettségét 0,9-re. Teljesül-e a követelmény? Ezután adj meg havi részleges löketpróbát 0,6-os lefedettséggel (PST időköz 730 h, DCPST 0,6, PTC 1). Mekkora a tartalék?\nCseréld a távadók architektúráját 2oo3-ra. Hogyan változik a PFD és a téves leállások gyakorisága?\nRedundáns tápellátásnál két tápegység egyidejű kiesése kell a téves leálláshoz: az egyéb téves leállási ráta \\(2\\cdot(2\\lambda_{PSU}^2\\,\\text{MTTR}) = 8\\cdot10^{-10}\\)/h (\\(\\lambda_{PSU} = 5\\cdot10^{-6}\\)/h, MTTR = 8 h). Írd be ezt az értéket: ellenőrizd, hogy az MTTFS a kézikönyv szerinti mintegy 22 év lesz, és nézd meg, melyik alrendszer vált dominánssá.\nA tornádódiagram alapján fogalmazd meg, mely üzemeltetési feltevéseket kell a biztonsági érvelésben mutatóval követni!",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>PFD és SIL-igazolás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/11-sil.html#notebook-sil-igazolás-és-bizonytalanság",
+    "href": "laborok/11-sil.html#notebook-sil-igazolás-és-bizonytalanság",
+    "title": "11  PFD és SIL-igazolás",
+    "section": "11.3 Notebook: SIL-igazolás és bizonytalanság",
+    "text": "11.3 Notebook: SIL-igazolás és bizonytalanság\nMegnyitás a Google Colabban · a notebook letöltése\nA notebook a képleteket reprodukálja, tornádódiagramot rajzol, és Monte Carlo-szimulációval megmutatja, hogy a bizonytalanság figyelembevételével mekkora a valószínűsége a követelmény túllépésének.\nMintaprompt\n„Egy biztonsági funkció PFD-számítását végeztem: [adatok, architektúrák, eredmény]. Készíts listát azokról a feltevésekről, amelyekre a számítás épül (például a próba lefedettsége, a javítási idő, a közös okú tényezők, az adatok forrása), és mindegyikhez javasolj egy üzem közben mérhető mutatót! Szabványpontra csak akkor hivatkozz, ha biztos vagy benne.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>PFD és SIL-igazolás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/11-sil.html#ellenőrző-szempontok",
+    "href": "laborok/11-sil.html#ellenőrző-szempontok",
+    "title": "11  PFD és SIL-igazolás",
+    "section": "11.4 Ellenőrző szempontok",
+    "text": "11.4 Ellenőrző szempontok\nA jó igazolás mindhárom pillért (PFD, architekturális korlátok, szisztematikus képesség) kezeli, minden adat forrását rögzíti, az érzékenységvizsgálatból üzemeltetési követelményeket vezet le, és a téves leállásokat is értékeli.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Kvantitatív módszerek",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>PFD és SIL-igazolás</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/12-projekt.html",
+    "href": "laborok/12-projekt.html",
+    "title": "12  Projektfeladat: egy rendszer teljes biztonsági elemzése",
+    "section": "",
+    "text": "12.1 Választható rendszerek\nHáttér: a kézikönyv egésze, különösen a 14., 15., 16., 17. és 18. fejezet.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Összegzés",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Projektfeladat: egy rendszer teljes biztonsági elemzése</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/12-projekt.html#választható-rendszerek",
+    "href": "laborok/12-projekt.html#választható-rendszerek",
+    "title": "12  Projektfeladat: egy rendszer teljes biztonsági elemzése",
+    "section": "",
+    "text": "automatizált raktári szállítójármű (AMR) emberekkel közös térben;\norvostechnikai infúziós pumpa;\nvasúti átjáró sorompójának vezérlése;\nhidrogéntöltő állomás nyomásvédelme;\negy saját, munkahelyi vagy kutatási rendszer (a gyakorlatvezetővel egyeztetve).",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Összegzés",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Projektfeladat: egy rendszer teljes biztonsági elemzése</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/12-projekt.html#a-munka-menete",
+    "href": "laborok/12-projekt.html#a-munka-menete",
+    "title": "12  Projektfeladat: egy rendszer teljes biztonsági elemzése",
+    "section": "12.2 A munka menete",
+    "text": "12.2 A munka menete\nA projekt hét lépésből áll (12.1. ábra). A lépések egymásra épülnek, de a tervezés természeténél fogva iteratív: ha a kvantitatív igazolás nem teljesül, az architektúrához kell visszatérni.\n\n\n\n\n\n\nábra 12.1: A projektfeladat lépései. Az architektúra és az igazolás között iteráció zajlik, amíg minden követelmény teljesül.\n\n\n\n\n\n\ntáblázat 12.1: A projektfeladat lépései és elvárt eredményei\n\n\n\n\n\n\n\n\n\n\nLépés\nElvárt eredmény\nKézikönyv\n\n\n\n\n1. rendszer és határok\na funkciók, az üzemállapotok, a környezet és a határok leírása; feltevések\n2., 4. fejezet\n\n\n2. veszélyazonosítás\nPHA, illetve a rendszerhez illő HAZOP, FHA/HARA vagy STPA\n5–7. fejezet\n\n\n3. kockázat és integritás\nkockázatértékelés; LOPA, HARA vagy PLr alapján a biztonsági funkciók integritási követelménye\n3., 4., 11. fejezet\n\n\n4. architektúra\nhibaviselkedési stratégia, redundancia, diagnosztika, közös okok elleni intézkedések\n14. fejezet\n\n\n5. kvantitatív igazolás\nhibafa vagy blokkdiagram, szükség esetén Markov-modell; PFD vagy PFH, érzékenység\n8–13. fejezet\n\n\n6. szoftver, ember, kiberbiztonság, MI\na releváns szempontok elemzése és intézkedései\n15., 16., 18. fejezet\n\n\n7. biztonsági érvelés\nGSN-váz a fő állításokkal, bizonyítékokkal és feltevésekkel; az üzemeltetési mutatók\n17. fejezet",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Összegzés",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Projektfeladat: egy rendszer teljes biztonsági elemzése</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/12-projekt.html#mintapromptok-a-lépésekhez",
+    "href": "laborok/12-projekt.html#mintapromptok-a-lépésekhez",
+    "title": "12  Projektfeladat: egy rendszer teljes biztonsági elemzése",
+    "section": "12.3 Mintapromptok a lépésekhez",
+    "text": "12.3 Mintapromptok a lépésekhez\n1–2. lépés: rendszerleírás és veszélyazonosítás\n„Egy [rendszer] biztonsági elemzését kezdem. A rendszerleírásom: […]. Kérdezz rá azokra a határokra, üzemállapotokra és külső feltételekre, amelyeket nem adtam meg, és amelyek a veszélyazonosításhoz szükségesek! Utána javasolj egy előzetes veszélylistát, de mindegyik veszélynél jelöld, hogy ez a leírásomból következik vagy általános tapasztalat.”\n\n3–5. lépés: integritási követelmény és igazolás\n„Az alábbi biztonsági funkcióra [SIL/PL] követelményt határoztam meg ezzel az indoklással: […]. Ellenőrizd a gondolatmenetet: van-e benne kettős beszámítás, nem független védelem vagy indokolatlan feltevés? Az architektúrámra kapott PFD/PFH-értéket ne számold újra; a feltevéseimet vizsgáld.”\n\n6. lépés: szoftver, ember, kiberbiztonság, MI\n„A rendszeremben [szoftveres / emberi / hálózati / gépi tanulási] elem is van: […]. Sorold fel azokat a veszélyforrásokat, amelyeket a hagyományos meghibásodás-alapú elemzés nem tár fel (például a rendeltetésszerű funkció korlátai, az automatizálás iróniái, támadási útvonalak), és mindegyikhez javasolj egy tervezési intézkedést!”\n\n7. lépés: biztonsági érvelés\n„Az alábbi GSN-vázat készítettem a biztonsági érvelésemhez: […]. Keress benne rejtett feltevéseket, a bizonyíték és az állítás közötti réseket, és olyan állításokat, amelyek nem ellenőrizhetők! Mindegyikre javasolj pontosabb megfogalmazást.”",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Összegzés",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Projektfeladat: egy rendszer teljes biztonsági elemzése</span>"
+    ]
+  },
+  {
+    "objectID": "laborok/12-projekt.html#ellenőrző-szempontok",
+    "href": "laborok/12-projekt.html#ellenőrző-szempontok",
+    "title": "12  Projektfeladat: egy rendszer teljes biztonsági elemzése",
+    "section": "12.4 Ellenőrző szempontok",
+    "text": "12.4 Ellenőrző szempontok\nA projekt akkor jó, ha a lépések következetesen egymásra épülnek (a veszélyekből követelmények, a követelményekből architektúra, az architektúrából igazolás lesz); a módszerválasztás indokolt; minden szám és feltevés forráshoz kötött; a kvantitatív eredmény mellett az érzékenység és a bizonytalanság is szerepel; a biztonsági érvelés a gyenge pontokat is őszintén megmutatja; és dokumentált, mire és hogyan használtad a nagy nyelvi modelleket.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Összegzés",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Projektfeladat: egy rendszer teljes biztonsági elemzése</span>"
+    ]
+  },
+  {
+    "objectID": "irodalom.html",
+    "href": "irodalom.html",
+    "title": "Irodalom",
+    "section": "",
+    "text": "Buncefield Major Incident Investigation Board. 2008. The\nBuncefield Incident 11 December 2005: The Final Report of\nthe Major Incident Investigation Board. HSE Books.\n\n\nBureau d’Enquêtes et d’Analyses. 2012. Final Report on the Accident\non 1st June 2009 to the Airbus A330-203 Registered\nF-GZCP Operated by Air France Flight AF\n447 Rio de Janeiro–Paris. BEA.\n\n\nLions, Jacques-Louis. 1996. ARIANE 5 Flight 501\nFailure: Report by the Inquiry Board. European Space Agency.\n\n\nNational Transportation Safety Board. 2019. Collision Between\nVehicle Controlled by Developmental Automated Driving System and\nPedestrian, Tempe, Arizona, March 18,\n2018. NTSB/HAR-19/03. NTSB.\n\n\nU.S. Chemical Safety and Hazard Investigation Board. 2007.\nInvestigation Report: Refinery Explosion and Fire, BP\nTexas City, Texas, March 23, 2005.\n2005-04-I-TX. CSB.",
+    "crumbs": [
+      "Gyakorlati útmutató",
+      "Irodalom"
+    ]
+  }
+]

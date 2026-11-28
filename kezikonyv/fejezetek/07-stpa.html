@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+
+<title>7&nbsp; Rendszerelméleti veszélyelemzés: STAMP és STPA – Biztonságkritikus rendszerek</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../fejezetek/08-megbizhatosag.html" rel="next">
+<link href="../fejezetek/06-fmea.html" rel="prev">
+<link href="../assets/logo/pe-favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4bb6adbf2c391f8ec7a8d9fd34cf9cbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési hivatkozás másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a fejezetben",
+    "search-more-matches-text": "további találat ebben a fejezetben",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "Keresés a könyvben",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<meta property="og:title" content="7&nbsp; Rendszerelméleti veszélyelemzés: STAMP és STPA – Biztonságkritikus rendszerek">
+<meta property="og:description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+<meta property="og:image" content="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/abrak/gen/terkep-07.svg">
+<meta property="og:site_name" content="Biztonságkritikus rendszerek">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/">
+    <span class="navbar-title">Biztonságkritikus rendszerek</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigáció ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Kézikönyv</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/"> 
+<span class="menu-text">Gyakorlati útmutató</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/#textbooks"> 
+<span class="menu-text">Összes tankönyv</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/tree/main/kezikonyv/" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+            <div id="quarto-search" class="" title="Keresés"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/05-veszelyazonositas.html">II. rész – Veszélyazonosítás</a></li><li class="breadcrumb-item"><a href="../fejezetek/07-stpa.html"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/" class="sidebar-logo-link">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. rész – Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/01-balesetek.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/02-fogalmak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2.</span>&nbsp; <span class="chapter-title">Fogalmak: veszély, kockázat, biztonság, megbízhatóság</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/03-kockazatertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3.</span>&nbsp; <span class="chapter-title">Kockázatértékelés és a kockázat elfogadhatósága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/04-eletciklus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4.</span>&nbsp; <span class="chapter-title">A biztonsági életciklus és a szabványok rendszere</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. rész – Veszélyazonosítás</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/05-veszelyazonositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5.</span>&nbsp; <span class="chapter-title">Veszélyazonosítás: a veszélylistáktól a HAZOP-ig</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/06-fmea.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6.</span>&nbsp; <span class="chapter-title">FMEA, FMECA és FMEDA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/07-stpa.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. rész – Kvantitatív megbízhatóság és biztonság</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/08-megbizhatosag.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8.</span>&nbsp; <span class="chapter-title">Megbízhatóság-elmélet és élettartam-adatok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/09-rbd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9.</span>&nbsp; <span class="chapter-title">Rendszermegbízhatóság: blokkdiagramok és k-ból-n rendszerek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/10-hibafa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10.</span>&nbsp; <span class="chapter-title">Hibafa-elemzés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/11-esemenyfa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/12-markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12.</span>&nbsp; <span class="chapter-title">Markov-modellek és rendelkezésre állás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/13-sil.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13.</span>&nbsp; <span class="chapter-title">A biztonsági integritás igazolása: PFD, PFH és SIL</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. rész – Tervezés biztonságra</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/14-architekturak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14.</span>&nbsp; <span class="chapter-title">Biztonságos architektúrák és tervezési elvek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/15-szoftver.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15.</span>&nbsp; <span class="chapter-title">A szoftver biztonsága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/16-ember.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16.</span>&nbsp; <span class="chapter-title">Az ember a biztonságkritikus rendszerben</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. rész – Bizonyítás és új kihívások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/17-biztonsagi-erveles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17.</span>&nbsp; <span class="chapter-title">Biztonsági érvelés és igazolás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/18-uj-kihivasok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../irodalom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalom</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/a-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A.</span>&nbsp; <span class="chapter-title">Valószínűségszámítási összefoglaló</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/b-esettanulmanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B.</span>&nbsp; <span class="chapter-title">A három esettanulmány</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/c-szoszedet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C.</span>&nbsp; <span class="chapter-title">Magyar–angol szószedet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/d-szabvanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D.</span>&nbsp; <span class="chapter-title">Szabványok és jogszabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Ezen az oldalon</h2>
+   
+  <ul>
+  <li><a href="#sec-miert-stpa" id="toc-sec-miert-stpa" class="nav-link active" data-scroll-target="#sec-miert-stpa"><span class="header-section-number">7.1.</span> Miért kell új módszer?</a></li>
+  <li><a href="#sec-stamp" id="toc-sec-stamp" class="nav-link" data-scroll-target="#sec-stamp"><span class="header-section-number">7.2.</span> A STAMP modell</a></li>
+  <li><a href="#sec-stpa-lepesek" id="toc-sec-stpa-lepesek" class="nav-link" data-scroll-target="#sec-stpa-lepesek"><span class="header-section-number">7.3.</span> Az STPA lépései</a>
+  <ul class="collapse">
+  <li><a href="#sec-stpa-1" id="toc-sec-stpa-1" class="nav-link" data-scroll-target="#sec-stpa-1"><span class="header-section-number">7.3.1.</span> 1. lépés: az elemzés céljának meghatározása</a></li>
+  <li><a href="#sec-stpa-2" id="toc-sec-stpa-2" class="nav-link" data-scroll-target="#sec-stpa-2"><span class="header-section-number">7.3.2.</span> 2. lépés: az irányítási struktúra modellezése</a></li>
+  <li><a href="#sec-stpa-3" id="toc-sec-stpa-3" class="nav-link" data-scroll-target="#sec-stpa-3"><span class="header-section-number">7.3.3.</span> 3. lépés: nem biztonságos irányítási akciók</a></li>
+  <li><a href="#sec-stpa-4" id="toc-sec-stpa-4" class="nav-link" data-scroll-target="#sec-stpa-4"><span class="header-section-number">7.3.4.</span> 4. lépés: veszteségforgatókönyvek</a></li>
+  </ul></li>
+  <li><a href="#sec-stpa-kobocella" id="toc-sec-stpa-kobocella" class="nav-link" data-scroll-target="#sec-stpa-kobocella"><span class="header-section-number">7.4.</span> Kidolgozott STPA a KoboCella esetre</a>
+  <ul class="collapse">
+  <li><a href="#sec-stpa-kobocella-1" id="toc-sec-stpa-kobocella-1" class="nav-link" data-scroll-target="#sec-stpa-kobocella-1"><span class="header-section-number">7.4.1.</span> Veszteségek, veszélyek, korlátok</a></li>
+  <li><a href="#sec-stpa-kobocella-2" id="toc-sec-stpa-kobocella-2" class="nav-link" data-scroll-target="#sec-stpa-kobocella-2"><span class="header-section-number">7.4.2.</span> Az irányítási struktúra</a></li>
+  <li><a href="#sec-stpa-kobocella-3" id="toc-sec-stpa-kobocella-3" class="nav-link" data-scroll-target="#sec-stpa-kobocella-3"><span class="header-section-number">7.4.3.</span> Nem biztonságos irányítási akciók</a></li>
+  <li><a href="#sec-stpa-kobocella-4" id="toc-sec-stpa-kobocella-4" class="nav-link" data-scroll-target="#sec-stpa-kobocella-4"><span class="header-section-number">7.4.4.</span> Veszteségforgatókönyvek és követelmények</a></li>
+  </ul></li>
+  <li><a href="#sec-stpa-hely" id="toc-sec-stpa-hely" class="nav-link" data-scroll-target="#sec-stpa-hely"><span class="header-section-number">7.5.</span> Az STPA helye a módszerek között</a>
+  <ul class="collapse">
+  <li><a href="#sec-stpa-korlatai" id="toc-sec-stpa-korlatai" class="nav-link" data-scroll-target="#sec-stpa-korlatai"><span class="header-section-number">7.5.1.</span> Erősségek és korlátok</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/07-stpa.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/07-stpa.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/05-veszelyazonositas.html">II. rész – Veszélyazonosítás</a></li><li class="breadcrumb-item"><a href="../fejezetek/07-stpa.html"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-stpa" class="quarto-section-identifier"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="../abrak/gen/terkep-07.svg" class="img-fluid" style="width:100.0%"></p>
+<p>Az FMEA és a hibafa alapfeltevése, hogy a balesetek alkatrészhibákból vagy azok kombinációiból fakadnak. A szoftverintenzív, automatizált, emberrel együttműködő rendszerekben azonban egyre gyakoribbak azok a balesetek, amelyekben egyetlen alkatrész sem hibásodik meg. A baleset a komponensek nem biztonságos kölcsönhatásából, hibás követelményekből vagy az ember és az automatizálás félreértéséből fakad. Az <a href="01-balesetek.html" class="quarto-xref"><span>1</span></a>. fejezetben bemutatott Mars Polar Lander, a Boeing 737 MAX vagy az Uber-baleset is ilyen. Erre a kihívásra adott választ Nancy Leveson STAMP-modellje és az erre épülő veszélyelemzési módszer, az STPA. Ez a fejezet a módszert a KoboCella kollaboratív robotcelláján vezeti végig.</p>
+<div class="doboz doboz-cel"><div class="doboz-cim">Tanulási eredmények</div><div class="doboz-tartalom">
+<p>A fejezet végére képes leszel</p>
+<ul>
+<li>elmagyarázni, miért nem elegendőek az alkatrészhiba-alapú módszerek a szoftverintenzív és ember–automatizálás rendszerekben;</li>
+<li>leírni a STAMP fogalmait: biztonsági korlát, hierarchikus irányítási struktúra, folyamatmodell, visszacsatolás;</li>
+<li>végigvezetni az STPA négy lépését: veszteségek és veszélyek meghatározása, irányítási struktúra modellezése, nem biztonságos irányítási akciók azonosítása, veszteségforgatókönyvek feltárása;</li>
+<li>az STPA eredményeiből biztonsági követelményeket levezetni;</li>
+<li>összevetni az STPA-t a hagyományos módszerekkel, és tudni, mikor melyiket érdemes alkalmazni.</li>
+</ul>
+</div></div>
+<section id="sec-miert-stpa" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-miert-stpa"><span class="header-section-number">7.1.</span> Miért kell új módszer?</h2>
+<p>A hagyományos veszélyelemzési módszerek (FMEA, hibafa, HAZOP) az 1950–1970-es évek elektromechanikus rendszereire születtek. Ezekben a baleset tipikusan valóban egy vagy több alkatrész meghibásodásából fakadt, és a komponensek közötti kölcsönhatások viszonylag egyszerűek, átláthatók voltak. A mai rendszerekben három dolog változott meg <span class="citation" data-cites="leveson2011">(<a href="../irodalom.html#ref-leveson2011" role="doc-biblioref">Leveson 2011</a>)</span>:</p>
+<ol type="1">
+<li><strong>A szoftver nem hibásodik meg, mégis okozhat balesetet.</strong> A szoftver pontosan azt teszi, amit a kód előír. Ha a követelmény hibás vagy hiányos (nem gondolt egy működési helyzetre), a szoftver „helyesen” fog veszélyes dolgot tenni. A szoftverhiba-arány fogalmának nincs értelme, és a „meghibásodás” helyett a „nem biztonságos viselkedés” a helyes kategória.</li>
+<li><strong>A komponensek kölcsönhatása bonyolulttá vált.</strong> Egy modern jármű vagy gyártócella tucatnyi irányító egységből áll, amelyek hálózaton kommunikálnak. A veszély nem egy komponensben, hanem a kölcsönhatásban rejlik: két, külön-külön helyesen működő funkció együtt nem biztonságos.</li>
+<li><strong>Az ember szerepe megváltozott.</strong> Az ember már nem közvetlen kezelő, hanem felügyelő, aki az automatizálás állapotát értelmezi, és szükség esetén beavatkozik. A tipikus hiba nem a „rossz gomb megnyomása”, hanem az, hogy az ember másnak hiszi a rendszer állapotát, mint amilyen (üzemmód-tévesztés), vagy nem érti, mit csinál az automatizálás.</li>
+</ol>
+<p>Az alkatrészhiba-alapú módszerek ezeket a jelenségeket rosszul kezelik. Az FMEA-ban a szoftvernek nincs meghibásodási módja abban az értelemben, ahogy egy szelepnek; a hibafa alapeseményei között nem szerepel az, hogy „a követelmény nem vette figyelembe a lábak kinyitásakor keletkező rezgést”.</p>
+</section>
+<section id="sec-stamp" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-stamp"><span class="header-section-number">7.2.</span> A STAMP modell</h2>
+<p>A STAMP (<em>Systems-Theoretic Accident Model and Processes</em>) a rendszerelméletre és az irányításelméletre épül <span class="citation" data-cites="leveson2011">(<a href="../irodalom.html#ref-leveson2011" role="doc-biblioref">Leveson 2011</a>)</span>. Három alapfogalma van.</p>
+<p><strong>Biztonsági korlátok.</strong> A biztonság a rendszer emergens tulajdonsága: nem az egyes komponensekben, hanem a komponensek viselkedését korlátozó szabályokban jelenik meg. A biztonsági korlát (<em>safety constraint</em>) olyan feltétel, amelynek teljesülnie kell ahhoz, hogy a rendszer ne kerüljön veszélyes állapotba („a robot sebessége 250 mm/s alatt legyen, ha ember van a közelében”).</p>
+<p><strong>Hierarchikus irányítási struktúra.</strong> A biztonsági korlátokat irányítók érvényesítik, amelyek hierarchiába rendeződnek: a jogalkotótól és a hatóságtól a vállalatvezetésen, a mérnöki szervezeten és a kezelőn át az automatikus irányítókig. Minden szint irányítja az alatta lévőt (követelményekkel, utasításokkal, irányító parancsokkal), és visszajelzést kap tőle (jelentésekkel, mérésekkel).</p>
+<p><strong>Folyamatmodell.</strong> Minden irányító, ember és gép egyaránt, a döntéseit a saját <strong>folyamatmodellje</strong> alapján hozza: az irányított folyamat állapotáról alkotott képe alapján (<a href="#fig-iranyitasi-hurok" class="quarto-xref"><span>7.1</span></a>. ábra). Egy emberi kezelő folyamatmodellje a mentális modellje, egy szoftveré a belső változói. A balesetek jelentős része abból fakad, hogy a folyamatmodell eltér a valóságtól: a Therac-25 szoftvere más beállítást „hitt”, mint ami valójában volt; a 737 MAX MCAS-funkciója a hibás érzékelőjel miatt túl nagynak „hitte” az állásszöget; az Uber szoftvere a gyalogost minden átsorolásnál új objektumnak „hitte”.</p>
+<div id="fig-iranyitasi-hurok" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iranyitasi-hurok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/iranyitasi-hurok.svg" class="img-fluid figure-img" style="width:92.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iranyitasi-hurok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">7.1. ábra.</span> Az általános irányítási hurok a STAMP szerint, a lehetséges hibaforrásokkal. Az irányító döntéseit a folyamatmodellje alapján hozza, amely a visszacsatolásból frissül.
+</figcaption>
+</figure>
+</div>
+<p>A STAMP szerint a baleset oka mindig az, hogy egy biztonsági korlát nem érvényesült. Ennek lehetséges okai az irányítási hurok elemeihez köthetők: az irányító nem ad ki szükséges parancsot, vagy nem biztonságos parancsot ad; a parancsot rosszkor vagy rossz ideig adja; a parancs nem hajtódik végre; a visszacsatolás hiányzik, késik vagy hibás, és ezért a folyamatmodell téves.</p>
+</section>
+<section id="sec-stpa-lepesek" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="sec-stpa-lepesek"><span class="header-section-number">7.3.</span> Az STPA lépései</h2>
+<p>Az STPA (<em>System-Theoretic Process Analysis</em>) a STAMP-ra épülő veszélyelemzési módszer. Részletes leírása az MIT kutatóinak <em>STPA Handbook</em> című, ingyenesen elérhető kézikönyvében található <span class="citation" data-cites="leveson2018">(<a href="../irodalom.html#ref-leveson2018" role="doc-biblioref">Leveson és Thomas 2018</a>)</span>. A módszer négy lépésből áll (<a href="#fig-stpa-lepesek" class="quarto-xref"><span>7.2</span></a>. ábra).</p>
+<div id="fig-stpa-lepesek" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stpa-lepesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/stpa-lepesek.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stpa-lepesek-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">7.2. ábra.</span> Az STPA négy lépése. Az eredmény a biztonsági követelmények és tervmódosítások listája.
+</figcaption>
+</figure>
+</div>
+<section id="sec-stpa-1" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="sec-stpa-1"><span class="header-section-number">7.3.1.</span> 1. lépés: az elemzés céljának meghatározása</h3>
+<p>Az első lépés meghatározza, mit akarunk megelőzni.</p>
+<ul>
+<li><strong>Veszteségek</strong> (<em>losses</em>, L): az érintettek számára elfogadhatatlan kimenetelek, például emberi sérülés vagy halál, környezeti kár, a küldetés vagy a termelés elvesztése, a hírnév sérülése.</li>
+<li><strong>Rendszerszintű veszélyek</strong> (<em>system-level hazards</em>, H): olyan rendszerállapotok vagy feltételek, amelyek a környezet legrosszabb esetű körülményeivel együtt veszteséghez vezetnek. Fontos, hogy a veszély a <em>rendszer</em> állapota legyen (amit a tervező befolyásolni tud), ne a környezeté, és ne egy alkatrész meghibásodása. A „robotkar meghibásodik” nem rendszerszintű veszély, a „a robotkar a szerelőhöz közel a biztonságos határnál nagyobb sebességgel mozog” az.</li>
+<li><strong>Rendszerszintű biztonsági korlátok</strong> (<em>system-level constraints</em>, SC): a veszélyek fordítottjai, vagyis azok a feltételek, amelyeknek teljesülniük kell a veszélyek megelőzéséhez, illetve a veszteség csökkentéséhez, ha a veszély mégis bekövetkezik.</li>
+</ul>
+<p>Minden veszélyhez hozzárendeljük, mely veszteség(ek)hez vezethet, így a nyomon követhetőség a teljes elemzésen át biztosított.</p>
+</section>
+<section id="sec-stpa-2" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-stpa-2"><span class="header-section-number">7.3.2.</span> 2. lépés: az irányítási struktúra modellezése</h3>
+<p>A második lépés a rendszer <strong>irányítási struktúrájának</strong> felrajzolása: az irányítók (emberek, szervezetek, automatikus egységek), az általuk kiadott irányítási akciók és az általuk kapott visszacsatolások. A modell nem fizikai rajz és nem adatfolyam-diagram, hanem funkcionális: azt mutatja meg, <em>ki mit irányít, és mit tud</em> az irányított folyamatról. Minden irányítóhoz rögzítjük a felelősségeit (melyik biztonsági korlát érvényesítéséért felel) és a folyamatmodelljének fontos változóit.</p>
+</section>
+<section id="sec-stpa-3" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="sec-stpa-3"><span class="header-section-number">7.3.3.</span> 3. lépés: nem biztonságos irányítási akciók</h3>
+<p>A harmadik lépés minden irányítási akcióra megvizsgálja, milyen körülmények között lehet <strong>nem biztonságos</strong> (<em>unsafe control action</em>, UCA). Az STPA négy típust különböztet meg:</p>
+<ol type="1">
+<li>az akció <strong>elmaradása</strong> veszélyhez vezet (<em>not providing causes hazard</em>);</li>
+<li>az akció <strong>kiadása</strong> veszélyhez vezet (<em>providing causes hazard</em>);</li>
+<li>az akció <strong>túl korán, túl későn vagy rossz sorrendben</strong> érkezik (<em>too early, too late, out of order</em>);</li>
+<li>az akció <strong>túl korán áll le vagy túl sokáig tart</strong> (folyamatos akcióknál; <em>stopped too soon, applied too long</em>).</li>
+</ol>
+<p>Minden UCA-t a <strong>kontextusával</strong> együtt kell megfogalmazni: egy akció önmagában ritkán veszélyes, csak bizonyos helyzetben. A jó UCA-megfogalmazás öt eleme: az irányító, az akció típusa, maga az akció, a kontextus és a hivatkozás a veszélyre. Például: „<em>A biztonsági vezérlő nem</em> aktiválja <em>a sebességkorlátozást</em>, amikor <em>személy tartózkodik a figyelt zónában</em> [H1].”</p>
+</section>
+<section id="sec-stpa-4" class="level3" data-number="7.3.4">
+<h3 data-number="7.3.4" class="anchored" data-anchor-id="sec-stpa-4"><span class="header-section-number">7.3.4.</span> 4. lépés: veszteségforgatókönyvek</h3>
+<p>A negyedik lépés azt vizsgálja, <em>miért</em> következhet be egy UCA, illetve miért nem hajtódhat végre egy helyes akció. Két forgatókönyv-típus van:</p>
+<ul>
+<li><strong>(a) Miért adja ki az irányító a nem biztonságos akciót?</strong> Az irányítási algoritmus hibás vagy hiányos; a folyamatmodell téves (az irányító rosszul ismeri a folyamat állapotát), mert a visszacsatolás hiányzik, késik, pontatlan, vagy rosszul értelmezik; az irányító más irányítóktól ellentmondó parancsokat kap.</li>
+<li><strong>(b) Miért nem hajtódik végre a helyes akció, vagy miért nem éri el a hatását?</strong> A beavatkozó szerv hibás vagy lassú; az irányított folyamat másképp viselkedik, mint feltételezték; zavarás vagy más irányító akciója hatástalanítja.</li>
+</ul>
+<p>A forgatókönyvekből közvetlenül adódnak a <strong>követelmények és tervezési döntések</strong>: redundáns vagy diverz visszacsatolás, a folyamatmodell érvényességének ellenőrzése, üzemmódjelzés, reteszelés, a kezelői felület módosítása, szervezeti eljárások.</p>
+</section>
+</section>
+<section id="sec-stpa-kobocella" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-stpa-kobocella"><span class="header-section-number">7.4.</span> Kidolgozott STPA a KoboCella esetre</h2>
+<section id="sec-stpa-kobocella-1" class="level3" data-number="7.4.1">
+<h3 data-number="7.4.1" class="anchored" data-anchor-id="sec-stpa-kobocella-1"><span class="header-section-number">7.4.1.</span> Veszteségek, veszélyek, korlátok</h3>
+<p>A KoboCella STPA-jának első lépése a <a href="#tbl-stpa-lhc" class="quarto-xref"><span>7.1</span></a>. táblázatban látható.</p>
+<div id="tbl-stpa-lhc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stpa-lhc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">7.1. táblázat.</span> A KoboCella STPA-jának veszteségei, rendszerszintű veszélyei és biztonsági korlátai
+</figcaption>
+<div aria-describedby="tbl-stpa-lhc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Azonosító</th>
+<th style="text-align: left;">Megfogalmazás</th>
+<th style="text-align: left;">Kapcsolat</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">L1</td>
+<td style="text-align: left;">a szerelő sérülése</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">L2</td>
+<td style="text-align: left;">a berendezés vagy a munkadarab károsodása</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">L3</td>
+<td style="text-align: left;">a termelés kiesése</td>
+<td style="text-align: left;">–</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H1</td>
+<td style="text-align: left;">a robotkar a szerelőhöz közel a biztonságos határnál nagyobb sebességgel mozog</td>
+<td style="text-align: left;">L1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">H2</td>
+<td style="text-align: left;">a robot a szerelő testére a biomechanikai határértéknél nagyobb erőt vagy nyomást fejt ki</td>
+<td style="text-align: left;">L1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">H3</td>
+<td style="text-align: left;">a robot a megfogott munkadarabot ellenőrizetlenül elengedi a szerelő fölött</td>
+<td style="text-align: left;">L1, L2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">H4</td>
+<td style="text-align: left;">a cella indokolatlanul leáll, vagy nem indítható újra</td>
+<td style="text-align: left;">L3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SC1</td>
+<td style="text-align: left;">a robotkar sebessége nem haladhatja meg a szerelőtől mért távolsághoz tartozó biztonságos határt</td>
+<td style="text-align: left;">H1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SC2</td>
+<td style="text-align: left;">a robot által kifejtett erő és nyomás nem haladhatja meg az ISO/TS 15066 szerinti határértékeket</td>
+<td style="text-align: left;">H2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SC3</td>
+<td style="text-align: left;">a megfogó csak akkor nyithat, ha a munkadarab a lerakóhelyen van</td>
+<td style="text-align: left;">H3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SC4</td>
+<td style="text-align: left;">a biztonsági funkciók nem okozhatnak a termelést aránytalanul zavaró téves leállást</td>
+<td style="text-align: left;">H4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Érdemes észrevenni a H4–SC4 párt. Az STPA nem csak a biztonságot vizsgálja, hanem a termelékenységgel való konfliktust is láthatóvá teszi. A túl gyakori téves leállás a <a href="01-balesetek.html#sec-rasmussen" class="quarto-xref"><span>1.4.5</span></a>. szakaszban leírt sodródás klasszikus kiváltója: a kezelők elkezdik áthidalni a „kényelmetlen” védelmet.</p>
+</section>
+<section id="sec-stpa-kobocella-2" class="level3" data-number="7.4.2">
+<h3 data-number="7.4.2" class="anchored" data-anchor-id="sec-stpa-kobocella-2"><span class="header-section-number">7.4.2.</span> Az irányítási struktúra</h3>
+<p>A KoboCella irányítási struktúráját a <a href="#fig-kobocella-struktura" class="quarto-xref"><span>7.3</span></a>. ábra mutatja. A termelésirányító rendszer (MES) adja ki a rendeléseket a cellavezérlőnek; a cellavezérlő (PLC) futtatja a műveletsort, és sebesség-alapjelet ad a robotvezérlőnek; a robotvezérlő tervezi a pályát és vezérli a robotkart. A biztonsági vezérlő a lézerszkenner jelei alapján felügyeli a szerelő és a robot távolságát, és sebességkorlátozást vagy biztonsági leállítást kényszerít a robotvezérlőre. A szerelő a kezelőpanelen indítja, jóváhagyja és nyugtázza a műveleteket, és saját testével is része az irányított folyamatnak.</p>
+<div id="fig-kobocella-struktura" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-kobocella-struktura-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/kobocella-iranyitasi-struktura.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-kobocella-struktura-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">7.3. ábra.</span> A KoboCella irányítási struktúrája. Lefelé az irányítási akciók, felfelé (kék) a visszacsatolások; a zöld elemek a biztonsági funkcióhoz, a lila elemek a szerelőhöz tartoznak.
+</figcaption>
+</figure>
+</div>
+<p>A modell egy fontos részletét már a felrajzolás során észrevette a csapat: a szerelő az üzemmódot (kollaboratív vagy nem kollaboratív) és a pillanatnyi sebességkorlátot csak a kezelőpanel egy kis kijelzőjén látja, amelyre munka közben nem néz rá. A folyamatmodellje ezért elavulhat.</p>
+</section>
+<section id="sec-stpa-kobocella-3" class="level3" data-number="7.4.3">
+<h3 data-number="7.4.3" class="anchored" data-anchor-id="sec-stpa-kobocella-3"><span class="header-section-number">7.4.3.</span> Nem biztonságos irányítási akciók</h3>
+<p>A <a href="#tbl-uca-kobocella" class="quarto-xref"><span>7.2</span></a>. táblázat két irányítási akcióra mutatja az UCA-elemzést: a biztonsági vezérlő „sebességkorlátozás aktiválása” és a szerelő „a következő lépés jóváhagyása” akciójára.</p>
+<div id="tbl-uca-kobocella" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-uca-kobocella-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">7.2. táblázat.</span> A KoboCella két irányítási akciójának UCA-elemzése
+</figcaption>
+<div aria-describedby="tbl-uca-kobocella-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Akció</th>
+<th style="text-align: left;">Nem adja ki</th>
+<th style="text-align: left;">Kiadja</th>
+<th style="text-align: left;">Rossz időben vagy sorrendben</th>
+<th style="text-align: left;">Rossz ideig</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>biztonsági vezérlő: sebességkorlátozás</strong></td>
+<td style="text-align: left;">UCA-1: nem korlátoz, amikor személy van a figyelt zónában [H1]</td>
+<td style="text-align: left;">UCA-2: korlátoz, amikor nincs személy a zónában (téves leállás) [H4]</td>
+<td style="text-align: left;">UCA-3: a korlátozás azután lép életbe, hogy a szerelő már a robot pályáján van [H1]</td>
+<td style="text-align: left;">UCA-4: a korlátozást feloldja, mielőtt a személy elhagyta a zónát [H1]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>szerelő: jóváhagyás</strong></td>
+<td style="text-align: left;">(nem veszélyes; a cella vár)</td>
+<td style="text-align: left;">UCA-5: jóváhagyja a következő lépést, amikor a keze még a megfogó közelében van [H2]</td>
+<td style="text-align: left;">UCA-6: a lerakás előtt hagyja jóvá a megfogó nyitását [H3]</td>
+<td style="text-align: left;">–</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-stpa-kobocella-4" class="level3" data-number="7.4.4">
+<h3 data-number="7.4.4" class="anchored" data-anchor-id="sec-stpa-kobocella-4"><span class="header-section-number">7.4.4.</span> Veszteségforgatókönyvek és követelmények</h3>
+<p>Az UCA-1-hez (a sebességkorlátozás elmarad, pedig személy van a zónában) a csapat a következő forgatókönyveket tárta fel:</p>
+<ul>
+<li><strong>F-1 (téves folyamatmodell, takarás):</strong> a szerelő a nagy munkadarab mögött áll, a lézerszkenner nem látja, a biztonsági vezérlő ezért úgy „tudja”, hogy a zóna üres. → <em>Követelmény:</em> a szkenner elhelyezését úgy kell megtervezni, hogy a munkadarab semmilyen pozícióban ne takarja a szerelő lehetséges helyzeteit; ennek igazolására takarási elemzés (szimuláció) szükséges.</li>
+<li><strong>F-2 (téves folyamatmodell, konfiguráció):</strong> a karbantartás során a szkenner zónakonfigurációját módosították (a figyelt zónát kisebbre állították a téves leállások miatt), és ezt senki nem ellenőrizte. → <em>Követelmény:</em> a biztonsági konfiguráció módosítása csak jelszóval, naplózva és ellenőrzés után lehetséges; a konfiguráció ellenőrzőösszegét a biztonsági vezérlő minden indításkor ellenőrzi.</li>
+<li><strong>F-3 (a beavatkozás nem hat):</strong> a biztonsági vezérlő kiadja a korlátozást, de a robotvezérlő egy szoftverfrissítés után a korlátozást csak a következő mozgásszakasztól alkalmazza. → <em>Követelmény:</em> a sebességkorlátozás végrehajtását a biztonsági vezérlőnek független sebességméréssel kell ellenőriznie, és eltérés esetén biztonságos leállítást kell kezdeményeznie; minden robotvezérlő-frissítés után a biztonsági funkciót validálni kell.</li>
+<li><strong>F-4 (visszacsatolás késése):</strong> a szkenner válaszideje és a robot fékútja együtt nagyobb, mint amennyit a zónaméret megenged. → <em>Követelmény:</em> a védőtávolságot a robot legrosszabb esetű fékútjával és a teljes válaszidővel kell méretezni (lásd a gyakorlati útmutató feladatát).</li>
+</ul>
+<p>Az UCA-5-höz (a szerelő a keze veszélyes helyzetében hagyja jóvá a következő lépést) a forgatókönyv egészen más jellegű: a szerelő folyamatmodellje téves (azt hiszi, hogy a robot kollaboratív üzemmódban, erőkorlátozással mozog, holott egy speciális műveletnél nem kollaboratív üzemmódban van). → <em>Követelmény:</em> az üzemmódot a munkaterületen jól látható módon kell jelezni (például színes fénysávval a roboton); a nem kollaboratív üzemmódban a jóváhagyás csak kétkezes vezérlővel lehetséges.</p>
+<p>Ezek a forgatókönyvek jól mutatják az STPA erejét. Az F-2 (karbantartási konfigurációmódosítás), az F-3 (szoftverfrissítés utáni viselkedésváltozás) és az UCA-5 (üzemmód-tévesztés) egyike sem alkatrész-meghibásodás, ezért egy hagyományos FMEA-ban vagy hibafában nehezen jelenne meg. Mindhárom a valós ipari balesetek tipikus mintázata.</p>
+<div class="doboz doboz-esetB"><div class="doboz-cim">VészFék: az STPA gyors alkalmazása</div><div class="doboz-tartalom">
+<p>A VészFék fékezési parancsának UCA-elemzése:</p>
+<ul>
+<li><em>nem adja ki:</em> nem kezdeményez fékezést, amikor akadály van a pályán, és az ütközés elkerülhetetlen [H: frontális ütközés];</li>
+<li><em>kiadja:</em> fékezést kezdeményez, amikor nincs valós akadály [H: ráfutásos baleset];</li>
+<li><em>túl későn:</em> a fékezés akkor kezdődik, amikor az ütközés már nem csökkenthető számottevően;</li>
+<li><em>túl korán áll le:</em> a fékezés megszakad, amikor a szoftver az akadályt átsorolja (például gyalogosból „ismeretlen objektummá”).</li>
+</ul>
+<p>Az utolsó UCA egyik forgatókönyve közvetlenül megfelel az Uber-baleset jelentésében leírt mechanizmusnak: az osztályozás ingadozása miatt a rendszer mozgáselőzménye minden átsorolásnál elveszett (<a href="01-balesetek.html#sec-hat-baleset" class="quarto-xref"><span>1.2</span></a>. szakasz). A levezetett követelmény: az objektum követését és a fékezési döntést az osztályozástól függetlenül, a pálya és a mozgás alapján is meg kell hozni.</p>
+</div></div>
+</section>
+</section>
+<section id="sec-stpa-hely" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-stpa-hely"><span class="header-section-number">7.5.</span> Az STPA helye a módszerek között</h2>
+<p>Az STPA nem váltja ki a hagyományos módszereket, hanem kiegészíti őket. A <a href="#tbl-stpa-osszevetes" class="quarto-xref"><span>7.3</span></a>. táblázat a fő különbségeket foglalja össze.</p>
+<div id="tbl-stpa-osszevetes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-stpa-osszevetes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">7.3. táblázat.</span> Az STPA és a hagyományos módszerek összevetése
+</figcaption>
+<div aria-describedby="tbl-stpa-osszevetes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Szempont</th>
+<th style="text-align: left;">FMEA, hibafa</th>
+<th style="text-align: left;">HAZOP</th>
+<th style="text-align: left;">STPA</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">baleseti modell</td>
+<td style="text-align: left;">alkatrészhiba, hibalánc</td>
+<td style="text-align: left;">eltérés a tervezési szándéktól</td>
+<td style="text-align: left;">nem érvényesülő biztonsági korlát</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">kiindulópont</td>
+<td style="text-align: left;">alkatrészek vagy csúcsesemény</td>
+<td style="text-align: left;">P&amp;ID csomópontok</td>
+<td style="text-align: left;">veszteségek, irányítási struktúra</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">szoftver, követelményhibák</td>
+<td style="text-align: left;">gyengén</td>
+<td style="text-align: left;">közepesen (CHAZOP)</td>
+<td style="text-align: left;">erősen</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ember és automatizálás</td>
+<td style="text-align: left;">gyengén</td>
+<td style="text-align: left;">közepesen</td>
+<td style="text-align: left;">erősen (folyamatmodell)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">kvantitatív eredmény</td>
+<td style="text-align: left;">igen (valószínűség, gyakoriság)</td>
+<td style="text-align: left;">nem (félkvantitatív kiegészítéssel)</td>
+<td style="text-align: left;">nem</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">alkalmazhatóság</td>
+<td style="text-align: left;">részletes tervezés</td>
+<td style="text-align: left;">részletes tervezés</td>
+<td style="text-align: left;">a koncepciótól kezdve</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Az STPA különösen akkor ajánlott, ha a rendszer szoftverintenzív, sok irányítóból áll, ember és automatizálás együttműködésén alapul, vagy új, kevéssé ismert technológiát alkalmaz. Mivel a koncepciós fázisban is elvégezhető (a részletes terv ismerete nélkül), korán befolyásolhatja az architektúrát. A kvantitatív igazoláshoz (PFD, PMHF) viszont továbbra is a III. rész módszerei kellenek: az STPA megmondja, <em>mit</em> kell biztosítani, a hibafa és a Markov-modell pedig azt, hogy <em>mennyire megbízhatóan</em> sikerült.</p>
+<p>A módszernek több változata és kiterjesztése is van. A <strong>CAST</strong> (<em>Causal Analysis based on STAMP</em>) a STAMP-ra épülő balesetvizsgálati módszer; az <strong>STPA-Sec</strong> a kiberbiztonsági veszélyek elemzésére alkalmazza ugyanezt a szemléletet. Az autóiparban a SAE J3187 ajánlott gyakorlat (2022) írja le az STPA alkalmazását, és a rendeltetésszerű funkció biztonságát szabályozó ISO 21448 is a lehetséges módszerek között említi.</p>
+<div class="doboz doboz-hiba"><div class="doboz-cim">Az STPA mint ellenőrzőlista</div><div class="doboz-tartalom">
+<p>Az STPA-t néha táblázatkitöltési gyakorlatként alkalmazzák: minden akcióhoz mechanikusan beírnak négy UCA-t, és a forgatókönyveket elhagyják. Így a módszer legértékesebb része, a negyedik lépés vész el, ahol a valódi okok és a tervezési követelmények születnek. Az UCA-k csak a „mit”, a forgatókönyvek a „miért” kérdésére felelnek, és csak a „miért”-ből lesz tervmódosítás.</p>
+</div></div>
+<section id="sec-stpa-korlatai" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="sec-stpa-korlatai"><span class="header-section-number">7.5.1.</span> Erősségek és korlátok</h3>
+<p><strong>Erősségek:</strong> a specifikációs és követelményhibákat, a komponensek közötti kölcsönhatásokat, a szoftver és az ember szerepét egységes keretben kezeli; a koncepciós fázisban is alkalmazható; közvetlenül tervezési követelményeket ad; a szervezeti és szabályozási szinteket is elemzi.</p>
+<p><strong>Korlátok:</strong> a módszer viszonylag új, a szabványosítása és az iparági gyakorlata még formálódik; nagy rendszereknél az irányítási struktúra és a forgatókönyvek száma gyorsan nő; az eredmény minősége, akárcsak a HAZOP-nál, a csapat tudásán múlik; nem ad számszerű kockázati mérőszámot.</p>
+<div class="doboz doboz-labor"><div class="doboz-cim">Gyakorlat</div><div class="doboz-tartalom">
+<p>A gyakorlati útmutató 5. laborjában egy böngészős STPA-munkalappal dolgozol: felrajzolod egy egyszerű rendszer irányítási struktúráját, kitöltöd az UCA-táblázatot, és minden UCA-hoz legalább két forgatókönyvet és egy követelményt rendelsz. A feladat a VészFék és a KoboCella közül választható.</p>
+</div></div>
+<div class="doboz doboz-osszefoglalo"><div class="doboz-cim">Összefoglalás</div><div class="doboz-tartalom">
+<ul>
+<li>A szoftverintenzív és ember–automatizálás rendszerekben a balesetek gyakran meghibásodás nélkül, nem biztonságos kölcsönhatásokból és hibás követelményekből fakadnak.</li>
+<li>A STAMP szerint a biztonság emergens tulajdonság, amelyet a hierarchikus irányítási struktúra a biztonsági korlátok érvényesítésével tart fenn; a balesetek oka a nem érvényesülő korlát.</li>
+<li>Az irányítók a folyamatmodelljük alapján döntenek; a téves folyamatmodell a balesetek gyakori oka.</li>
+<li>Az STPA négy lépése: veszteségek, veszélyek és korlátok; irányítási struktúra; nem biztonságos irányítási akciók (négy típus, kontextussal); veszteségforgatókönyvek és követelmények.</li>
+<li>Az STPA kiegészíti a hagyományos módszereket; korán alkalmazható, de nem ad kvantitatív eredményt.</li>
+</ul>
+</div></div>
+<div class="doboz doboz-onell"><div class="doboz-cim">Önellenőrzés</div><div class="doboz-tartalom">
+<ol type="1">
+<li>Miért nem rendszerszintű veszély az, hogy „a lézerszkenner meghibásodik”? Fogalmazd meg helyesen a mögötte álló veszélyt!</li>
+<li>Sorold fel az UCA négy típusát, és adj mindegyikre példát egy lift ajtajának „ajtó nyitása” akciójára!</li>
+<li>Mi a folyamatmodell, és miért fontos a STAMP-ban? Mutasd be egy példán, hogyan vezethet baleshez a téves folyamatmodell!</li>
+<li>Melyik STPA-lépés adja a tervezési követelményeket, és miért?</li>
+</ol>
+<details class="megoldas"><summary>Megoldás</summary>
+<ol type="1">
+<li>Mert alkatrészhiba, nem a rendszer állapota; ráadásul a szkenner meghibásodása nem feltétlenül vezet veszélyhez (lehet biztonságos meghibásodás is). A helyes veszély: „a robotkar a szerelőhöz közel a biztonságos határnál nagyobb sebességgel mozog”. A szkenner meghibásodása ennek egy lehetséges oka a negyedik lépés forgatókönyveiben.</li>
+<li><em>Nem adja ki:</em> nem nyitja az ajtót, amikor a fülke a szinten áll, és tűz miatt menekülni kell. <em>Kiadja:</em> kinyitja az ajtót, amikor a fülke nincs a szinten. <em>Rossz időben:</em> túl korán nyit, amikor a fülke még mozog. <em>Rossz ideig:</em> túl korán zárja, amikor valaki még az ajtóban áll.</li>
+<li>A folyamatmodell az irányító képe az irányított folyamat állapotáról (embernél a mentális modell, szoftvernél a belső változók). Az irányító ez alapján dönt, ezért ha a modell eltér a valóságtól, helyes algoritmus mellett is nem biztonságos döntést hoz. Példa: a 737 MAX MCAS-funkciója egyetlen hibás állásszög-érzékelő jele alapján túl nagynak „hitte” az állásszöget, és ismételten lefelé trimmelte a gépet.</li>
+<li>A negyedik lépés (veszteségforgatókönyvek), mert ez tárja fel, <em>miért</em> következhet be egy nem biztonságos akció, illetve miért nem hajtódik végre a helyes akció. A konkrét okokra (takarás, konfigurációmódosítás, késleltetés, üzemmód-tévesztés) adható tervezési válasz.</li>
+</ol>
+</details>
+</div></div>
+<div class="doboz doboz-forras"><div class="doboz-cim">Továbbolvasás</div><div class="doboz-tartalom">
+<ul>
+<li>Leveson, N. G. (2011): <em>Engineering a Safer World.</em> MIT Press – a STAMP és az STPA elméleti alapjai, nyílt hozzáféréssel <span class="citation" data-cites="leveson2011">(<a href="../irodalom.html#ref-leveson2011" role="doc-biblioref">Leveson 2011</a>)</span>.</li>
+<li>Leveson, N. G., Thomas, J. P. (2018): <em>STPA Handbook</em> – lépésenkénti útmutató sok példával, ingyenesen letölthető <span class="citation" data-cites="leveson2018">(<a href="../irodalom.html#ref-leveson2018" role="doc-biblioref">Leveson és Thomas 2018</a>)</span>.</li>
+<li>ISO/TS 15066:2016 – a kollaboratív robotok biomechanikai határértékei <span class="citation" data-cites="isots15066">(<a href="../irodalom.html#ref-isots15066" role="doc-biblioref">ISO 2016</a>)</span>.</li>
+</ul>
+</div></div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-isots15066" class="csl-entry" role="listitem">
+ISO. 2016. <em><span>ISO/TS</span> 15066: Robots and Robotic Devices – Collaborative Robots</em>.
+</div>
+<div id="ref-leveson2011" class="csl-entry" role="listitem">
+Leveson, Nancy G. 2011. <em>Engineering a Safer World: Systems Thinking Applied to Safety</em>. MIT Press. <a href="https://doi.org/10.7551/mitpress/8179.001.0001">https://doi.org/10.7551/mitpress/8179.001.0001</a>.
+</div>
+<div id="ref-leveson2018" class="csl-entry" role="listitem">
+Leveson, Nancy G., és John P. Thomas. 2018. <em><span>STPA</span> Handbook</em>. MIT Partnership for Systems Approaches to Safety; Security.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/biztonsagkritikus-rendszerek\/kezikonyv\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../fejezetek/06-fmea.html" class="pagination-link" aria-label="FMEA, FMECA és FMEDA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6.</span>&nbsp; <span class="chapter-title">FMEA, FMECA és FMEDA</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../fejezetek/08-megbizhatosag.html" class="pagination-link" aria-label="Megbízhatóság-elmélet és élettartam-adatok">
+        <span class="nav-page-text"><span class="chapter-number">8.</span>&nbsp; <span class="chapter-title">Megbízhatóság-elmélet és élettartam-adatok</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Abonyi János · Pannon Egyetem · CC BY-NC-SA 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/07-stpa.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/07-stpa.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/">Gyakorlati útmutató</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

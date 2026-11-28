@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="hu" xml:lang="hu"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+
+<title>1&nbsp; Miért hibáznak a rendszerek? Balesetek és balesetmodellek – Biztonságkritikus rendszerek</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../fejezetek/02-fogalmak.html" rel="next">
+<link href="../index.html" rel="prev">
+<link href="../assets/logo/pe-favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-18038207a4bfd50187eff2b2f0526436.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-4bb6adbf2c391f8ec7a8d9fd34cf9cbf.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nincs találat",
+    "search-matching-documents-text": "találat",
+    "search-copy-link-title": "Keresési hivatkozás másolása",
+    "search-hide-matches-text": "További találatok elrejtése",
+    "search-more-match-text": "további találat ebben a fejezetben",
+    "search-more-matches-text": "további találat ebben a fejezetben",
+    "search-clear-button-title": "Törlés",
+    "search-text-placeholder": "Keresés a könyvben",
+    "search-detached-cancel-button-title": "Mégse",
+    "search-submit-button-title": "Keresés",
+    "search-label": "Keresés"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+<meta property="og:title" content="1&nbsp; Miért hibáznak a rendszerek? Balesetek és balesetmodellek – Biztonságkritikus rendszerek">
+<meta property="og:description" content="Nyílt hozzáférésű kézikönyv a biztonságkritikus rendszerek tervezéséről és igazolásáról: balesetmodellek, kockázatértékelés, HAZOP, FMEA, STPA, hibafa, LOPA, Markov-modellek, SIL-igazolás, biztonságos architektúrák, szoftver, emberi tényezők, biztonsági érvelés, SOTIF, gépi tanulás és kiberbiztonság.">
+<meta property="og:image" content="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/kezikonyv/abrak/gen/terkep-01.svg">
+<meta property="og:site_name" content="Biztonságkritikus rendszerek">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/">
+    <span class="navbar-title">Biztonságkritikus rendszerek</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Navigáció ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../index.html" aria-current="page"> 
+<span class="menu-text">Kézikönyv</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/"> 
+<span class="menu-text">Gyakorlati útmutató</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://complexsystemsintelligence.github.io/#textbooks"> 
+<span class="menu-text">Összes tankönyv</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/tree/main/kezikonyv/" title="Forráskód" class="quarto-navigation-tool px-1" aria-label="Forráskód"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Letöltés" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Letöltés"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Letöltés PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../biztonsagkritikus-rendszerek.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Letöltés ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+            <div id="quarto-search" class="" title="Keresés"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" aria-label="Toolbar">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Oldalsáv ki/be" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/01-balesetek.html">I. rész – Alapok</a></li><li class="breadcrumb-item"><a href="../fejezetek/01-balesetek.html"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></a></li></ol></nav>
+        <a class="flex-grow-1" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto" aria-label="Section">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/" class="sidebar-logo-link">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../assets/logo/pe-cimer-nevjel-fekvo-kek.svg" alt="Pannon Egyetem" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Előszó</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-controls="quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text" id="quarto-sidebar-section-1-label">I. rész – Alapok</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-1" aria-labelledby="quarto-sidebar-section-1-label" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/01-balesetek.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/02-fogalmak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2.</span>&nbsp; <span class="chapter-title">Fogalmak: veszély, kockázat, biztonság, megbízhatóság</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/03-kockazatertekeles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3.</span>&nbsp; <span class="chapter-title">Kockázatértékelés és a kockázat elfogadhatósága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/04-eletciklus.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4.</span>&nbsp; <span class="chapter-title">A biztonsági életciklus és a szabványok rendszere</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-controls="quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-2-label">II. rész – Veszélyazonosítás</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-2" aria-labelledby="quarto-sidebar-section-2-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/05-veszelyazonositas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5.</span>&nbsp; <span class="chapter-title">Veszélyazonosítás: a veszélylistáktól a HAZOP-ig</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/06-fmea.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6.</span>&nbsp; <span class="chapter-title">FMEA, FMECA és FMEDA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/07-stpa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7.</span>&nbsp; <span class="chapter-title">Rendszerelméleti veszélyelemzés: STAMP és STPA</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-controls="quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-3-label">III. rész – Kvantitatív megbízhatóság és biztonság</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-3" aria-labelledby="quarto-sidebar-section-3-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/08-megbizhatosag.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8.</span>&nbsp; <span class="chapter-title">Megbízhatóság-elmélet és élettartam-adatok</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/09-rbd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9.</span>&nbsp; <span class="chapter-title">Rendszermegbízhatóság: blokkdiagramok és k-ból-n rendszerek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/10-hibafa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10.</span>&nbsp; <span class="chapter-title">Hibafa-elemzés</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/11-esemenyfa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11.</span>&nbsp; <span class="chapter-title">Eseményfa, rétegzett védelem és csokornyakkendő-modell</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/12-markov.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12.</span>&nbsp; <span class="chapter-title">Markov-modellek és rendelkezésre állás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/13-sil.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13.</span>&nbsp; <span class="chapter-title">A biztonsági integritás igazolása: PFD, PFH és SIL</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-controls="quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-4-label">IV. rész – Tervezés biztonságra</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-4" aria-labelledby="quarto-sidebar-section-4-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/14-architekturak.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14.</span>&nbsp; <span class="chapter-title">Biztonságos architektúrák és tervezési elvek</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/15-szoftver.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15.</span>&nbsp; <span class="chapter-title">A szoftver biztonsága</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/16-ember.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16.</span>&nbsp; <span class="chapter-title">Az ember a biztonságkritikus rendszerben</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-controls="quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-5-label">V. rész – Bizonyítás és új kihívások</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-5" aria-labelledby="quarto-sidebar-section-5-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/17-biztonsagi-erveles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17.</span>&nbsp; <span class="chapter-title">Biztonsági érvelés és igazolás</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fejezetek/18-uj-kihivasok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18.</span>&nbsp; <span class="chapter-title">Új kihívások: rendeltetésszerű funkció, mesterséges intelligencia és kiberbiztonság</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../irodalom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Irodalom</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <button type="button" class="sidebar-item-text sidebar-item-toggle sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-controls="quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text" id="quarto-sidebar-section-6-label">Függelékek</span><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+      </div>
+      <ul id="quarto-sidebar-section-6" aria-labelledby="quarto-sidebar-section-6-label" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/a-valoszinuseg.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A.</span>&nbsp; <span class="chapter-title">Valószínűségszámítási összefoglaló</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/b-esettanulmanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B.</span>&nbsp; <span class="chapter-title">A három esettanulmány</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/c-szoszedet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C.</span>&nbsp; <span class="chapter-title">Magyar–angol szószedet</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../fuggelek/d-szabvanyok.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D.</span>&nbsp; <span class="chapter-title">Szabványok és jogszabályok</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Ezen az oldalon</h2>
+   
+  <ul>
+  <li><a href="#sec-balesetek-tanulsag" id="toc-sec-balesetek-tanulsag" class="nav-link active" data-scroll-target="#sec-balesetek-tanulsag"><span class="header-section-number">1.1.</span> Mit tanulhatunk a balesetekből?</a></li>
+  <li><a href="#sec-hat-baleset" id="toc-sec-hat-baleset" class="nav-link" data-scroll-target="#sec-hat-baleset"><span class="header-section-number">1.2.</span> Hat baleset, hat tanulság</a></li>
+  <li><a href="#sec-kozos-mintazatok" id="toc-sec-kozos-mintazatok" class="nav-link" data-scroll-target="#sec-kozos-mintazatok"><span class="header-section-number">1.3.</span> Közös mintázatok</a></li>
+  <li><a href="#sec-balesetmodellek" id="toc-sec-balesetmodellek" class="nav-link" data-scroll-target="#sec-balesetmodellek"><span class="header-section-number">1.4.</span> A balesetmodellek fejlődése</a>
+  <ul class="collapse">
+  <li><a href="#sec-oklanc" id="toc-sec-oklanc" class="nav-link" data-scroll-target="#sec-oklanc"><span class="header-section-number">1.4.1.</span> Lineáris okláncmodellek</a></li>
+  <li><a href="#sec-energia-gat" id="toc-sec-energia-gat" class="nav-link" data-scroll-target="#sec-energia-gat"><span class="header-section-number">1.4.2.</span> Energia–gát modell</a></li>
+  <li><a href="#sec-sajtszelet" id="toc-sec-sajtszelet" class="nav-link" data-scroll-target="#sec-sajtszelet"><span class="header-section-number">1.4.3.</span> A sajtszelet-modell: aktív hibák és latens feltételek</a></li>
+  <li><a href="#sec-perrow" id="toc-sec-perrow" class="nav-link" data-scroll-target="#sec-perrow"><span class="header-section-number">1.4.4.</span> Normál balesetek: komplexitás és csatolás</a></li>
+  <li><a href="#sec-rasmussen" id="toc-sec-rasmussen" class="nav-link" data-scroll-target="#sec-rasmussen"><span class="header-section-number">1.4.5.</span> Sodródás a határ felé</a></li>
+  <li><a href="#sec-stamp-bevezetes" id="toc-sec-stamp-bevezetes" class="nav-link" data-scroll-target="#sec-stamp-bevezetes"><span class="header-section-number">1.4.6.</span> STAMP: a biztonság irányítási feladat</a></li>
+  <li><a href="#sec-safety-ii" id="toc-sec-safety-ii" class="nav-link" data-scroll-target="#sec-safety-ii"><span class="header-section-number">1.4.7.</span> Safety-I és Safety-II</a></li>
+  </ul></li>
+  <li><a href="#sec-balesetek-mernok" id="toc-sec-balesetek-mernok" class="nav-link" data-scroll-target="#sec-balesetek-mernok"><span class="header-section-number">1.5.</span> Mit jelent mindez a mérnök számára?</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/01-balesetek.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/01-balesetek.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="Breadcrumbs"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../fejezetek/01-balesetek.html">I. rész – Alapok</a></li><li class="breadcrumb-item"><a href="../fejezetek/01-balesetek.html"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-balesetek" class="quarto-section-identifier"><span class="chapter-number">1.</span>&nbsp; <span class="chapter-title">Miért hibáznak a rendszerek? Balesetek és balesetmodellek</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="../abrak/gen/terkep-01.svg" class="img-fluid" style="width:100.0%"></p>
+<p>A biztonságtechnika a balesetekből tanult meg mindent, amit tud. A szabványok előírásai, a tervezési elvek és az elemzési módszerek mögött szinte mindig egy-egy konkrét katasztrófa áll, amelyet utólag sokan „elkerülhetőnek” neveztek. Ebben a fejezetben hat jól dokumentált balesetet vizsgálunk meg, és megkeressük, mi a közös bennük. Ezután áttekintjük, hogyan gondolkodott a mérnöki és a pszichológiai szakirodalom a balesetek keletkezéséről az elmúlt száz évben. A fejezet célja nem a félelemkeltés, hanem a szemléletformálás: a későbbi módszerek akkor használhatók jól, ha értjük, milyen jelenségek ellen dolgoznak.</p>
+<div class="doboz doboz-cel"><div class="doboz-cim">Tanulási eredmények</div><div class="doboz-tartalom">
+<p>A fejezet végére képes leszel</p>
+<ul>
+<li>hat jelentős baleset (Therac-25, Ariane 5, Texas City, Buncefield, Boeing 737 MAX, Uber ATG) okait és tanulságait a vizsgálati jelentések alapján összefoglalni;</li>
+<li>megkülönböztetni a lineáris okláncmodelleket, az epidemiológiai modelleket és a rendszerszintű balesetmodelleket;</li>
+<li>a sajtszelet-modell, a Rasmussen-féle sodródás és a STAMP fogalmaival elemezni egy balesetet;</li>
+<li>megindokolni, miért nem elég a biztonsághoz az egyes alkatrészek megbízhatóságát növelni.</li>
+</ul>
+</div></div>
+<section id="sec-balesetek-tanulsag" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="sec-balesetek-tanulsag"><span class="header-section-number">1.1.</span> Mit tanulhatunk a balesetekből?</h2>
+<p>Edward Murphy amerikai mérnök nevéhez fűződik a mondás, hogy „ami elromolhat, az el is romlik”. A történet szerint 1949-ben egy gyorsulásmérési kísérletsorozatot kellett megismételni, mert a mérőátalakítókat fordítva szerelték be. A mondás szellemes, de a mérnök számára veszélyes is, mert azt sugallja, hogy a hiba sorsszerű. A balesetvizsgálatok tapasztalata ennél árnyaltabb: a súlyos balesetek ritkán egyetlen hibából fakadnak, és szinte mindig megelőzik őket figyelmeztető jelek, elmaradt intézkedések, rosszul értelmezett kockázatok.</p>
+<p>A balesetvizsgálat célja ma már nem a bűnös megtalálása, hanem annak megértése, hogyan válhatott lehetővé a baleset, és hogyan lehet megakadályozni az ismétlődését. Ezt a szemléletet követik a független vizsgálószervek, például az amerikai Közlekedésbiztonsági Testület (NTSB), a Vegyipari Biztonsági Testület (CSB) vagy a francia polgári repülési balesetvizsgáló hatóság (BEA). Jelentéseik nyilvánosak, és a biztonságtechnika legfontosabb tananyagai közé tartoznak.</p>
+</section>
+<section id="sec-hat-baleset" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="sec-hat-baleset"><span class="header-section-number">1.2.</span> Hat baleset, hat tanulság</h2>
+<p>Az alábbi esetek különböző iparágakból származnak, és mindegyikük más okból vált a szakma közös emlékezetének részévé. A leírások a hivatalos vizsgálati jelentéseken és az azokat feldolgozó szakirodalmon alapulnak.</p>
+<div class="doboz doboz-baleset"><div class="doboz-cim">Therac-25: amikor a szoftver átveszi a hardveres védelem szerepét (1985–1987)</div><div class="doboz-tartalom">
+<p>A Therac-25 sugárterápiás gyorsító két üzemmódban működött: kis intenzitású elektronnyalábbal és nagy intenzitású, céltárgyon átvezetett röntgensugárzással. Az elődmodellekben hardveres reteszelés akadályozta meg, hogy a nagy intenzitású nyaláb céltárgy nélkül érje a beteget. A Therac-25-ben ezt a reteszelést szoftveres ellenőrzés váltotta fel. Hat ismert balesetben a betegek a tervezett dózis sokszorosát kapták, több eset halálos kimenetelű volt <span class="citation" data-cites="leveson1993">(<a href="../irodalom.html#ref-leveson1993" role="doc-biblioref">Leveson és Turner 1993</a>)</span>.</p>
+<p>A vizsgálat több egymást erősítő okot tárt fel. A szoftverben versenyhelyzet (<em>race condition</em>) volt: ha a kezelő gyorsan módosította a bevitt adatokat, a gép beállítása és a képernyőn látható érték eltérhetett egymástól. A hibaüzenetek rejtélyesek voltak („MALFUNCTION 54”), a kezelők megszokták, hogy egyszerűen továbblépnek. A gyártó az első bejelentések után nem tudta reprodukálni a hibát, és hosszú ideig kizártnak tartotta, hogy a szoftver okozza. A szoftvert nem vetették alá független felülvizsgálatnak, a régebbi modellekből átvett kódrészleteket újrafelhasználták, pedig azok korábban a hardveres reteszelés „árnyékában” működtek.</p>
+<p><strong>Tanulság:</strong> a szoftver nem hibázik véletlenszerűen, hanem szisztematikusan; a hardveres védelem kiváltása szoftverrel új veszélyeket teremt; a kezelőfelület és a hibajelzések tervezése biztonsági kérdés.</p>
+</div></div>
+<div class="doboz doboz-baleset"><div class="doboz-cim">Ariane 5, 501-es repülés: hibátlan kód rossz környezetben (1996)</div><div class="doboz-tartalom">
+<p>1996. június 4-én az Európai Űrügynökség új hordozórakétája az első repülésén mintegy negyven másodperccel a start után letért a pályájáról, és megsemmisült. A vizsgálóbizottság szerint az inerciális referenciarendszer (SRI) szoftvere egy 64 bites lebegőpontos értéket (a vízszintes sebességhez kapcsolódó változót) 16 bites előjeles egész számmá alakított, és a túlcsordulás kezeletlen kivételt okozott <span class="citation" data-cites="lions1996">(<a href="../irodalom.html#ref-lions1996" role="doc-biblioref">Lions 1996</a>)</span>. A kódot az Ariane 4-ből vették át, ahol a rakéta pályája miatt ez az érték soha nem nőhetett ekkorára. Az Ariane 5 nagyobb vízszintes gyorsulása mellett viszont igen. Ráadásul az érintett függvénynek a start után már nem volt szerepe.</p>
+<p>A redundancia nem segített: a két SRI-egység ugyanazt a szoftvert futtatta, így ugyanabban a pillanatban, ugyanazért hibásodott meg. A fedélzeti számítógép a hibás egység diagnosztikai adatait repülési adatként értelmezte, és teljes kitérítést adott a fúvókáknak.</p>
+<p><strong>Tanulság:</strong> az újrafelhasznált komponens csak az eredeti feltételei között bizonyított; az azonos redundáns egységek közös okú hibája ellen a megtöbbszörözés nem véd; a követelmények és feltevések nyomon követése (mit tételezett fel a kód írója?) biztonsági kérdés.</p>
+</div></div>
+<div class="doboz doboz-baleset"><div class="doboz-cim">BP Texas City: a figyelmeztető jelek erodálódása (2005)</div><div class="doboz-tartalom">
+<p>2005. március 23-án a texasi finomító izomerizációs üzemének indításakor egy desztillálókolonnát túltöltöttek. A túlnyomás miatt nyíló biztonsági szelepeken keresztül éghető folyadék került egy légköri lefúvató tartályba és kéménybe, onnan a szabadba. A kialakuló gőzfelhő berobbant. Tizenöt ember meghalt, több mint százhetvenen megsérültek; a halálos áldozatok a közelben elhelyezett ideiglenes konténerirodákban tartózkodtak <span class="citation" data-cites="csb2007">(<a href="../irodalom.html#ref-csb2007" role="doc-biblioref">U.S. Chemical Safety and Hazard Investigation Board 2007</a>)</span>.</p>
+<p>A CSB jelentése a technikai okok (hibás szintmérés, a magasszint-riasztás elmaradása, elavult lefúvató rendszer) mellett hangsúlyosan szervezeti okokat nevezett meg: költségcsökkentést a karbantartásban, a kezelők fáradtságát, a korábbi hasonló események figyelmen kívül hagyását, és azt, hogy a vállalat a munkabiztonsági mutatók (például a munkaidő-kieséses balesetek száma) javulását a folyamatbiztonság javulásának tekintette.</p>
+<p><strong>Tanulság:</strong> a személyi munkabiztonság és a folyamatbiztonság két különböző dolog, más mutatókkal mérhető; a kisebb események és a „majdnem balesetek” a nagy balesetek előjelei; a telepítési döntések (hová kerülnek az emberek) a kockázat részei.</p>
+</div></div>
+<div class="doboz doboz-baleset"><div class="doboz-cim">Buncefield: a nem független védelmi réteg (2005)</div><div class="doboz-tartalom">
+<p>2005. december 11-én hajnalban az angliai Buncefield üzemanyag-tárolójában egy tartályt túltöltöttek. A szintmérő megakadt, és állandó értéket mutatott, a független magasszint-kapcsoló pedig nem működött, mert egy szerelési és karbantartási hiba miatt hatástalan volt. A kiömlő benzin gőzfelhőt alkotott, amely berobbant és a környék több tartályára átterjedő tűzvészt okozott. Halálos áldozat nem volt, de negyvenhárom ember megsérült, és a kár Európa egyik legnagyobb ipari kára volt <span class="citation" data-cites="buncefield2008">(<a href="../irodalom.html#ref-buncefield2008" role="doc-biblioref">Buncefield Major Incident Investigation Board 2008</a>)</span>.</p>
+<p><strong>Tanulság:</strong> a papíron független védelmi rétegek a gyakorlatban közös gyengeséggel rendelkezhetnek (közös karbantartási gyakorlat, közös téves feltevés); a védelmi funkciót rendszeresen, valósághűen kell vizsgálni (<em>proof test</em>); a tervezett kockázatcsökkentés csak akkor valós, ha az üzemeltetés is fenntartja.</p>
+</div></div>
+<div class="doboz doboz-baleset"><div class="doboz-cim">Boeing 737 MAX: egyetlen érzékelő és egy rejtett automatizmus (2018–2019)</div><div class="doboz-tartalom">
+<p>A Lion Air 610-es (2018. október 29.) és az Ethiopian Airlines 302-es (2019. március 10.) járatának lezuhanásában összesen 346 ember halt meg. Mindkét esetben a repülésvezérlés egy új funkciója, az MCAS (<em>Maneuvering Characteristics Augmentation System</em>) hibás állásszögjel alapján ismételten lefelé trimmelte a gépet. Az MCAS egyetlen állásszög-érzékelő jelére támaszkodott, ismételten aktiválódhatott, és a hatásköre a fejlesztés során megnőtt. A pilóták képzési anyagai nem írták le részletesen <span class="citation" data-cites="jatr2019">(<a href="../irodalom.html#ref-jatr2019" role="doc-biblioref">Joint Authorities Technical Review 2019</a>)</span>.</p>
+<p>A nemzetközi szakértői vizsgálat (JATR) többek között azt állapította meg, hogy a funkció hibás működésének veszélyességi besorolása és a tanúsítás során tett feltevések (például hogy a pilóták néhány másodpercen belül felismerik és kezelik a helyzetet) nem követték a funkció módosításait.</p>
+<p><strong>Tanulság:</strong> egy biztonságkritikus funkció nem támaszkodhat egyetlen érzékelőre; a tervezés során módosuló funkciók veszélyelemzését újra kell értékelni; az emberi beavatkozásra vonatkozó feltevéseket igazolni kell, nem csak feltételezni.</p>
+</div></div>
+<div class="doboz doboz-baleset"><div class="doboz-cim">Uber ATG, Tempe: az automatizálás és a felügyelő ember (2018)</div><div class="doboz-tartalom">
+<p>2018. március 18-án éjjel az arizonai Tempe városában egy fejlesztés alatt álló önvezető tesztjármű halálosan elütött egy kerékpárját toló gyalogost. Az NTSB vizsgálata szerint a rendszer körülbelül 5,6 másodperccel az ütközés előtt észlelte a gyalogost, de többször átsorolta (jármű, egyéb objektum, kerékpár), és minden átsorolásnál elvetette a mozgáspályájának előzményeit. A jármű saját vészfékező funkcióját a tesztek idejére kikapcsolták, és a rendszer a beavatkozást a biztonsági vezetőre bízta, aki a vizsgálat szerint a baleset előtt a telefonján nézett videót <span class="citation" data-cites="ntsb2019">(<a href="../irodalom.html#ref-ntsb2019" role="doc-biblioref">National Transportation Safety Board 2019</a>)</span>.</p>
+<p>Az NTSB a valószínű okok között a biztonsági vezető figyelmetlenségét, de a hozzájáruló tényezők között a vállalat elégtelen biztonsági kockázatértékelését, a kezelők figyelmének hiányzó felügyeletét és a „automatizálási elkényelmesedés” (<em>automation complacency</em>) kezelésének hiányát is megnevezte.</p>
+<p><strong>Tanulság:</strong> a passzív felügyeletre szoruló ember megbízhatatlan biztonsági tartalék; az érzékelés és osztályozás bizonytalanságát a rendszer architektúrájának kell kezelnie; a fejlesztési és tesztelési tevékenység maga is biztonsági kockázatot hordoz.</p>
+</div></div>
+</section>
+<section id="sec-kozos-mintazatok" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="sec-kozos-mintazatok"><span class="header-section-number">1.3.</span> Közös mintázatok</h2>
+<p>A hat eset között évtizedek és iparágak húzódnak, mégis feltűnően hasonlóak. A <a href="#tbl-mintazatok" class="quarto-xref"><span>1.1</span></a>. táblázat összefoglalja azokat a mintázatokat, amelyekre a könyv további fejezetei módszereket kínálnak.</p>
+<div id="tbl-mintazatok" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mintazatok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">1.1. táblázat.</span> A balesetek közös mintázatai és a kapcsolódó fejezetek
+</figcaption>
+<div aria-describedby="tbl-mintazatok-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Mintázat</th>
+<th style="text-align: left;">Példa</th>
+<th style="text-align: left;">A könyv válasza</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A hiba a specifikációban vagy a feltevésekben van, nem az alkatrészben</td>
+<td style="text-align: left;">Ariane 5, Therac-25, 737 MAX</td>
+<td style="text-align: left;">veszélyazonosítás (5–7. fejezet), követelmények nyomon követése (15. fejezet)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A redundáns egységek közös okból hibásodnak meg</td>
+<td style="text-align: left;">Ariane 5, Buncefield</td>
+<td style="text-align: left;">közös okú hibák modellezése (10. és 13. fejezet)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">A védelmi rétegek idővel erodálódnak</td>
+<td style="text-align: left;">Texas City, Buncefield</td>
+<td style="text-align: left;">proof teszt, üzemeltetési fázis (13. fejezet)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">A szoftver új, szisztematikus hibamódokat hoz</td>
+<td style="text-align: left;">Therac-25, Ariane 5</td>
+<td style="text-align: left;">szoftverbiztonság (15. fejezet)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Az ember felügyelőként és tartalékként nem megbízható</td>
+<td style="text-align: left;">Uber, 737 MAX</td>
+<td style="text-align: left;">ember a rendszerben (16. fejezet)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Szervezeti nyomás és gyenge biztonsági kultúra</td>
+<td style="text-align: left;">Texas City, Uber</td>
+<td style="text-align: left;">biztonsági érvelés és menedzsment (17. fejezet)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Az új technológia a meglévő módszerek határain túl működik</td>
+<td style="text-align: left;">Uber</td>
+<td style="text-align: left;">SOTIF, gépi tanulás (18. fejezet)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Két általános következtetés adódik. Az első, hogy <strong>a megbízhatóság és a biztonság nem ugyanaz.</strong> Az Ariane 5 szoftvere azt tette, amit specifikáltak; a Therac-25 szoftvere a specifikációja szerinti esetek túlnyomó többségében helyesen működött. Egy rendszer lehet megbízható és mégis veszélyes, és lehet kevéssé megbízható, mégis biztonságos (például ha minden hibájakor biztonságos állapotba áll). A <a href="02-fogalmak.html" class="quarto-xref"><span>2</span></a>. fejezet ezt a különbséget pontosan definiálja.</p>
+<p>A második, hogy <strong>a balesetek mögött rendszerszintű okok állnak.</strong> Az alkatrészhiba, az emberi tévedés vagy a szoftverhiba közvetlen ok, de az, hogy ebből baleset lett, a rendszer felépítésén, a szervezet működésén és a szabályozási környezeten múlt. Ezt a felismerést követték a balesetmodellek.</p>
+</section>
+<section id="sec-balesetmodellek" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sec-balesetmodellek"><span class="header-section-number">1.4.</span> A balesetmodellek fejlődése</h2>
+<p>A balesetmodell az a gondolati keret, amellyel a balesetek keletkezését magyarázzuk. A választott modell meghatározza, mit keresünk a vizsgálat során, és milyen intézkedéseket tartunk hatékonynak. A <a href="#fig-modellek-idovonal" class="quarto-xref"><span>1.1</span></a>. ábra a legfontosabb modelleket mutatja időrendben.</p>
+<div id="fig-modellek-idovonal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-modellek-idovonal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/balesetmodellek-idovonal.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-modellek-idovonal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">1.1. ábra.</span> A balesetmodellek fejlődése: az egyszerű okláncoktól a rendszerszintű modellekig.
+</figcaption>
+</figure>
+</div>
+<section id="sec-oklanc" class="level3" data-number="1.4.1">
+<h3 data-number="1.4.1" class="anchored" data-anchor-id="sec-oklanc"><span class="header-section-number">1.4.1.</span> Lineáris okláncmodellek</h3>
+<p>Herbert W. Heinrich biztosítási szakember 1931-ben megjelent könyvében a balesetet egymás után dőlő dominók sorozataként írta le: a társadalmi környezet és a személyes hiányosságok vezetnek a nem biztonságos cselekedethez vagy állapothoz, ez a balesethez, az pedig a sérüléshez <span class="citation" data-cites="heinrich1931">(<a href="../irodalom.html#ref-heinrich1931" role="doc-biblioref">Heinrich 1931</a>)</span>. Ha egy dominót kiveszünk, a lánc megszakad. Heinrich nevéhez fűződik az a sokat idézett, de módszertanilag gyenge állítás is, hogy a balesetek túlnyomó többségét emberi „nem biztonságos cselekedet” okozza.</p>
+<p>A dominóelv egyszerű és jól kommunikálható, ezért ma is él például a gyökérok-elemzés (<em>root cause analysis</em>) naiv változataiban. Két korlátja van: a balesetet egyetlen láncra szűkíti, holott a valóságban több, egymással kölcsönható ok vezet hozzá, és könnyen az utolsó láncszemnél, a kezelő hibájánál áll meg.</p>
+</section>
+<section id="sec-energia-gat" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="sec-energia-gat"><span class="header-section-number">1.4.2.</span> Energia–gát modell</h3>
+<p>James Gibson és William Haddon az 1960-as és 1970-es években a balesetet a nem kívánt <strong>energiaátadás</strong> jelenségeként írta le <span class="citation" data-cites="haddon1973">(<a href="../irodalom.html#ref-haddon1973" role="doc-biblioref">Haddon 1973</a>)</span>. A kár akkor keletkezik, ha mechanikai, hő-, vegyi, villamos vagy sugárzási energia olyan mértékben jut el az emberhez vagy a védendő értékhez, amely meghaladja annak tűrőképességét. A megelőzés eszközei a <strong>gátak</strong> (<em>barriers</em>): az energia mennyiségének csökkentése, a felhalmozódás megakadályozása, a felszabadulás lassítása, a térbeli vagy időbeli elválasztás, a védendő érték ellenállóbbá tétele. Haddon tíz ilyen ellenstratégiát sorolt fel.</p>
+<p>Az energia–gát gondolat a mai folyamatbiztonság alapja. A <a href="11-esemenyfa.html" class="quarto-xref"><span>11</span></a>. fejezetben tárgyalt rétegzett védelem (LOPA) és a bow-tie diagram közvetlenül erre épül, és a <a href="14-architekturak.html" class="quarto-xref"><span>14</span></a>. fejezetben tárgyalt inherens biztonság elve (kevesebb veszélyes anyag, alacsonyabb nyomás) is az energiaforrás csökkentéséről szól.</p>
+</section>
+<section id="sec-sajtszelet" class="level3" data-number="1.4.3">
+<h3 data-number="1.4.3" class="anchored" data-anchor-id="sec-sajtszelet"><span class="header-section-number">1.4.3.</span> A sajtszelet-modell: aktív hibák és latens feltételek</h3>
+<p>James Reason pszichológus a <em>Human Error</em> (1990) és a <em>Managing the Risks of Organizational Accidents</em> (1997) című könyveiben a szervezeti balesetek magyarázatára vezette be a sokszor „svájci sajt modellnek” nevezett ábrázolást <span class="citation" data-cites="reason1990 reason1997">(<a href="../irodalom.html#ref-reason1990" role="doc-biblioref">Reason 1990</a>, <a href="../irodalom.html#ref-reason1997" role="doc-biblioref">1997</a>)</span>. A rendszer védelmi rétegeit (szervezeti döntések, tervezés, irányítás, riasztás, védelmi rendszer) szeletekként képzeljük el, amelyeken lyukak vannak (<a href="#fig-sajtszelet" class="quarto-xref"><span>1.2</span></a>. ábra). Baleset akkor következik be, ha egy pillanatra minden szelet lyukai egy vonalba kerülnek, és a veszély átjut rajtuk.</p>
+<div id="fig-sajtszelet" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sajtszelet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/sajtszelet-modell.svg" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sajtszelet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">1.2. ábra.</span> A sajtszelet-modell. A védelmi rétegek gyengeségei (lyukai) folyamatosan változnak; a baleset akkor következik be, amikor egy pillanatra mind egy vonalba kerülnek.
+</figcaption>
+</figure>
+</div>
+<p>Reason két hibatípust különböztet meg. Az <strong>aktív hibák</strong> (<em>active failures</em>) a frontvonalban dolgozók (kezelők, pilóták, karbantartók) tévedései és szabályszegései, amelyeknek azonnali hatásuk van. A <strong>latens feltételek</strong> (<em>latent conditions</em>) a tervezők, a vezetők és a szabályozók döntéseiből fakadnak: elégtelen képzés, félrevezető kezelőfelület, karbantartási hiányosság, időnyomás. Ezek évekig rejtve maradhatnak, amíg egy aktív hibával találkozva balesethez nem vezetnek. A modell legfontosabb üzenete, hogy a kezelő hibája gyakran csak a lánc utolsó, látható eleme; a tartós javulást a latens feltételek felszámolása hozza.</p>
+<p>A sajtszelet-modell a gyakorlatban rendkívül népszerű, és a 2014-es jegyzet is ezzel szemléltette a független védelmi rétegek jelentőségét. Fontos azonban látni a korlátait: a lyukak „egy vonalba kerülését” nem magyarázza meg, a rétegeket egymástól függetlennek ábrázolja, és könnyen arra csábít, hogy egyszerűen több szeletet tegyünk a rendszerbe.</p>
+<div class="doboz doboz-hiba"><div class="doboz-cim">„Még egy védelmi réteg” mindig segít?</div><div class="doboz-tartalom">
+<p>A sajtszelet-modell félreérthető üzenete, hogy minél több a szelet, annál biztonságosabb a rendszer. A valóságban az új réteg új hibamódokat, új bonyolultságot és hamis biztonságérzetet is hozhat. A kezelők például jobban támaszkodhatnak az automatikus védelemre, és ritkábban figyelnek a folyamatra. A rétegek csak akkor szorozzák a kockázatcsökkentést, ha valóban függetlenek egymástól. Ezt a <a href="11-esemenyfa.html" class="quarto-xref"><span>11</span></a>. fejezetben a független védelmi réteg (IPL) szigorú kritériumaival fogjuk megfogalmazni.</p>
+</div></div>
+</section>
+<section id="sec-perrow" class="level3" data-number="1.4.4">
+<h3 data-number="1.4.4" class="anchored" data-anchor-id="sec-perrow"><span class="header-section-number">1.4.4.</span> Normál balesetek: komplexitás és csatolás</h3>
+<p>Charles Perrow szociológus az 1979-es Three Mile Island-i atomerőmű-baleset elemzése nyomán jutott arra a következtetésre, hogy bizonyos rendszerekben a balesetek elkerülhetetlenek, „normálisak” <span class="citation" data-cites="perrow1984">(<a href="../irodalom.html#ref-perrow1984" role="doc-biblioref">Perrow 1984</a>)</span>. Két jellemzőt emelt ki (<a href="#fig-perrow" class="quarto-xref"><span>1.3</span></a>. ábra):</p>
+<ul>
+<li><strong>interaktív komplexitás:</strong> a rendszer elemei váratlan, nem tervezett és nehezen átlátható módon hathatnak egymásra;</li>
+<li><strong>szoros csatolás:</strong> a folyamatok gyorsan, kötött sorrendben és kevés tartalékkal futnak, így nincs idő beavatkozni, ha valami eltér a tervezettől.</li>
+</ul>
+<div id="fig-perrow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-perrow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/perrow-ter.svg" class="img-fluid figure-img" style="width:72.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-perrow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">1.3. ábra.</span> Perrow kölcsönhatás–csatolás tere. A jobb felső negyedbe eső rendszerekben a „normál baleset” kockázata a legnagyobb.
+</figcaption>
+</figure>
+</div>
+<p>Perrow szerint a jobb felső negyedbe eső rendszerekben a több független hiba váratlan kölcsönhatása előbb-utóbb balesethez vezet, és a redundancia tovább növelheti a komplexitást. Az elmélet vitatott, mert a magas megbízhatóságú szervezetek (például a repülőgép-hordozók vagy a légiforgalmi irányítás) kutatói kimutatták, hogy megfelelő szervezeti kultúrával ezek a rendszerek is tartósan biztonságosan működtethetők. A mérnök számára mégis fontos üzenetet hordoz: a komplexitás és a csatolás tervezési paraméter, és csökkentésük maga is biztonsági intézkedés.</p>
+</section>
+<section id="sec-rasmussen" class="level3" data-number="1.4.5">
+<h3 data-number="1.4.5" class="anchored" data-anchor-id="sec-rasmussen"><span class="header-section-number">1.4.5.</span> Sodródás a határ felé</h3>
+<p>Jens Rasmussen dán mérnök és pszichológus 1997-es tanulmányában a biztonságot dinamikus egyensúlyként írta le <span class="citation" data-cites="rasmussen1997">(<a href="../irodalom.html#ref-rasmussen1997" role="doc-biblioref">Rasmussen 1997</a>)</span>. A rendszer működése egy olyan térben mozog, amelyet három határ fog közre (<a href="#fig-rasmussen" class="quarto-xref"><span>1.4</span></a>. ábra): a gazdasági kudarc határa, az elviselhetetlen munkaterhelés határa és a balesethez vezető működés határa. A vezetés a hatékonyság növelésére, a dolgozók az erőfeszítés csökkentésére törekednek. Ez a két nyomás a működést lassan, észrevétlenül a biztonsági határ felé sodorja. Minden egyes lépés ésszerűnek tűnik, és mivel a baleset elmarad, a kisebb tartalék megszokottá válik.</p>
+<div id="fig-rasmussen" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rasmussen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../abrak/gen/rasmussen-sodrodas.svg" class="img-fluid figure-img" style="width:82.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rasmussen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<span class="abraszam">1.4. ábra.</span> Rasmussen modellje: a gazdasági nyomás és a kisebb erőfeszítésre való törekvés a működést a biztonsági határ felé sodorja.
+</figcaption>
+</figure>
+</div>
+<p>A Texas City-i baleset jó példája ennek a sodródásnak: az elhalasztott karbantartások, a mellőzött eljárások és az elfogadott rendellenességek külön-külön nem okoztak balesetet, együtt viszont eltüntették a biztonsági tartalékot. A Rasmussen-modell üzenete, hogy a biztonságot nem lehet egyszer „beépíteni” a rendszerbe, hanem folyamatosan figyelni kell, és a határokat láthatóvá kell tenni a döntéshozók számára.</p>
+</section>
+<section id="sec-stamp-bevezetes" class="level3" data-number="1.4.6">
+<h3 data-number="1.4.6" class="anchored" data-anchor-id="sec-stamp-bevezetes"><span class="header-section-number">1.4.6.</span> STAMP: a biztonság irányítási feladat</h3>
+<p>Nancy Leveson az MIT professzoraként a 2000-es évek elején fogalmazta meg a STAMP-modellt (<em>Systems-Theoretic Accident Model and Processes</em>), amelyet <em>Engineering a Safer World</em> című könyvében foglalt össze <span class="citation" data-cites="leveson2011">(<a href="../irodalom.html#ref-leveson2011" role="doc-biblioref">Leveson 2011</a>)</span>. A STAMP a balesetet nem hibák láncolataként, hanem <strong>irányítási problémaként</strong> értelmezi: a biztonság a rendszer emergens tulajdonsága, amely akkor áll fenn, ha a rendszer viselkedésére vonatkozó biztonsági korlátokat (<em>safety constraints</em>) a hierarchikus irányítási struktúra minden szintje érvényesíti. A baleset oka az, hogy egy korlát nem érvényesült: az irányító hibás vagy hiányos folyamatmodell alapján döntött, a visszacsatolás hiányzott vagy késett, vagy az irányító beavatkozása nem hatott.</p>
+<p>Ebben a szemléletben az alkatrészhiba csak egy a lehetséges okok közül. A baleset akkor is bekövetkezhet, ha egyetlen alkatrész sem hibásodik meg, de az alkatrészek kölcsönhatása nem biztonságos. Erre a Mars Polar Lander 1999-es elvesztése a klasszikus példa: a leszállóláb kinyitásakor keletkező rezgést a szoftver a talajérés jelének értelmezte, és idő előtt leállította a fékezőhajtóművet. Az érzékelő és a szoftver is a specifikációja szerint működött.</p>
+<p>A STAMP-ra épülő veszélyelemzési módszert, az STPA-t a <a href="07-stpa.html" class="quarto-xref"><span>7</span></a>. fejezet részletesen tárgyalja.</p>
+</section>
+<section id="sec-safety-ii" class="level3" data-number="1.4.7">
+<h3 data-number="1.4.7" class="anchored" data-anchor-id="sec-safety-ii"><span class="header-section-number">1.4.7.</span> Safety-I és Safety-II</h3>
+<p>Erik Hollnagel és a rezilienciamérnökség (<em>resilience engineering</em>) képviselői arra hívták fel a figyelmet, hogy a hagyományos biztonságtechnika (Safety-I) a ritka hibákból és balesetekből tanul, és a biztonságot a nem kívánt események hiányaként határozza meg <span class="citation" data-cites="hollnagel2014">(<a href="../irodalom.html#ref-hollnagel2014" role="doc-biblioref">Hollnagel 2014</a>)</span>. A Safety-II szemlélet szerint a biztonság az a képesség, hogy a rendszer változó körülmények között is sikeresen működjön. Ezt pedig leginkább a jól működő esetekből, az emberek folyamatos alkalmazkodásából lehet megérteni. A két szemlélet nem zárja ki, hanem kiegészíti egymást: a tervezésnél a Safety-I módszerei (veszélyazonosítás, kockázatcsökkentés), az üzemeltetésnél a Safety-II szemlélete (a mindennapi alkalmazkodás megértése és támogatása) egyaránt szükséges.</p>
+</section>
+</section>
+<section id="sec-balesetek-mernok" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-balesetek-mernok"><span class="header-section-number">1.5.</span> Mit jelent mindez a mérnök számára?</h2>
+<p>A balesetmodellek nem egymást felváltó divatok, hanem egymásra épülő rétegek. A könyv módszertana mindegyikből merít:</p>
+<ul>
+<li>a <strong>redukcionista módszerek</strong> (FMEA, hibafa, megbízhatósági blokkdiagram, Markov-modell) az alkatrészhibák és kombinációik hatását számszerűsítik, és nélkülözhetetlenek a biztonsági funkciók integritásának igazolásához (III. rész);</li>
+<li>a <strong>gát- és rétegszemlélet</strong> (LOPA, bow-tie) a kockázatcsökkentés felépítését teszi átláthatóvá (<a href="11-esemenyfa.html" class="quarto-xref"><span>11</span></a>. fejezet);</li>
+<li>a <strong>rendszerelméleti szemlélet</strong> (STAMP, STPA) a kölcsönhatásokból, a specifikációs hibákból és az ember–automatizálás együttműködéséből fakadó veszélyeket tárja fel (<a href="07-stpa.html" class="quarto-xref"><span>7</span></a>. fejezet);</li>
+<li>a <strong>szervezeti és emberi szemlélet</strong> (Reason, Rasmussen, Hollnagel) az üzemeltetés és a biztonsági kultúra kérdéseire figyelmeztet (<a href="16-ember.html" class="quarto-xref"><span>16</span></a>. és <a href="17-biztonsagi-erveles.html" class="quarto-xref"><span>17</span></a>. fejezet).</li>
+</ul>
+<div class="doboz doboz-esetA"><div class="doboz-cim">ReaktorVéd: melyik baleset tanulsága érinti a reaktort?</div><div class="doboz-tartalom">
+<p>A ReaktorVéd reaktorát exoterm reakció hőfejlődése teszi veszélyessé. A Texas City- és a Buncefield-baleset közvetlenül releváns: mindkettőben túltöltés és a védelmi rétegek eróziója vezetett a katasztrófához. A tervezőcsapat ezért már a koncepciós fázisban három kérdést tesz fel: Mennyi energiát tárolunk, és csökkenthető-e (kisebb adag, lassabb adagolás)? Mely védelmi rétegek valóban függetlenek egymástól? Hogyan biztosítjuk, hogy a védelmi funkciók az üzemeltetés évei alatt is működőképesek maradjanak?</p>
+</div></div>
+<div class="doboz doboz-esetB"><div class="doboz-cim">VészFék: az Uber-baleset tanulsága</div><div class="doboz-tartalom">
+<p>A VészFék fejlesztőcsapata az Uber-baleset jelentéséből két tervezési elvet szűr le. Az érzékelés bizonytalanságát (az objektum osztályozásának ingadozását) a funkció logikájának kell kezelnie, nem a vezetőnek. Továbbá a rendszer nem építhet olyan emberi beavatkozásra, amelyre a vezetőnek nincs ideje vagy figyelme. Ezek a szempontok a <a href="18-uj-kihivasok.html" class="quarto-xref"><span>18</span></a>. fejezetben, a rendeltetésszerű funkció biztonságánál (SOTIF) térnek vissza.</p>
+</div></div>
+<div class="doboz doboz-labor"><div class="doboz-cim">Gyakorlat</div><div class="doboz-tartalom">
+<p>A gyakorlati útmutató első feladata egy választott, nyilvános balesetvizsgálati jelentés elemzése a sajtszelet-modell és a STAMP szemléletével. A feladatlap mintapromptokat is ad ahhoz, hogyan lehet egy nagy nyelvi modellt kritikus olvasótársként használni a jelentés feldolgozásához (lásd a gyakorlati útmutató 1. laborját).</p>
+</div></div>
+<div class="doboz doboz-osszefoglalo"><div class="doboz-cim">Összefoglalás</div><div class="doboz-tartalom">
+<ul>
+<li>A súlyos balesetek ritkán egyetlen hibából fakadnak; mögöttük specifikációs hibák, közös okú hibák, erodálódó védelmi rétegek, emberi tényezők és szervezeti nyomás áll.</li>
+<li>A megbízhatóság (a specifikáció szerinti működés) és a biztonság (a nem elfogadható kár elkerülése) két különböző tulajdonság.</li>
+<li>A balesetmodellek a lineáris okláncoktól (Heinrich) az energia–gát modellen és az epidemiológiai modelleken (Reason) át a rendszerszintű modellekig (Rasmussen, STAMP, Safety-II) fejlődtek.</li>
+<li>A modern biztonságtechnika a redukcionista, a gát-, a rendszerelméleti és a szervezeti szemléletet együtt alkalmazza.</li>
+</ul>
+</div></div>
+<div class="doboz doboz-onell"><div class="doboz-cim">Önellenőrzés</div><div class="doboz-tartalom">
+<ol type="1">
+<li>Miért nem védett a két inerciális referenciaegység az Ariane 5 balesete ellen?</li>
+<li>Mi a különbség Reason fogalmai szerint az aktív hiba és a latens feltétel között? Adj egy-egy példát a Texas City-i balesetből!</li>
+<li>Hogyan magyarázza a Rasmussen-modell, hogy egy üzem évekig baleset nélkül működik, majd egyszer csak súlyos baleset történik?</li>
+<li>Lehet-e baleset akkor, ha a rendszer minden eleme a specifikációja szerint működik? Indokold egy példával!</li>
+</ol>
+<details class="megoldas"><summary>Megoldás</summary>
+<ol type="1">
+<li>Mert ugyanazt a szoftvert futtatták, így ugyanaz a bemenet ugyanabban a pillanatban mindkettőben ugyanazt a kezeletlen kivételt váltotta ki. Ez közös okú hiba; ellene az azonos egységek megtöbbszörözése nem véd, csak a diverzitás (eltérő kialakítás) vagy a hiba okának megszüntetése.</li>
+<li>Az aktív hiba azonnali hatású, a frontvonalban elkövetett tévedés vagy szabályszegés (például a kolonna túltöltése az indításkor, a szintjelzés figyelmen kívül hagyása). A latens feltétel tervezési vagy szervezeti eredetű, rejtett gyengeség (például az elavult lefúvató rendszer, a kezelők túlterhelése, a karbantartási költségek csökkentése, az ideiglenes irodák rossz elhelyezése).</li>
+<li>A gazdasági nyomás és a kisebb erőfeszítésre való törekvés lassan csökkenti a biztonsági tartalékot. Mivel a baleset sokáig elmarad, minden kisebb lépés elfogadottá válik, és a működés észrevétlenül a biztonsági határig sodródik. Ekkor már egy kis zavar is elegendő a balesethez.</li>
+<li>Igen. A STAMP szerint a baleset az elemek nem biztonságos kölcsönhatásából is fakadhat. Példa a Mars Polar Lander: a lábak kinyitásakor keletkező jelet a szoftver a talajérés jelének vette, és leállította a hajtóművet, holott minden komponens a specifikációja szerint működött. A hiba a specifikációban (a kölcsönhatás figyelmen kívül hagyásában) volt.</li>
+</ol>
+</details>
+</div></div>
+<div class="doboz doboz-forras"><div class="doboz-cim">Továbbolvasás</div><div class="doboz-tartalom">
+<ul>
+<li>Leveson, N. G. (2011): <em>Engineering a Safer World.</em> MIT Press – nyílt hozzáférésű; a 2. és 3. fejezet a balesetmodellek kritikai áttekintése <span class="citation" data-cites="leveson2011">(<a href="../irodalom.html#ref-leveson2011" role="doc-biblioref">Leveson 2011</a>)</span>.</li>
+<li>Reason, J. (1997): <em>Managing the Risks of Organizational Accidents.</em> Ashgate – a latens feltételek és a szervezeti balesetek klasszikus műve <span class="citation" data-cites="reason1997">(<a href="../irodalom.html#ref-reason1997" role="doc-biblioref">Reason 1997</a>)</span>.</li>
+<li>Rasmussen, J. (1997): Risk management in a dynamic society. <em>Safety Science</em> 27, 183–213 <span class="citation" data-cites="rasmussen1997">(<a href="../irodalom.html#ref-rasmussen1997" role="doc-biblioref">Rasmussen 1997</a>)</span>.</li>
+<li>A vizsgálati jelentések: Leveson és Turner (1993) a Therac-25-ről, Lions (1996) az Ariane 5-ről, a CSB (2007) a Texas City-i és az NTSB (2019) a tempei balesetről.</li>
+</ul>
+</div></div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-buncefield2008" class="csl-entry" role="listitem">
+Buncefield Major Incident Investigation Board. 2008. <em>The <span>Buncefield</span> Incident 11 December 2005: The Final Report of the Major Incident Investigation Board</em>. HSE Books.
+</div>
+<div id="ref-haddon1973" class="csl-entry" role="listitem">
+Haddon, William. 1973. <span>„Energy Damage and the Ten Countermeasure Strategies”</span>. <em>Journal of Trauma</em> 13 (4): 321–31.
+</div>
+<div id="ref-heinrich1931" class="csl-entry" role="listitem">
+Heinrich, Herbert W. 1931. <em>Industrial Accident Prevention: A Scientific Approach</em>. McGraw-Hill.
+</div>
+<div id="ref-hollnagel2014" class="csl-entry" role="listitem">
+Hollnagel, Erik. 2014. <em>Safety-<span>I</span> and Safety-<span>II</span>: The Past and Future of Safety Management</em>. Ashgate.
+</div>
+<div id="ref-jatr2019" class="csl-entry" role="listitem">
+Joint Authorities Technical Review. 2019. <em>Boeing 737 <span>MAX</span> Flight Control System: Observations, Findings, and Recommendations</em>. Federal Aviation Administration.
+</div>
+<div id="ref-leveson2011" class="csl-entry" role="listitem">
+Leveson, Nancy G. 2011. <em>Engineering a Safer World: Systems Thinking Applied to Safety</em>. MIT Press. <a href="https://doi.org/10.7551/mitpress/8179.001.0001">https://doi.org/10.7551/mitpress/8179.001.0001</a>.
+</div>
+<div id="ref-leveson1993" class="csl-entry" role="listitem">
+Leveson, Nancy G., és Clark S. Turner. 1993. <span>„An Investigation of the <span>Therac-25</span> Accidents”</span>. <em>Computer</em> 26 (7): 18–41. <a href="https://doi.org/10.1109/MC.1993.274940">https://doi.org/10.1109/MC.1993.274940</a>.
+</div>
+<div id="ref-lions1996" class="csl-entry" role="listitem">
+Lions, Jacques-Louis. 1996. <em><span>ARIANE 5</span> Flight 501 Failure: Report by the Inquiry Board</em>. European Space Agency.
+</div>
+<div id="ref-ntsb2019" class="csl-entry" role="listitem">
+National Transportation Safety Board. 2019. <em>Collision Between Vehicle Controlled by Developmental Automated Driving System and Pedestrian, <span>Tempe</span>, <span>Arizona</span>, March 18, 2018</em>. NTSB/HAR-19/03. NTSB.
+</div>
+<div id="ref-perrow1984" class="csl-entry" role="listitem">
+Perrow, Charles. 1984. <em>Normal Accidents: Living with High-Risk Technologies</em>. Basic Books.
+</div>
+<div id="ref-rasmussen1997" class="csl-entry" role="listitem">
+Rasmussen, Jens. 1997. <span>„Risk Management in a Dynamic Society: A Modelling Problem”</span>. <em>Safety Science</em> 27 (2–3): 183–213. <a href="https://doi.org/10.1016/S0925-7535(97)00052-0">https://doi.org/10.1016/S0925-7535(97)00052-0</a>.
+</div>
+<div id="ref-reason1990" class="csl-entry" role="listitem">
+Reason, James. 1990. <em>Human Error</em>. Cambridge University Press.
+</div>
+<div id="ref-reason1997" class="csl-entry" role="listitem">
+Reason, James. 1997. <em>Managing the Risks of Organizational Accidents</em>. Ashgate.
+</div>
+<div id="ref-csb2007" class="csl-entry" role="listitem">
+U.S. Chemical Safety and Hazard Investigation Board. 2007. <em>Investigation Report: Refinery Explosion and Fire, <span>BP</span> <span>Texas City</span>, <span>Texas</span>, March 23, 2005</em>. 2005-04-I-TX. CSB.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Kimásolva!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Kimásolva!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/complexsystemsintelligence\.github\.io\/biztonsagkritikus-rendszerek\/kezikonyv\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+<nav class="page-navigation" aria-label="Page">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Előszó">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Előszó</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../fejezetek/02-fogalmak.html" class="pagination-link" aria-label="Fogalmak: veszély, kockázat, biztonság, megbízhatóság">
+        <span class="nav-page-text"><span class="chapter-number">2.</span>&nbsp; <span class="chapter-title">Fogalmak: veszély, kockázat, biztonság, megbízhatóság</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© 2026 Abonyi János · Pannon Egyetem · CC BY-NC-SA 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/edit/main/kezikonyv/fejezetek/01-balesetek.qmd" class="toc-action"><i class="bi bi-github"></i>Oldal szerkesztése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/issues/new" class="toc-action"><i class="bi empty"></i>Hiba vagy javaslat bejelentése</a></li><li><a href="https://github.com/ComplexSystemsIntelligence/biztonsagkritikus-rendszerek/blob/main/kezikonyv/fejezetek/01-balesetek.qmd" class="toc-action"><i class="bi empty"></i>Forrás megtekintése</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p><a href="https://complexsystemsintelligence.github.io/biztonsagkritikus-rendszerek/gyakorlat/">Gyakorlati útmutató</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
